@@ -13,6 +13,9 @@ export default {
   name: 'Home',
   components: {
     HelloWorld
+  },
+  mounted() {
+    this.$store.dispatch('busRoute/init');
   }
 }
 </script>
