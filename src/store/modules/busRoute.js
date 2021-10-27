@@ -13,12 +13,17 @@ const busRouteModule = {
       "city": "InterBus",
     }],
     routes: [],
+    isInitialized: false,
   }),
 
   actions: {
-    init: async ({ dispatch }) => {
+    init: async ({ state, dispatch, commit }) => {
+      if (state.isInitialized) {
+        return;
+      }
       await dispatch('loadCityOption');
       await dispatch('loadRoutes');
+      commit('setInitialized', true);
     },
     loadCityOption: async ({ commit }) => {
       const { data: cityList } = await GistApi.get('/V3/Map/Basic/City');
@@ -30,6 +35,18 @@ const busRouteModule = {
       }));
     },
     loadRoutes: async ({ state, commit }) => {
+      // 讀取儲存的快取資料
+      const storedDataString = window.localStorage.getItem('busRoutes/routes') || '';
+      if(storedDataString) {
+        const storedData = JSON.parse(storedDataString);
+        if(Object.keys(storedData).length) {
+          commit('addToCityRoute', storedData);
+          return;
+        }
+        window.localStorage.removeItem('busRoutes/routes');
+      }
+
+      // 從 API 拉資料
       const requests = [];
       state.cityOptions.forEach(c => requests.push(
         MotcApi.get(
@@ -43,16 +60,27 @@ const busRouteModule = {
       }
       const responses = await Promise.all(requests);
       responses.forEach(({ data }) => {
-        const saveItems = data.map(i => {
-          return {
-            routeUID: `${i.RouteUID}`,
-            routeID: `${i.RouteID}`,
-            routeName: `${i.RouteName.Zh_tw}`,
-            departureName: i.DepartureStopNameZh || '-',
-            destinationName: i.DestinationStopNameZh || '-',
-            direction: i.HasSubRoutes ? 2 : 1,
-            city: i.City || 'InterBus',
-          };
+        const saveItems = [];
+        data.forEach(i => {
+          const city = i.City || 'InterBus';
+          i.SubRoutes.forEach(s => {
+            const subRouteName = `${s.SubRouteName.Zh_tw}` == `${i.RouteName.Zh_tw}0` ? `${i.RouteName.Zh_tw}` : `${s.SubRouteName.Zh_tw}`;
+            const subRouteNameEn = `${s.SubRouteName.En}` == `${i.RouteName.En}0` ? `${i.RouteName.En}` : `${s.SubRouteName.En}`;
+            saveItems.push({
+              routeUID: `${i.RouteID}`,
+              subRouteUID: `${s.SubRouteUID}`,
+              routeName: `${i.RouteName.Zh_tw}`,
+              routeNameEn: `${i.RouteName.En}`,
+              subRouteName: subRouteName,
+              subRouteNameEn: subRouteNameEn,
+              direction: `${s.Direction}`,
+              headSign: `${s.Headsign || subRouteName}`,
+              headSignEn: `${s.HeadsignEn || subRouteNameEn}`,
+              city: city,
+              uniqueIndex: `${city}|${subRouteName}`,
+              searchPatten: `${subRouteName} ${i.RouteName.Zh_tw} ${s.Headsign}`,
+            });
+          });
         });
         commit('addToCityRoute', saveItems);
       });
@@ -60,11 +88,15 @@ const busRouteModule = {
   },
 
   mutations: {
+    setInitialized(state, payload) {
+      state.isInitialized = payload;
+    },
     setCityOptions(state, payload) {
       state.cityOptions.push(...payload);
     },
     addToCityRoute(state, payload) {
       state.routes.push(...payload);
+      window.localStorage.setItem('busRoutes/routes', JSON.stringify(state.routes));
     },
   },
   getters: {
@@ -73,7 +105,7 @@ const busRouteModule = {
       // 確認關鍵字有輸入
       keyword = (keyword || '').toLocaleLowerCase().trim();
       if (keyword === '') {
-        return {};
+        return undefined;
       }
       // 找出符合的地址
       city = (city || '').toLocaleLowerCase().trim();
@@ -88,25 +120,34 @@ const busRouteModule = {
         return c;
       }, {});
 
-      // 找出符合條件的路線
+      // 找出符合條件的路線，排除重複
+      const skipIndex = {};
       state.routes.forEach(route => {
-        if (!(route.city in result)) { // 不是符合的查詢縣市
+        // 不是符合的查詢縣市
+        if (!(route.city in result)) { 
           return;
         }
-        switch (true) {
-          case -1 !== route.routeName.toLocaleLowerCase().indexOf(keyword):
-          case -1 !== route.departureName.toLocaleLowerCase().indexOf(keyword):
-          case -1 !== route.destinationName.toLocaleLowerCase().indexOf(keyword):
-            result[route.city].routes.push(route);
-            break;
-          default:
-            return;
+        // 判斷是否已經查找過
+        if (route.uniqueIndex in skipIndex) {
+          
+          return;
         }
+        // 記錄此資料已經檢查過
+        skipIndex[route.uniqueIndex] = route.uniqueIndex;
+
+        // 檢查是否命中關鍵字
+        if (-1 === route.searchPatten.toLocaleLowerCase().indexOf(keyword)) {
+          return;
+        }
+        
+        // 資料命中放入輸出結果
+        result[route.city].routes.push(route);
       });
 
       return result;
     },
-  }
+    getRouteGroup: state => uniqueIndex => state.routes.filter(r => r.uniqueIndex == uniqueIndex),
+  },
 };
 
 export default busRouteModule;
