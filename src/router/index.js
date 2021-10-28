@@ -12,15 +12,24 @@ const routes = [
         name: 'Home',
         component: () => import(/* webpackChunkName: "HomePage" */ '../views/Home.vue'),
       },
+      {
+        path: 'result',
+        name: 'SearchResult',
+        beforeEnter: (to, from, next) => {
+          store.commit('routeSelector/setSelectedCity', String(to.query.city || '').trim());
+          store.commit('routeSelector/setInputKeyword', String(to.query.keyword || '').trim());
+          if(store.state.routeSelector.inputKeyword == '') {
+            next({
+              name: 'Home'
+            });
+          } else {
+            next();
+          }
+          
+        },
+        component: () => import(/* webpackChunkName: "SearchResultPage" */ '../views/SearchResult.vue'),
+      },
     ],
-  },
-  {
-    path: '/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
   },
   {
     path: '/:pathMatch(.*)*',

@@ -105,7 +105,7 @@ const busRouteModule = {
       // 確認關鍵字有輸入
       keyword = (keyword || '').toLocaleLowerCase().trim();
       if (keyword === '') {
-        return undefined;
+        return {};
       }
       // 找出符合的地址
       city = (city || '').toLocaleLowerCase().trim();
@@ -129,7 +129,6 @@ const busRouteModule = {
         }
         // 判斷是否已經查找過
         if (route.uniqueIndex in skipIndex) {
-          
           return;
         }
         // 記錄此資料已經檢查過

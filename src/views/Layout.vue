@@ -2,15 +2,13 @@
   <div class="layout">
     <header>
       <div class="container header-layout">
-        <div class="logo-bar">
-          <img class="logo-image" src="../assets/logo.svg" alt="Bus logo" />
-        </div>
+        <img class="logo" src="../assets/logo.svg" alt="Bus logo" />
         <div class="search-bar">
           <SearchBar />
         </div>
         <div class="menu-bar">
-          <div class="">
-            我的最愛
+          <div class="btn">
+            <img class="favorite-icon" src="../assets/icons/favorite-icon.svg" /> 我的最愛
           </div>
         </div>
       </div>
@@ -40,23 +38,29 @@ export default {
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
-  justify-content: center;
-  align-content: stretch;
-  vertical-align: center;
+  align-items: center;
+  justify-items: stretch;
+  align-items: stretch;
   background: #F4F5F9;
 
   & > * {
-    flex-basis: 1;
+    flex-basis: 0;
     flex-grow: 1;
+    max-height: 100%;
+    align-content: center;
+    overflow: hidden;
   }
 
   & > header, & > footer {
     flex: 0 0 auto;
     height: auto;
+    max-height: 100%;
+    overflow: initial;
   }
 
   & > header {
     background: #040D2E;
+    padding: 1rem; 
 
     &::after {
       content: '';
@@ -70,18 +74,25 @@ export default {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    align-content: stretch;
-    justify-content: center;
-    vertical-align: center;
+    align-items: stretch;
+    justify-items: center;
 
-    & > .logo-bar, & > .menu-bar {
-      flex: 0 0 auto;
-      width: auto;
+    & > * {
+      flex-basis: 0;
+      flex-grow: 1;
+      max-width: 100%;
+      align-content: center;
     }
 
-    & > .search-bar {
-      flex-basis: 1;
-      flex-grow: 1;
+    & > .logo, & > .menu-bar {
+      flex: 0 0 auto;
+      width: auto;
+      max-width: 100%;
+    }
+
+    & .menu-bar {
+      align-self: center;
+      color: #FFF;
     }
   }
 }
