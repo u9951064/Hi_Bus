@@ -8,10 +8,7 @@ const busRouteModule = {
   namespaced: true,
 
   state: () => ({
-    cityOptions: [{
-      'cityName': "公路客運",
-      "city": "InterBus",
-    }],
+    cityOptions: [],
     routes: [],
     isInitialized: false,
   }),
@@ -26,6 +23,17 @@ const busRouteModule = {
       commit('setInitialized', true);
     },
     loadCityOption: async ({ commit }) => {
+      // 讀取儲存的快取資料
+      const storedDataString = window.localStorage.getItem('busRoutes/cityOptions') || '';
+      if(storedDataString) {
+        const storedData = JSON.parse(storedDataString);
+        if(Object.keys(storedData).length) {
+          commit('setCityOptions', storedData);
+          return;
+        }
+        window.localStorage.removeItem('busRoutes/cityOptions');
+      }
+
       const { data: cityList } = await GistApi.get('/V3/Map/Basic/City');
       commit('setCityOptions', cityList.map(c => {
         return {
@@ -33,6 +41,10 @@ const busRouteModule = {
           city: c.City,
         };
       }));
+      commit('setCityOptions', [{
+        'cityName': "公路客運",
+        "city": "InterBus",
+      }]);
     },
     loadRoutes: async ({ state, commit }) => {
       // 讀取儲存的快取資料
@@ -67,7 +79,7 @@ const busRouteModule = {
             const subRouteName = `${s.SubRouteName.Zh_tw}` == `${i.RouteName.Zh_tw}0` ? `${i.RouteName.Zh_tw}` : `${s.SubRouteName.Zh_tw}`;
             const subRouteNameEn = `${s.SubRouteName.En}` == `${i.RouteName.En}0` ? `${i.RouteName.En}` : `${s.SubRouteName.En}`;
             saveItems.push({
-              routeUID: `${i.RouteID}`,
+              routeUID: `${i.RouteUID}`,
               subRouteUID: `${s.SubRouteUID}`,
               routeName: `${i.RouteName.Zh_tw}`,
               routeNameEn: `${i.RouteName.En}`,
@@ -78,7 +90,7 @@ const busRouteModule = {
               headSignEn: `${s.HeadsignEn || subRouteNameEn}`,
               city: city,
               uniqueIndex: `${city}|${subRouteName}`,
-              searchPatten: `${subRouteName} ${i.RouteName.Zh_tw} ${s.Headsign}`,
+              searchPatten: `${subRouteName} ${i.RouteName.Zh_tw} ${s.Headsign || ''}`,
             });
           });
         });
@@ -93,6 +105,7 @@ const busRouteModule = {
     },
     setCityOptions(state, payload) {
       state.cityOptions.push(...payload);
+      window.localStorage.setItem('busRoutes/cityOptions', JSON.stringify(state.cityOptions));
     },
     addToCityRoute(state, payload) {
       state.routes.push(...payload);

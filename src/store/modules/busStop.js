@@ -63,12 +63,11 @@ const busStopModule = {
         });
         saveData[uniqueIndex][direction].sort((a, b) => { a.stopSequence - b.stopSequence });
       });
-
       commit('saveBusStopMap', saveData);
       return state.busRouteStopMap[uniqueIndex] || null;
     },
     updateArrivalBus: async ({state, commit} , payload) => {
-      const { city, uniqueIndex, routeName, subRouteUID } = payload;
+      const { city, uniqueIndex, routeName, subRouteUID, routeUID } = payload;
       // 缺少資料
       if (!city || !routeName || !uniqueIndex || !subRouteUID) { 
         return null;
@@ -80,49 +79,97 @@ const busStopModule = {
         return;
       }
 
-      // 從 API 取得
-      const { data: arrivalRecords } = await MotcApi.get(
-        city == "InterBus" ?
-          `/v2/Bus/EstimatedTimeOfArrival/InterCity/${routeName}` :
-          `/v2/Bus/EstimatedTimeOfArrival/City/${city}/${routeName}`,
-        {
-          params: {
-            '$filter': `SubRouteUID eq '${subRouteUID}'`,
-            '$orderby': 'IsLastBus desc, StopSequence asc',
+      const requests = [
+        // 取得站點估計時間
+        MotcApi.get(
+          city == "InterBus" ?
+            `/v2/Bus/EstimatedTimeOfArrival/InterCity/${routeName}` :
+            `/v2/Bus/EstimatedTimeOfArrival/City/${city}/${routeName}`,
+          {
+            params: {
+              '$filter': `RouteUID eq '${routeUID}'`,
+              '$orderby': 'StopSequence asc',
+            }
           }
-        }
-      );
-      if(!arrivalRecords) {
-        return null;
-      }
-      const stopInfos = {};
-      const existBus = {'-1': '-1'};
-      arrivalRecords.forEach(r => {
-        const plateNumber = `${r.PlateNumb}`;
-        const stopUID = `${r.StopUID}`;
-        if(!(stopUID in stopInfos)) {
-          stopInfos[stopUID] = {
-            stopUID,
-            plateNumbers: [],
-            stopStatus: parseInt(r.StopStatus), // 車輛狀態備註 : [0:'正常',1:'尚未發車',2:'交管不停靠',3:'末班車已過',4:'今日未營運'] ,
-            isLastBus: r.IsLastBus,
-            estimateTime: Number.MAX_SAFE_INTEGER,
-            // TODO:
-            nextBusTime: !r.NextBusTime ? null : new Date(r.NextBusTime), //下一班公車到達時間
+        ),
+        // 取得公車車牌
+        MotcApi.get(
+          city == "InterBus" ?
+            `/v2/Bus/RealTimeNearStop/InterCity/${routeName}` :
+            `/v2/Bus/RealTimeNearStop/City/${city}/${routeName}`,
+          {
+            params: {
+              '$filter': `RouteUID eq '${routeUID}'`,
+              '$orderby': 'StopSequence asc',
+            }
           }
-        }
-        if(!(plateNumber in existBus)) {
-          existBus[plateNumber] = plateNumber;
-          stopInfos[stopUID].plateNumbers.push(plateNumber);
-          stopInfos[stopUID].isLastBus = stopInfos[stopUID].isLastBus || r.IsLastBus;
-        }
-        if('EstimateTime' in r) {
-          stopInfos[stopUID].estimateTime = Math.min(stopInfos[stopUID].estimateTime, parseInt(r.EstimateTime));
-        }
-      });
+        ),
+      ];
 
+      const [
+        {data: arrivalTimeResponse}, 
+        {data: arrivalBusResponse}
+      ] = await Promise.all(requests);
+
+      const arrivalTimeMap = (arrivalTimeResponse || []).reduce((c, r) => {
+        const stopUID = `${r.StopUID}`;
+        if(!(stopUID in c)) {
+          c[stopUID] = {
+            stopUID,
+            routeUID,
+            estimateTime: Number.MAX_SAFE_INTEGER,
+            stopStatus: parseInt(r.StopStatus), // 車輛狀態備註 : [0:'正常',1:'尚未發車',2:'交管不停靠',3:'末班車已過',4:'今日未營運'],
+          };
+        }
+
+        if('EstimateTime' in r) {
+          c[stopUID].estimateTime = Math.min(c[stopUID].estimateTime, parseInt(r.EstimateTime));
+        }
+
+        return c;
+      }, {});
+
+      const plateNumberMap = (arrivalBusResponse || []).reduce((c,r) => {
+        const stopUID = `${r.StopUID}`;
+        if(!(stopUID in c)) {
+          c[stopUID] = [];
+        }
+        if(r.PlateNumb == '-1') {
+          return c;
+        }
+        c[stopUID].push(`${r.PlateNumb}`);
+
+        if('EstimateTime' in r && stopUID in arrivalTimeMap) {
+          arrivalTimeMap[stopUID].estimateTime = Math.min(arrivalTimeMap[stopUID].estimateTime, parseInt(r.EstimateTime));
+        }
+        return c;
+      }, {});
+
+      const routePaths = state.busRouteStopMap[uniqueIndex];
+      const stopInfos = {};
+      const existBus = {};
+      Object.keys(routePaths).forEach(d => {
+        stopInfos[d] = routePaths[d].reduce((c, s) => {
+          c[s.stopUID] = arrivalTimeMap[s.stopUID] || {
+            stopUID: s.stopUID,
+            routeUID,
+            estimateTime: Number.MAX_SAFE_INTEGER,
+            stopStatus: 1,
+          };
+          c[s.stopUID].plateNumbers = (plateNumberMap[s.stopUID] || []).filter(n => {
+            if(n in existBus) {
+              return false;
+            } else {
+              existBus[n] = n;
+              return true;
+            }
+          });
+
+          return c;
+        }, {});
+      });
       commit('saveStopArrivalInfos', {
-        subRouteUID,
+        uniqueIndex,
         stopInfos,
         muteUpdateArrivals: Object.keys(state.busRouteStopMap) !== Object.keys(stopInfos) ? currentTimestamp : (currentTimestamp + 10),
       });
@@ -136,17 +183,26 @@ const busStopModule = {
       });
     },
     saveStopArrivalInfos(state, payload) {
-      const {subRouteUID, stopInfos, muteUpdateArrivals} = payload;
-      if(!(subRouteUID in state.stopArrivalInfos)) {
-        state.stopArrivalInfos[subRouteUID] = stopInfos;
-      } else {
-        Object.keys(stopInfos).forEach(stopUID => state.stopArrivalInfos[subRouteUID][stopUID] = stopInfos[stopUID]);
-      }
-      state.muteUpdateArrivals[subRouteUID] = muteUpdateArrivals;
+      const {uniqueIndex, stopInfos, muteUpdateArrivals} = payload;
+      state.stopArrivalInfos[uniqueIndex] = stopInfos;
+      state.muteUpdateArrivals[uniqueIndex] = muteUpdateArrivals;
     }
   },
   getters: {
-    getStops: state => uniqueIndex => state.busRouteStopMap[uniqueIndex] || null,
+    getStops: state => (route) => {
+      if(!route) {
+        return [];
+      }
+      const {uniqueIndex, direction} = route;
+      return (state.busRouteStopMap[uniqueIndex] || {})[direction] || [];
+    },
+    getStopInfos: state => (route) => {
+      if(!route) {
+        return {};
+      }
+      const {uniqueIndex, direction} = route;
+      return (state.stopArrivalInfos[uniqueIndex] || {})[direction] || {};
+    },
   }
 };
 

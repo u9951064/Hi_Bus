@@ -12,7 +12,7 @@
     <div class="suggestion-block" @mouseenter="enterHandler(true)" @mouseleave="enterHandler(false)" @click="focusInput">
       <div class="suggestion-inner">
         <SearchSuggestionInput v-show="inputKeyword === ''" @input="setupInput"/>
-        <SearchSuggestionList v-if="inputKeyword !== ''" :selectedCity="selectedCity" :inputKeyword="inputKeyword" />
+        <SearchSuggestionList v-if="inputKeyword !== ''" :selectedCity="selectedCity" :inputKeyword="inputKeyword" @input="setupInput"/>
       </div>
     </div>
   </div>
@@ -69,9 +69,10 @@ export default {
         },
       });
     },
-    setupInput(keyword) {
+    setupInput(keyword, city) {
       this.focusInput();
       this.inputKeyword = keyword;
+      this.selectedCity = city === undefined ? this.selectedCity : city;
     }
   },
   computed: {

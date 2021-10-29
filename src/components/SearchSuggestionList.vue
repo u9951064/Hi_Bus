@@ -28,11 +28,17 @@ export default {
   },
   methods: {
     selectRoute(route) {
-      this.$store.commit('routeSelector/setSelectedCity', this.selectedCity);
-      this.$store.commit('routeSelector/setInputKeyword', this.inputKeyword);
-
-      // TODO: redirect to route detail page
       this.$store.commit('routeSelector/setSelectedRoute', route);
+      this.$store.commit('routeSelector/setSelectedCity', route.city);
+      this.$store.commit('routeSelector/setInputKeyword', route.routeName);
+      this.$emit('input', route.routeName, route.city);
+
+      return this.$router.push({
+        name: 'TracingBus',
+        params: {
+          uniqueIndex: route.uniqueIndex,
+        }
+      });
     }
   },
   computed: {

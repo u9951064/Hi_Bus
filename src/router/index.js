@@ -6,6 +6,20 @@ const routes = [
   {
     path: '/',
     component: Layout,
+    beforeEnter: (to, from, next) => {
+      store.commit('routeSelector/setSelectedCity', String(to.query.city || '').trim());
+      store.commit('routeSelector/setInputKeyword', String(to.query.keyword || '').trim());
+
+      if (store.state.routeSelector.selectedCity !== '') {
+        const o = store.state.busRoute.cityOptions.find(({ city }) => city.toLowerCase() == store.state.routeSelector.selectedCity.toLowerCase());
+        if (!o) {
+          store.commit('routeSelector/setSelectedCity', '');
+        } else {
+          store.commit('routeSelector/setSelectedCity', o.city);
+        }
+      }
+      next();
+    },
     children: [
       {
         path: '',
@@ -15,19 +29,21 @@ const routes = [
       {
         path: 'result',
         name: 'SearchResult',
-        beforeEnter: (to, from, next) => {
-          store.commit('routeSelector/setSelectedCity', String(to.query.city || '').trim());
-          store.commit('routeSelector/setInputKeyword', String(to.query.keyword || '').trim());
-          if(store.state.routeSelector.inputKeyword == '') {
+        beforeRouteUpdate: (to, from, next) => {
+          if (store.state.routeSelector.inputKeyword == '') {
             next({
               name: 'Home'
             });
           } else {
             next();
           }
-          
         },
         component: () => import(/* webpackChunkName: "SearchResultPage" */ '../views/SearchResult.vue'),
+      },
+      {
+        path: 'tracing/:uniqueIndex',
+        name: 'TracingBus',
+        component: () => import(/* webpackChunkName: "TracingBus" */ '../views/TracingBus.vue'),
       },
     ],
   },
