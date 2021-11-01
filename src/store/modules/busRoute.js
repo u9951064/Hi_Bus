@@ -25,9 +25,9 @@ const busRouteModule = {
     loadCityOption: async ({ commit }) => {
       // 讀取儲存的快取資料
       const storedDataString = window.localStorage.getItem('busRoutes/cityOptions') || '';
-      if(storedDataString) {
+      if (storedDataString) {
         const storedData = JSON.parse(storedDataString);
-        if(Object.keys(storedData).length) {
+        if (Object.keys(storedData).length) {
           commit('setCityOptions', storedData);
           return;
         }
@@ -49,9 +49,9 @@ const busRouteModule = {
     loadRoutes: async ({ state, commit }) => {
       // 讀取儲存的快取資料
       const storedDataString = window.localStorage.getItem('busRoutes/routes') || '';
-      if(storedDataString) {
+      if (storedDataString) {
         const storedData = JSON.parse(storedDataString);
-        if(Object.keys(storedData).length) {
+        if (Object.keys(storedData).length) {
           commit('addToCityRoute', storedData);
           return;
         }
@@ -78,17 +78,20 @@ const busRouteModule = {
           i.SubRoutes.forEach(s => {
             const subRouteName = `${s.SubRouteName.Zh_tw}` == `${i.RouteName.Zh_tw}0` ? `${i.RouteName.Zh_tw}` : `${s.SubRouteName.Zh_tw}`;
             const subRouteNameEn = `${s.SubRouteName.En}` == `${i.RouteName.En}0` ? `${i.RouteName.En}` : `${s.SubRouteName.En}`;
+            const headSign = s.Headsign || (s.Direction == 0 ? `${i.DepartureStopNameZh}→${i.DestinationStopNameZh}` : `${i.DestinationStopNameZh}→${i.DepartureStopNameZh}`);
+            const headSignEn = s.Headsign || (s.Direction == 0 ? `${i.DepartureStopNameEn}→${i.DestinationStopNameEn}` : `${i.DestinationStopNameEn}→${i.DepartureStopNameEn}`);
+            
             saveItems.push({
               routeUID: `${i.RouteUID}`,
-              subRouteUID: `${s.SubRouteUID}`,
+              subRouteUID: `${s.SubRouteUID}-${s.Direction}`,
               routeName: `${i.RouteName.Zh_tw}`,
               routeNameEn: `${i.RouteName.En}`,
               subRouteName: subRouteName,
               subRouteNameEn: subRouteNameEn,
               direction: `${s.Direction}`,
-              headSign: `${s.Headsign || subRouteName}`,
-              headSignEn: `${s.HeadsignEn || subRouteNameEn}`,
-              city: city,
+              headSign,
+              headSignEn,
+              city,
               uniqueIndex: `${city}|${subRouteName}`,
               searchPatten: `${subRouteName} ${i.RouteName.Zh_tw} ${s.Headsign || ''}`,
             });
@@ -137,7 +140,7 @@ const busRouteModule = {
       const skipIndex = {};
       state.routes.forEach(route => {
         // 不是符合的查詢縣市
-        if (!(route.city in result)) { 
+        if (!(route.city in result)) {
           return;
         }
         // 判斷是否已經查找過
@@ -151,7 +154,7 @@ const busRouteModule = {
         if (-1 === route.searchPatten.toLocaleLowerCase().indexOf(keyword)) {
           return;
         }
-        
+
         // 資料命中放入輸出結果
         result[route.city].routes.push(route);
       });

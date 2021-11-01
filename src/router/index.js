@@ -60,7 +60,10 @@ const router = createRouter({
 })
 
 router.beforeEach(async (to, from, next) => {
-  await store.dispatch('busRoute/init');
+  await Promise.all([
+    store.dispatch('busRoute/init'),
+    store.dispatch('vehicleInfo/init')
+  ]);
   next();
 })
 

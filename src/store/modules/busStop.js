@@ -13,6 +13,18 @@ const busStopModule = {
   }),
 
   actions: {
+    init: ({commit}) => {
+      // 讀取儲存的快取資料
+      const storedDataString = window.localStorage.getItem('busStop/busRouteStopMap') || '';
+      if(storedDataString) {
+        const storedData = JSON.parse(storedDataString);
+        if(Object.keys(storedData).length) {
+          commit('saveBusStopMap', storedData);
+          return;
+        }
+        window.localStorage.removeItem('busStop/busRouteStopMap');
+      }
+    },
     loadBusStop: async ({ state, commit }, payload) => {
       const { city, uniqueIndex, routeName } = payload;
       // 缺少資料
@@ -181,6 +193,7 @@ const busStopModule = {
       Object.keys(payload).forEach(k => {
         state.busRouteStopMap[k] = payload[k];
       });
+      window.localStorage.setItem('busStop/busRouteStopMap', JSON.stringify(state.busRouteStopMap));
     },
     saveStopArrivalInfos(state, payload) {
       const {uniqueIndex, stopInfos, muteUpdateArrivals} = payload;

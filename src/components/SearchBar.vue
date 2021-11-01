@@ -7,7 +7,8 @@
     <div class="separator"></div>
     <input class="keyword-input" type="text" placeholder="搜尋公車路線" ref="keywordInput" v-model.trim="inputKeyword" @focus="focusHandler" @blur="blurHandler"/>
     <div class="search-btn" @click="searchHandler">
-      <img src="../assets/icons/search-icon.svg" />
+      <img v-if="active" src="../assets/icons/search-dark-icon.svg" alt="查詢" />
+      <img v-else src="../assets/icons/search-white-icon.svg" alt="查詢" />
     </div>
     <div class="suggestion-block" @mouseenter="enterHandler(true)" @mouseleave="enterHandler(false)" @click="focusInput">
       <div class="suggestion-inner">
