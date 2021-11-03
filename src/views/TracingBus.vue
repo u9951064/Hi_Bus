@@ -2,8 +2,10 @@
   <div class="tracing-page">
     <div class="bus-info-block row direction-column">
       <div class="nav row col-auto">
-        <div class="back-btn col-auto" @click="backToResult">
-          <img src="../assets/icons/arrow-gray.svg" />
+        <div class="back-btn col-auto">
+          <a class="link" @click="backToResult">
+            <img src="../assets/icons/arrow-dark.svg" />
+          </a>
         </div>
         <div class="col-auto text-right">
           <div class="refresh-info row flex-warp">
@@ -13,14 +15,16 @@
           </div>
         </div>
       </div>
-      <div class="route-header row col-auto">
-        <div class="route-number col-auto">
-          {{ selectedRoute.subRouteName }}
+      <div class="route-header col-auto">
+        <div class="row">
+          <div class="route-number col">
+            {{ selectedRoute.subRouteName }}
+          </div>
+          <a class="favorite col-auto">
+            <img src="../assets/icons/favorite-empty-icon.svg" />收藏
+          </a>
         </div>
-        <div class="head-sign col">{{ selectedRoute.headSign }}</div>
-        <div class="favorite col-auto">
-          <img src="../assets/icons/favorite-empty-icon.svg" />收藏
-        </div>
+        <div class="head-sign">{{ selectedRoute.headSign }}</div>
       </div>
       <div class="route-directions row col-auto" v-if="routeGroup.length > 1">
         <div
@@ -57,7 +61,9 @@
         </template>
       </div>
     </div>
-    <div class="bus-map-block"></div>
+    <div class="bus-map-block">
+      <HereMap :busStops="stops" />
+    </div>
   </div>
 </template>
 
@@ -65,6 +71,7 @@
 import { mapState } from "vuex";
 import store from "@/store";
 import BusPlate from '@/components/BusPlate.vue'
+import HereMap from '@/components/HereMap.vue'
 
 const initialHandler = async (to, from, next) => {
   const uniqueIndex = String(to.params.uniqueIndex || "").trim();
@@ -97,7 +104,8 @@ export default {
     };
   },
   components: {
-    BusPlate
+    BusPlate,
+    HereMap,
   },
   beforeRouteEnter: initialHandler,
   beforeRouteUpdate: initialHandler,
@@ -236,24 +244,49 @@ export default {
     justify-content: space-between;
   }
 
+  & .route-number {
+    text-align: left;
+    font-weight: 600;
+    font-size: 1.5rem;
+  }
+
+  & .head-sign {
+    text-align: left;
+    font-weight: 400;
+    font-size: 1rem;
+  }
+
   & .favorite {
     border-radius: 1000rem;
     border: 1px solid #cacfde;
     color: #8c90ab;
     font-size: 0.9rem;
     padding: 0.5rem 1.5rem;
+    display: inline-flex;
+    align-items: center;
   }
 
   & .back-btn {
-    padding: 0.75rem;
-    cursor: pointer;
+    & .link {
+      display: inline-flex;
+      padding: 0.75rem;
+      cursor: pointer;
+      border-radius: 100rem;
+      background-color: #EDEEF2;
+      &:hover {
+        background-color: #F4F5F9;
+      }
+      &:active {
+        color: #FFF;
+        background-color: #8C90AB;
+      }
+    }
     & img {
-      width: 1.5rem;
+      width: 1.25rem;
+      height: 1.25rem;
       transform: scaleX(-1);
     }
-    &:hover {
-      background-color: #d1dcff;
-    }
+    
   }
 
   & .route-directions {

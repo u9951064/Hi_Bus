@@ -160,6 +160,7 @@ export default {
 
   & .suggestion-block {
     position: absolute;
+    z-index: 5;
     flex: 1 1 100%;
     width: 100%;
     background: #FFF;

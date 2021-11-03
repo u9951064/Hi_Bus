@@ -2,7 +2,7 @@
   <div class="layout">
     <header>
       <div class="container header-layout">
-        <img class="logo" src="../assets/logo.svg" alt="Bus logo" />
+        <img class="logo btn" src="../assets/logo.svg" alt="Bus logo" @click="backToHome"/>
         <div class="search-bar">
           <SearchBar />
         </div>
@@ -26,7 +26,12 @@ export default {
   components: {
     SearchBar
   },
-  async mounted() {
+  methods: {
+    backToHome() {
+      return this.$router.push({
+        name: "Home",
+      });
+    },
   }
 }
 </script>
@@ -82,6 +87,10 @@ export default {
       flex-grow: 1;
       max-width: 100%;
       align-content: center;
+    }
+
+    & .btn {
+      cursor: pointer;
     }
 
     & > .logo, & > .menu-bar {
