@@ -41,6 +41,8 @@ const vehicleInfoModule = {
         return;
       }
 
+      console.log('trigger', missingVehicles)
+
       // 從 API 取得
       const { data: vehicleRecords } = await MotcApi.get(
         city == "InterBus" ?

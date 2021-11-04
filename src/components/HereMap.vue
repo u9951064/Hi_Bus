@@ -122,7 +122,6 @@ export default {
   computed: {
     stops() {
       if (this.mapObject.map !== null) {
-        console.log("rrr");
         this.drawNotations();
       }
       return this.busStops;

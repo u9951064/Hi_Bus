@@ -18,7 +18,8 @@ export default {
   },
   methods: {
     clickBtn(value) {
-      this.$emit('input', value);
+      this.$emit('input');
+      this.$store.commit('routeSelector/setSearchKeyword', value);
     }
   },
 }
@@ -50,7 +51,5 @@ export default {
       background: #F4F5F9;
     }
   }
-
-  
 }
 </style>

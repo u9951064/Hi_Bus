@@ -5,6 +5,8 @@ const routeSelectorModule = {
   namespaced: true,
 
   state: () => ({
+    searchCity: '',
+    searchKeyword: '',
     selectedCity: '',
     inputKeyword: '',
     selectedRoute: null,
@@ -15,10 +17,16 @@ const routeSelectorModule = {
 
   mutations: {
     setSelectedCity(state, payload) {
-      state.selectedCity = payload;
+      state.selectedCity = `${payload}`.trim();
     },
     setInputKeyword(state, payload) {
-      state.inputKeyword = payload;
+      state.inputKeyword = `${payload}`.trim();
+    },
+    setSearchCity(state, payload) {
+      state.searchCity = `${payload}`.trim();
+    },
+    setSearchKeyword(state, payload) {
+      state.searchKeyword = `${payload}`.trim();
     },
     setSelectedRoute(state, payload) {
       state.selectedRoute = payload;

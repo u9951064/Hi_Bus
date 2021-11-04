@@ -4,12 +4,10 @@
       <div class="container header-layout">
         <img class="logo btn" src="../assets/logo.svg" alt="Bus logo" @click="backToHome"/>
         <div class="search-bar">
-          <SearchBar />
+          <SearchBar v-if="!needHideSearchBar"/>
         </div>
         <div class="menu-bar">
-          <div class="btn">
-            <img class="favorite-icon" src="../assets/icons/favorite-icon.svg" /> 我的最愛
-          </div>
+          <a class="favorite btn" @click="goToFavorite">我的最愛</a>
         </div>
       </div>
     </header>
@@ -32,6 +30,16 @@ export default {
         name: "Home",
       });
     },
+    goToFavorite() {
+      return this.$router.push({
+        name: "Favorite",
+      });
+    },
+  },
+  computed: {
+    needHideSearchBar() {
+      return !!(this.$route.meta.hideLayoutSearchBar || false);
+    }
   }
 }
 </script>
@@ -102,6 +110,30 @@ export default {
     & .menu-bar {
       align-self: center;
       color: #FFF;
+
+      & .favorite {
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        white-space: nowrap;
+
+        &:before {
+          content: '';
+          height: 1rem;
+          width: 1rem;
+          background-image: url('../assets/icons/favorite-white-icon.svg');
+          background-size: cover;
+          margin-right: 0.2rem;
+        }
+
+        &:hover {
+          color: #FFC42D;
+
+          &:before {
+            background-image: url('../assets/icons/favorite-yellow-icon.svg');
+          }
+        }
+      }
     }
   }
 }

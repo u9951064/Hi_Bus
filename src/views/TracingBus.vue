@@ -20,9 +20,9 @@
           <div class="route-number col">
             {{ selectedRoute.subRouteName }}
           </div>
-          <a class="favorite col-auto">
-            <img src="../assets/icons/favorite-empty-icon.svg" />收藏
-          </a>
+          <div class="col-auto">
+            <FavoriteBtn :route="selectedRoute" />
+          </div>
         </div>
         <div class="head-sign">{{ selectedRoute.headSign }}</div>
       </div>
@@ -54,9 +54,17 @@
             </div>
             <div class="stop-name col">{{ o.stopName }}</div>
             <div class="plate-number col-3">
-              <BusPlate :city="selectedRoute.city" :plateNumbers="getArrivalInfo(o.stopUID).plateNumbers || []"/>
+              <BusPlate
+                :city="selectedRoute.city"
+                :plateNumbers="getArrivalInfo(o.stopUID).plateNumbers || []"
+              />
             </div>
-            <div class="bus-line col-1" :class="{active: getArrivalInfo(o.stopUID).plateNumbers.length !== 0}"></div>
+            <div
+              class="bus-line col-1"
+              :class="{
+                active: getArrivalInfo(o.stopUID).plateNumbers.length !== 0,
+              }"
+            ></div>
           </div>
         </template>
       </div>
@@ -70,8 +78,9 @@
 <script>
 import { mapState } from "vuex";
 import store from "@/store";
-import BusPlate from '@/components/BusPlate.vue'
-import HereMap from '@/components/HereMap.vue'
+import BusPlate from "@/components/BusPlate.vue";
+import HereMap from "@/components/HereMap.vue";
+import FavoriteBtn from "@/components/FavoriteBtn.vue";
 
 const initialHandler = async (to, from, next) => {
   const uniqueIndex = String(to.params.uniqueIndex || "").trim();
@@ -106,6 +115,7 @@ export default {
   components: {
     BusPlate,
     HereMap,
+    FavoriteBtn,
   },
   beforeRouteEnter: initialHandler,
   beforeRouteUpdate: initialHandler,
@@ -256,29 +266,19 @@ export default {
     font-size: 1rem;
   }
 
-  & .favorite {
-    border-radius: 1000rem;
-    border: 1px solid #cacfde;
-    color: #8c90ab;
-    font-size: 0.9rem;
-    padding: 0.5rem 1.5rem;
-    display: inline-flex;
-    align-items: center;
-  }
-
   & .back-btn {
     & .link {
       display: inline-flex;
       padding: 0.75rem;
       cursor: pointer;
       border-radius: 100rem;
-      background-color: #EDEEF2;
+      background-color: #edeef2;
       &:hover {
-        background-color: #F4F5F9;
+        background-color: #f4f5f9;
       }
       &:active {
-        color: #FFF;
-        background-color: #8C90AB;
+        color: #fff;
+        background-color: #8c90ab;
       }
     }
     & img {
@@ -286,7 +286,6 @@ export default {
       height: 1.25rem;
       transform: scaleX(-1);
     }
-    
   }
 
   & .route-directions {

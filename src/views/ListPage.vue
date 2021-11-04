@@ -1,6 +1,6 @@
 <template>
-  <div class="search-result-page">
-    <div class="container search-result-block">
+  <div class="list-page">
+    <div class="container result-block">
       <div class="result-info">
         <span>共找到 {{resultCount}} 個公車路線</span>
         <span class="tag" v-for="c in cityList" :key="c.city">{{ c.cityName }}</span>
@@ -19,10 +19,12 @@
           <div class="table-container">
             <div class="city-group" v-for="(c, i) in searchResults" :key="i">
               <div class="city-name">{{ c.cityName }}</div>
-              <div class="table-row" v-for="r in c.routes" :key="r.uniqueIndex">
+              <div class="table-row pointer" v-for="r in c.routes" :key="r.uniqueIndex" @click="goTrading(r)">
                 <div class="bus-number">{{ r.subRouteName }}</div>
                 <div class="bus-headsign">{{ r.headSign }}</div>
-                <div class="bus-favorite">收藏最愛</div>
+                <div class="bus-favorite">
+                  <FavoriteBtn :route="r"/>
+                </div>
               </div>
             </div>
           </div>
@@ -33,15 +35,39 @@
 </template>
 
 <script>
+import FavoriteBtn from '@/components/FavoriteBtn.vue'
+
 export default {
-  name: 'SearchResult',
+  name: 'ListPage',
+  props: {
+    records: {
+      type: Object,
+      required: true,
+    }
+  },
+  components: {
+    FavoriteBtn
+  },
+  methods: {
+    goTrading(route) {
+      return this.$router.push({
+        name: 'TracingBus',
+        params: {
+          uniqueIndex: route.uniqueIndex,
+        }
+      });
+    }
+  },
   computed: {
+    // searchResults() {
+    //   const r = this.$store.getters['busRoute/searchRoutes'](
+    //     this.$store.state.routeSelector.selectedCity,
+    //     this.$store.state.routeSelector.inputKeyword
+    //   );
+    //   return Object.values(records).filter(r => r.routes.length !== 0);
+    // },
     searchResults() {
-      const r = this.$store.getters['busRoute/searchRoutes'](
-        this.$store.state.routeSelector.selectedCity,
-        this.$store.state.routeSelector.inputKeyword
-      );
-      return Object.values(r).filter(r => r.routes.length !== 0);
+      return Object.values(this.records).filter(r => r.routes.length !== 0);
     },
     resultCount() {
       return this.searchResults.reduce((c, d) => c += d.routes.length, 0);
@@ -60,10 +86,10 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.search-result-page {
+.list-page {
   padding-bottom: 0.75rem;
 
-  & .search-result-block {
+  & .result-block {
     display: flex;
     flex-direction: column;
     flex-wrap: nowrap;
@@ -152,8 +178,8 @@ export default {
     }
 
     & > .bus-favorite {
-      flex: 0 0 10%;
-      width: 10%;
+      flex: 0 0 auto;
+      width: auto;
     }
 
     & ~ .table-row {

@@ -28,10 +28,12 @@ export default {
   },
   methods: {
     selectRoute(route) {
+      this.$emit('input');
       this.$store.commit('routeSelector/setSelectedRoute', route);
       this.$store.commit('routeSelector/setSelectedCity', route.city);
-      this.$store.commit('routeSelector/setInputKeyword', route.routeName);
-      this.$emit('input', route.routeName, route.city);
+      this.$store.commit('routeSelector/setInputKeyword', route.subRouteName);
+      this.$store.commit('routeSelector/setSearchCity', route.city);
+      this.$store.commit('routeSelector/setSearchKeyword', route.subRouteName);
 
       return this.$router.push({
         name: 'TracingBus',

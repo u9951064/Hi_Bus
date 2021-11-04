@@ -1,5 +1,47 @@
 <template>
-  <div class="home">
-    主頁內容
+  <div class="home ">
+    <h1 class="home-slogan col-auto">Hi，你今天想搭乘輛公車？</h1>
+    <div class="home-search col-auto"><SearchBar /></div>
   </div>
 </template>
+
+<script>
+import SearchBar from '../components/SearchBar.vue'
+
+export default {
+  name: 'Home',
+  components: {
+    SearchBar
+  },
+  methods: {
+    backToHome() {
+      return this.$router.push({
+        name: "Home",
+      });
+    },
+  }
+}
+</script>
+
+<style scoped lang="scss">
+.home {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: stretch;
+
+  & .home-slogan {
+    font-weight: 900;
+    font-size: 1.25rem;
+    letter-spacing: 0.06em;
+    padding: 0 0 2rem 0;
+  }
+
+  & .home-search {
+    padding: 0 0 2rem 0;
+  }
+}
+</style>

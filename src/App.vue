@@ -19,7 +19,7 @@ body {
   box-sizing: border-box;
 }
 
-#app {
+.app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -30,17 +30,17 @@ body {
   height: 100%;
 }
 
-#app .container {
+.app .container {
   width: 100%;
   max-width: 1200px;
   margin: auto;
 }
 
-#app .row:not(.direction-column) {
+.app .row:not(.direction-column) {
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
-  justify-items: center;
+  justify-content: center;
   align-items: center;
 
   &.flex-warp {
@@ -90,11 +90,11 @@ body {
   }
 }
 
-#app .row.direction-column {
+.app .row.direction-column {
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
-  justify-items: center;
+  justify-content: center;
   align-items: center;
 
   &.flex-warp {
@@ -121,15 +121,19 @@ body {
   }
 }
 
-#app .text-right {
+.app .text-right {
   text-align: right;
 }
 
-#app .text-center {
+.app .text-center {
   text-align: center;
 }
 
-#app .text-left {
+.app .text-left {
   text-align: left;
+}
+
+.app .pointer {
+  cursor: pointer;
 }
 </style>

@@ -161,6 +161,46 @@ const busRouteModule = {
 
       return result;
     },
+    getRoutesInList: state => (city, uniqueIndexes) => {
+      if (uniqueIndexes.length === 0 ) {
+        return {};
+      }
+      const cityObject = state.cityOptions.find(o => o.city === city);
+      if(!cityObject) {
+        return {};
+      }
+
+      const result = {};
+      result[cityObject.city] = {
+        ...cityObject,
+        routes: []
+      };
+
+      // 找出符合條件的路線，排除重複
+      const skipIndex = {};
+      state.routes.forEach(route => {
+        // 不是符合的查詢縣市
+        if (!(route.city in result)) {
+          return;
+        }
+        // 判斷是否已經查找過
+        if (route.uniqueIndex in skipIndex) {
+          return;
+        }
+        // 記錄此資料已經檢查過
+        skipIndex[route.uniqueIndex] = route.uniqueIndex;
+
+        // 檢查是否命中
+        if (-1 === uniqueIndexes.indexOf(route.uniqueIndex)) {
+          return;
+        }
+
+        // 資料命中放入輸出結果
+        result[route.city].routes.push(route);
+      });
+
+      return result;
+    },
     getRouteGroup: state => uniqueIndex => state.routes.filter(r => r.uniqueIndex == uniqueIndex),
   },
 };
