@@ -2,18 +2,18 @@
   <div class="home-page">
     <h1 class="home-slogan-block col-auto">Hi，你今天想搭乘輛公車？</h1>
     <div class="home-search-block col-auto">
-      <SearchBar :atHomePage="true"/>
+      <SearchBar :atHomePage="true" />
     </div>
   </div>
 </template>
 
 <script>
-import SearchBar from '../components/SearchBar.vue'
+import SearchBar from "../components/SearchBar.vue";
 
 export default {
-  name: 'Home',
+  name: "Home",
   components: {
-    SearchBar
+    SearchBar,
   },
   methods: {
     backToHome() {
@@ -21,8 +21,8 @@ export default {
         name: "Home",
       });
     },
-  }
-}
+  },
+};
 </script>
 
 <style scoped lang="scss">

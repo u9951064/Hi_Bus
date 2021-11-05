@@ -11,7 +11,7 @@ const nearbyThreshold = 30;
 
 // 預計時間 XX:XX
 const generateTimeAtString = function (timestampOffset) {
-  if(timestampOffset === Number.MAX_SAFE_INTEGER) {
+  if (timestampOffset === Number.MAX_SAFE_INTEGER) {
     return "尚未發車";
   }
   const estimateTime = new Date(new Date().getTime() + timestampOffset * 1e3);
@@ -53,7 +53,7 @@ export default {
     },
     tagAttr() {
       const result = {
-        class: 'status-empty',
+        class: "status-empty",
         label: '更新中"',
       };
 
@@ -69,11 +69,13 @@ export default {
           break;
         case "1":
           result.label = generateTimeAtString(this.estimateTime);
-          result.class = result.label === "尚未發車" ? 'status-empty' : 'status-estimate';
+          result.class =
+            result.label === "尚未發車" ? "status-empty" : "status-estimate";
           break;
         case "0":
           result.label = generateCountDownString(this.estimateTime);
-          result.class = result.label === "即將進站" ? 'status-nearby' : 'status-estimate';
+          result.class =
+            result.label === "即將進站" ? "status-nearby" : "status-estimate";
           break;
         default:
           result.label = "更新中";
@@ -92,19 +94,19 @@ export default {
   align-items: center;
   padding: 0.5rem 0;
   color: #09182d;
-  background: #FFFFFF;
+  background: #ffffff;
   border: 1px solid #8c90ab;
   border-radius: 9999rem;
   width: 7rem;
 
   &.status-nearby {
-    background: #FF6464;
-    color: #FFFFFF;
-    border: 1px solid #FF6464;
+    background: #ff6464;
+    color: #ffffff;
+    border: 1px solid #ff6464;
   }
 
   &.status-estimate {
-    background: #F4F5F9;
+    background: #f4f5f9;
   }
 }
 </style>

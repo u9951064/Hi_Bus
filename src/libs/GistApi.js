@@ -2,7 +2,7 @@ import axios from "axios";
 import CryptoJS from "crypto-js";
 
 const {
-  appID, 
+  appID,
   appKey
 } = require('../configs/MotcConfig');
 

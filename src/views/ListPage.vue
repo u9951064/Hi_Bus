@@ -2,8 +2,17 @@
   <div class="list-page">
     <div class="container result-block">
       <div class="result-info">
-        <span>共找到 <span class="result-count">{{resultCount}}</span> 個公車路線</span>
-        <a class="tag" v-for="c in cityList" :key="c.city" @click="scrollToCity(c.city)">{{ c.cityName }}</a>
+        <span
+          >共找到
+          <span class="result-count">{{ resultCount }}</span> 個公車路線</span
+        >
+        <a
+          class="tag"
+          v-for="c in cityList"
+          :key="c.city"
+          @click="scrollToCity(c.city)"
+          >{{ c.cityName }}</a
+        >
       </div>
       <div class="result-table">
         <div class="table-header">
@@ -19,11 +28,22 @@
           <div class="table-container" ref="scoller">
             <div class="city-group" v-for="(c, i) in searchResults" :key="i">
               <div class="city-name" :ref="c.city">{{ c.cityName }}</div>
-              <div class="table-row pointer" v-for="r in c.routes" :key="r.uniqueIndex" @click="goTracing(r)">
-                <div class="bus-number" v-html="replaceSymbol(r.subRouteName)"></div>
-                <div class="bus-headsign" v-html="replaceSymbol(r.headSign)"></div>
+              <div
+                class="table-row pointer"
+                v-for="r in c.routes"
+                :key="r.uniqueIndex"
+                @click="goTracing(r)"
+              >
+                <div
+                  class="bus-number"
+                  v-html="replaceSymbol(r.subRouteName)"
+                ></div>
+                <div
+                  class="bus-headsign"
+                  v-html="replaceSymbol(r.headSign)"
+                ></div>
                 <div class="bus-favorite">
-                  <FavoriteBtn :route="r"/>
+                  <FavoriteBtn :route="r" />
                 </div>
               </div>
             </div>
@@ -35,19 +55,19 @@
 </template>
 
 <script>
-import replaceSymbol from '@/utils/replaceSymbol'
-import FavoriteBtn from '@/components/FavoriteBtn.vue'
+import replaceSymbol from "@/utils/replaceSymbol";
+import FavoriteBtn from "@/components/FavoriteBtn.vue";
 
 export default {
-  name: 'ListPage',
+  name: "ListPage",
   props: {
     records: {
       type: Object,
       required: true,
-    }
+    },
   },
   components: {
-    FavoriteBtn
+    FavoriteBtn,
   },
   methods: {
     replaceSymbol(text) {
@@ -55,34 +75,33 @@ export default {
     },
     goTracing(route) {
       return this.$router.push({
-        name: 'TracingBus',
+        name: "TracingBus",
         params: {
           uniqueIndex: route.uniqueIndex,
-        }
+        },
       });
     },
     scrollToCity(city) {
-      this.$refs[city].scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
+      this.$refs[city].scrollIntoView({ behavior: "smooth", block: "start" });
+    },
   },
   computed: {
     searchResults() {
-      return Object.values(this.records).filter(r => r.routes.length !== 0);
+      return Object.values(this.records).filter((r) => r.routes.length !== 0);
     },
     resultCount() {
-      return this.searchResults.reduce((c, d) => c += d.routes.length, 0);
+      return this.searchResults.reduce((c, d) => (c += d.routes.length), 0);
     },
     cityList() {
-      return this.searchResults
-        .map(d => {
-          return {
-            cityName: d.cityName,
-            city: d.city,
-          };
-        });
+      return this.searchResults.map((d) => {
+        return {
+          cityName: d.cityName,
+          city: d.city,
+        };
+      });
     },
-  }
-}
+  },
+};
 </script>
 
 <style scoped lang="scss">
@@ -188,13 +207,13 @@ export default {
   }
 
   & .table-content .table-row:hover {
-    background: #F7F7FA;
+    background: #f7f7fa;
   }
 
   & .city-name {
     text-align: left;
     padding: 1rem 0.5rem 0.5rem;
-    color: #5468FF;
+    color: #5468ff;
   }
 
   & .result-info {
@@ -203,27 +222,58 @@ export default {
     overflow-y: auto;
 
     & .result-count {
-      color: #5468FF;
+      color: #5468ff;
     }
 
     & .tag {
       cursor: pointer;
       margin: 0 0.25rem;
       padding: 0.5rem 1.25rem;
-      background-color: #FFF;
-      color: #5468FF;
-      border: 1px solid #5468FF;
+      background-color: #fff;
+      color: #5468ff;
+      border: 1px solid #5468ff;
       border-radius: 1000px;
 
       &:hover {
-        background: #E7E9FD;
+        background: #e7e9fd;
       }
 
       &:active {
-        color: #FFFFFF;
-        background: #5468FF;
+        color: #ffffff;
+        background: #5468ff;
       }
     }
+  }
+}
+
+@media (max-width: 768px) {
+  .list-page {
+    & .table-header {
+      display: none;
+    }
+
+    & .table-row {
+      justify-content: space-between;
+      flex-wrap: wrap;
+
+      & .bus-number {
+        flex-basis: 0;
+        flex-grow: 1;
+        max-width: 100%;
+      }
+
+      & .bus-headsign {
+        order: 3;
+        flex: 1 1 100%;
+        width: 100%;
+      }
+      
+      & .bus-favorite {
+        order: 2;
+      }
+    }
+
+    
   }
 }
 </style>

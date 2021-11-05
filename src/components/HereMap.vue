@@ -1,16 +1,12 @@
 <template>
   <div class="here-map">
-    <div
-      class="map-container"
-      ref="hereMap"
-      :data-s="stops"
-    ></div>
+    <div class="map-container" ref="hereMap" :data-s="stops"></div>
   </div>
 </template>
 
 <script>
-import { markRaw } from "@vue/reactivity"
-import { apiKey } from "@/configs/HereMapConfig"
+import { markRaw } from "@vue/reactivity";
+import { apiKey } from "@/configs/HereMapConfig";
 
 export default {
   name: "HereMap",
@@ -30,10 +26,10 @@ export default {
     };
   },
   created() {
-    this.mapObject.platform = new window.H.service.Platform({apiKey});
-    this.mapObject.layer = this.mapObject.platform.createDefaultLayers({ 
-      lg: 'CHT',
-      lg2: 'ENG',
+    this.mapObject.platform = new window.H.service.Platform({ apiKey });
+    this.mapObject.layer = this.mapObject.platform.createDefaultLayers({
+      lg: "CHT",
+      lg2: "ENG",
     });
   },
   mounted() {
@@ -123,8 +119,8 @@ export default {
       this.drawStopMarker();
     },
     setCenter(lng, lat) {
-      this.mapObject.map.setCenter({lat, lng});
-    }
+      this.mapObject.map.setCenter({ lat, lng });
+    },
   },
   computed: {
     stops() {

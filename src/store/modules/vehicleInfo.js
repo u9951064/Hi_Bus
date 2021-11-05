@@ -11,12 +11,12 @@ const vehicleInfoModule = {
   }),
 
   actions: {
-    init: ({commit}) => {
+    init: ({ commit }) => {
       // 讀取儲存的快取資料
       const storedDataString = window.localStorage.getItem('vehicleInfo/busVehicleMap') || '';
-      if(storedDataString) {
+      if (storedDataString) {
         const storedData = JSON.parse(storedDataString);
-        if(Object.keys(storedData).length) {
+        if (Object.keys(storedData).length) {
           commit('setupVehicles', storedData);
           return;
         }
@@ -24,20 +24,20 @@ const vehicleInfoModule = {
       }
     },
 
-    loadVehicles: async ({state, commit}, payload) => {
-      const {city, plateNumbers} = payload;
-      if(!(plateNumbers instanceof Array) || !city) {
+    loadVehicles: async ({ state, commit }, payload) => {
+      const { city, plateNumbers } = payload;
+      if (!(plateNumbers instanceof Array) || !city) {
         return;
       }
 
       const missingVehicles = plateNumbers.filter(p => {
-        if(p in state.busVehicleMap) {
+        if (p in state.busVehicleMap) {
           return false;
         } else {
           return true;
         }
       });
-      if(missingVehicles.length === 0) {
+      if (missingVehicles.length === 0) {
         return;
       }
 
@@ -73,7 +73,7 @@ const vehicleInfoModule = {
         });
       });
 
-      if(saveRecords.length === 0) {
+      if (saveRecords.length === 0) {
         return;
       }
       commit('addVehicles', saveRecords);

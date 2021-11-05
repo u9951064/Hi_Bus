@@ -2,7 +2,6 @@ import { createStore } from 'vuex'
 import busRoute from './modules/busRoute'
 import busStop from './modules/busStop'
 import routeSelector from './modules/routeSelector'
-import userStorage from './modules/userStorage'
 import vehicleInfo from './modules/vehicleInfo'
 import favoritePool from './modules/favoritePool'
 
@@ -12,7 +11,6 @@ export default createStore({
     busStop,
     vehicleInfo,
     routeSelector,
-    userStorage,
     favoritePool,
   },
 })

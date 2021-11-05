@@ -8,7 +8,10 @@
           </a>
         </div>
         <div class="col-4 text-right">
-          <ProgressCounter :nextUpdateTimestamp="nextUpdateTimestamp" @update="reloadArrival"/>
+          <ProgressCounter
+            :nextUpdateTimestamp="nextUpdateTimestamp"
+            @update="reloadArrival"
+          />
         </div>
       </div>
       <div class="route-header col-auto">
@@ -57,7 +60,7 @@
     </div>
     <div class="bus-map-block">
       <!-- <keep-alive> -->
-        <HereMap :busStops="stops" ref="busMap"/>
+      <HereMap :busStops="stops" ref="busMap" />
       <!-- </keep-alive> -->
     </div>
   </div>
@@ -147,7 +150,7 @@ export default {
       this.$refs.busMap.setCenter(position.positionLon, position.positionLat);
     },
     reloadArrival() {
-      if(!this.selectedRoute) {
+      if (!this.selectedRoute) {
         return;
       }
       store.dispatch("busStop/updateArrivalBus", this.selectedRoute);
@@ -158,10 +161,12 @@ export default {
       selectedRoute: "selectedRoute",
     }),
     nextUpdateTimestamp() {
-      if(!this.selectedRoute) {
+      if (!this.selectedRoute) {
         return Number.POSITIVE_INFINITY;
       }
-      return this.$store.getters['busStop/getNextUpdateTimestamp'](this.selectedRoute.uniqueIndex);
+      return this.$store.getters["busStop/getNextUpdateTimestamp"](
+        this.selectedRoute.uniqueIndex
+      );
     },
     stops() {
       return this.$store.getters["busStop/getStops"](this.selectedRoute);
@@ -193,8 +198,6 @@ export default {
   align-items: stretch;
   height: 100%;
   padding: 1.5rem 1.5rem 0;
-
-  
 
   & .nav {
     justify-content: space-between;

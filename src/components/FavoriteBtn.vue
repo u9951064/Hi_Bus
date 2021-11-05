@@ -51,10 +51,10 @@ export default {
     display: none;
   }
   &:before {
-    content: '';
+    content: "";
     width: 1rem;
     height: 1rem;
-    background-size:cover;
+    background-size: cover;
     display: inline-block;
     background-image: url("../assets/icons/favorite-empty-icon.svg");
   }
@@ -63,7 +63,6 @@ export default {
     background-image: url("../assets/icons/favorite-green-icon.svg");
   }
 }
-
 
 // 768px 以上
 @media (min-width: 768px) {
@@ -85,7 +84,7 @@ export default {
     &:active {
       background-color: #bbc5e4;
       color: #fff;
-      
+
       &:before {
         background-image: url("../assets/icons/favorite-white-icon.svg");
       }
@@ -103,5 +102,4 @@ export default {
     }
   }
 }
-
 </style>

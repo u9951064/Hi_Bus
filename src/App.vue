@@ -1,5 +1,5 @@
 <template>
-  <router-view/>
+  <router-view />
 </template>
 
 <style lang="scss">
@@ -13,6 +13,7 @@ body {
   font-style: normal;
   line-height: normal;
   font-weight: normal;
+  overflow-x: hidden;
 }
 
 * {
@@ -100,7 +101,7 @@ body {
   &.flex-warp {
     flex-wrap: wrap;
   }
-  
+
   & > .col {
     flex-basis: 0;
     flex-grow: 1;

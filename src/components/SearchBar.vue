@@ -63,7 +63,7 @@ export default {
       type: Boolean,
       required: false,
       default: false,
-    }
+    },
   },
   data() {
     return {
@@ -127,7 +127,7 @@ export default {
       },
     },
     searchIconSrc() {
-      if(this.atHomePage) {
+      if (this.atHomePage) {
         return require("../assets/icons/search-white-icon.svg");
       } else if (this.active) {
         return require("../assets/icons/search-dark-icon.svg");
@@ -257,11 +257,12 @@ export default {
 
 /** 首頁 layout 模式 */
 .search.home-search {
-  background: #FFF;
-  border: 2px solid #5468FF;
+  background: #fff;
+  border: 2px solid #5468ff;
 
-  & .separator, &.active .separator {
-    border-right: 1px solid #5468FF;
+  & .separator,
+  &.active .separator {
+    border-right: 1px solid #5468ff;
   }
 
   & select,
@@ -271,7 +272,7 @@ export default {
   }
 
   & .search-btn {
-    background: #5468FF;
+    background: #5468ff;
   }
 
   & .suggestion-block {

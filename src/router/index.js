@@ -3,7 +3,7 @@ import store from '@/store'
 import Layout from '../views/Layout.vue'
 
 const routes = [
-  
+
   {
     path: '/',
     component: Layout,

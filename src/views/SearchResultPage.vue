@@ -3,20 +3,20 @@
 </template>
 
 <script>
-import ListPage from '@/views/ListPage.vue'
+import ListPage from "@/views/ListPage.vue";
 
 export default {
-  name: 'SearchResult',
+  name: "SearchResult",
   components: {
-    ListPage
+    ListPage,
   },
   computed: {
     searchResults() {
-      return this.$store.getters['busRoute/searchRoutes'](
+      return this.$store.getters["busRoute/searchRoutes"](
         this.$store.state.routeSelector.selectedCity,
         this.$store.state.routeSelector.inputKeyword
       );
     },
-  }
-}
+  },
+};
 </script>

@@ -9,7 +9,7 @@ const favoritePoolModule = {
   }),
 
   actions: {
-    init({commit}) {
+    init({ commit }) {
       // 讀取儲存的快取資料
       const storedDataString = window.localStorage.getItem('busStop/favoritePool') || '';
       if (storedDataString) {
@@ -24,11 +24,11 @@ const favoritePoolModule = {
       state.favoriteMap = payload;
     },
     toggle(state, payload) {
-      const {city, uniqueIndex} = payload;
-      if(!(city in state.favoriteMap)) {
+      const { city, uniqueIndex } = payload;
+      if (!(city in state.favoriteMap)) {
         state.favoriteMap[city] = {};
       }
-      if(uniqueIndex in state.favoriteMap[city]) {
+      if (uniqueIndex in state.favoriteMap[city]) {
         delete state.favoriteMap[city][uniqueIndex];
       } else {
         state.favoriteMap[city][uniqueIndex] = uniqueIndex;

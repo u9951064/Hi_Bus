@@ -14,12 +14,12 @@ const busStopModule = {
   }),
 
   actions: {
-    init: ({commit}) => {
+    init: ({ commit }) => {
       // 讀取儲存的快取資料
       const storedDataString = window.localStorage.getItem('busStop/busRouteStopMap') || '';
-      if(storedDataString) {
+      if (storedDataString) {
         const storedData = JSON.parse(storedDataString);
-        if(Object.keys(storedData).length) {
+        if (Object.keys(storedData).length) {
           commit('saveBusStopMap', storedData);
           return;
         }
@@ -79,16 +79,16 @@ const busStopModule = {
       commit('saveBusStopMap', saveData);
       return state.busRouteStopMap[uniqueIndex] || null;
     },
-    updateArrivalBus: async ({state, commit} , payload) => {
+    updateArrivalBus: async ({ state, commit }, payload) => {
       const { city, uniqueIndex, routeName, subRouteUID, routeUID } = payload;
       // 缺少資料
-      if (!city || !routeName || !uniqueIndex || !subRouteUID) { 
+      if (!city || !routeName || !uniqueIndex || !subRouteUID) {
         return null;
       }
 
       // 重新撈取間隔檢查
       const currentTimestamp = new Date().getTime();
-      if((state.muteUpdateArrivals[subRouteUID] || 0) >= currentTimestamp) {
+      if ((state.muteUpdateArrivals[subRouteUID] || 0) >= currentTimestamp) {
         return;
       }
 
@@ -120,13 +120,13 @@ const busStopModule = {
       ];
 
       const [
-        {data: arrivalTimeResponse}, 
-        {data: arrivalBusResponse}
+        { data: arrivalTimeResponse },
+        { data: arrivalBusResponse }
       ] = await Promise.all(requests);
 
       const arrivalTimeMap = (arrivalTimeResponse || []).reduce((c, r) => {
         const stopUID = `${r.StopUID}`;
-        if(!(stopUID in c)) {
+        if (!(stopUID in c)) {
           c[stopUID] = {
             stopUID,
             routeUID,
@@ -135,24 +135,24 @@ const busStopModule = {
           };
         }
 
-        if('EstimateTime' in r) {
+        if ('EstimateTime' in r) {
           c[stopUID].estimateTime = Math.min(c[stopUID].estimateTime, parseInt(r.EstimateTime));
         }
 
         return c;
       }, {});
 
-      const plateNumberMap = (arrivalBusResponse || []).reduce((c,r) => {
+      const plateNumberMap = (arrivalBusResponse || []).reduce((c, r) => {
         const stopUID = `${r.StopUID}`;
-        if(!(stopUID in c)) {
+        if (!(stopUID in c)) {
           c[stopUID] = [];
         }
-        if(r.PlateNumb == '-1') {
+        if (r.PlateNumb == '-1') {
           return c;
         }
         c[stopUID].push(`${r.PlateNumb}`);
 
-        if('EstimateTime' in r && stopUID in arrivalTimeMap) {
+        if ('EstimateTime' in r && stopUID in arrivalTimeMap) {
           arrivalTimeMap[stopUID].estimateTime = Math.min(arrivalTimeMap[stopUID].estimateTime, parseInt(r.EstimateTime));
         }
         return c;
@@ -170,7 +170,7 @@ const busStopModule = {
             stopStatus: 1,
           };
           c[s.stopUID].plateNumbers = (plateNumberMap[s.stopUID] || []).filter(n => {
-            if(n in existBus) {
+            if (n in existBus) {
               return false;
             } else {
               existBus[n] = n;
@@ -198,24 +198,24 @@ const busStopModule = {
       window.localStorage.setItem('busStop/busRouteStopMap', JSON.stringify(state.busRouteStopMap));
     },
     saveStopArrivalInfos(state, payload) {
-      const {uniqueIndex, stopInfos, muteUpdateArrivals} = payload;
+      const { uniqueIndex, stopInfos, muteUpdateArrivals } = payload;
       state.stopArrivalInfos[uniqueIndex] = stopInfos;
       state.muteUpdateArrivals[uniqueIndex] = muteUpdateArrivals;
     }
   },
   getters: {
     getStops: state => (route) => {
-      if(!route) {
+      if (!route) {
         return [];
       }
-      const {uniqueIndex, direction} = route;
+      const { uniqueIndex, direction } = route;
       return (state.busRouteStopMap[uniqueIndex] || {})[direction] || [];
     },
     getStopInfos: state => (route) => {
-      if(!route) {
+      if (!route) {
         return {};
       }
-      const {uniqueIndex, direction} = route;
+      const { uniqueIndex, direction } = route;
       return (state.stopArrivalInfos[uniqueIndex] || {})[direction] || {};
     },
     getNextUpdateTimestamp: state => (uniqueIndex) => state.muteUpdateArrivals[uniqueIndex] || 0,

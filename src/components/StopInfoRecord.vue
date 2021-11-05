@@ -25,7 +25,7 @@
 
 <script>
 import BusPlate from "@/components/BusPlate.vue";
-import ArrivalTimeTag from '@/components/ArrivalTimeTag.vue';
+import ArrivalTimeTag from "@/components/ArrivalTimeTag.vue";
 
 export default {
   name: "StopInfoRecord",
@@ -50,7 +50,7 @@ export default {
   components: {
     BusPlate,
     ArrivalTimeTag,
-  }
+  },
 };
 </script>
 

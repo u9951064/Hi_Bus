@@ -2,27 +2,32 @@
   <div class="layout">
     <header>
       <div class="container header-layout">
-        <img class="logo btn" src="../assets/logo.svg" alt="Bus logo" @click="backToHome"/>
+        <img
+          class="logo btn"
+          src="../assets/logo.svg"
+          alt="Bus logo"
+          @click="backToHome"
+        />
         <div class="search-bar">
-          <SearchBar v-if="!needHideSearchBar"/>
+          <SearchBar v-if="!needHideSearchBar" />
         </div>
         <div class="menu-bar">
           <a class="favorite btn" @click="goToFavorite">我的最愛</a>
         </div>
       </div>
     </header>
-    <router-view/>
+    <router-view />
     <footer>Copyright &copy; 2021 Double J. ALL Rights Reserved.</footer>
   </div>
 </template>
 
 <script>
-import SearchBar from '../components/SearchBar.vue'
+import SearchBar from "../components/SearchBar.vue";
 
 export default {
-  name: 'Layout',
+  name: "Layout",
   components: {
-    SearchBar
+    SearchBar,
   },
   methods: {
     backToHome() {
@@ -39,9 +44,9 @@ export default {
   computed: {
     needHideSearchBar() {
       return !!(this.$route.meta.hideLayoutSearchBar || false);
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
 <style scoped lang="scss">
@@ -54,7 +59,7 @@ export default {
   align-items: center;
   justify-items: stretch;
   align-items: stretch;
-  background: #F4F5F9;
+  background: #f4f5f9;
 
   & > * {
     flex-basis: 0;
@@ -64,7 +69,8 @@ export default {
     overflow: hidden;
   }
 
-  & > header, & > footer {
+  & > header,
+  & > footer {
     flex: 0 0 auto;
     height: auto;
     max-height: 100%;
@@ -72,18 +78,20 @@ export default {
   }
 
   & > header {
-    background: #040D2E;
-    padding: 1rem; 
-
+    background: #040d2e;
     &::after {
-      content: '';
+      content: "";
+      display: block;
       height: 5px;
       width: 100%;
-      background: linear-gradient(90deg, #5468FF 0%, #01D8D0 100%);
+      background: linear-gradient(90deg, #5468ff 0%, #01d8d0 50%, #5468ff 100%);
+      background-size: 200%;
+      animation: gradient 3s ease infinite;
     }
   }
 
   & .header-layout {
+    padding: 1rem;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
@@ -101,7 +109,8 @@ export default {
       cursor: pointer;
     }
 
-    & > .logo, & > .menu-bar {
+    & > .logo,
+    & > .menu-bar {
       flex: 0 0 auto;
       width: auto;
       max-width: 100%;
@@ -109,7 +118,7 @@ export default {
 
     & .menu-bar {
       align-self: center;
-      color: #FFF;
+      color: #fff;
 
       & .favorite {
         display: inline-flex;
@@ -118,23 +127,59 @@ export default {
         white-space: nowrap;
 
         &:before {
-          content: '';
+          content: "";
           height: 1rem;
           width: 1rem;
-          background-image: url('../assets/icons/favorite-white-icon.svg');
+          background-image: url("../assets/icons/favorite-white-icon.svg");
           background-size: cover;
           margin-right: 0.2rem;
         }
 
         &:hover {
-          color: #FFC42D;
+          color: #ffc42d;
 
           &:before {
-            background-image: url('../assets/icons/favorite-yellow-icon.svg');
+            background-image: url("../assets/icons/favorite-yellow-icon.svg");
           }
         }
       }
     }
+  }
+}
+
+@media (max-width: 768px) {
+  .layout {
+    & .header-layout {
+      justify-content: space-between;
+
+      & > .menu-bar {
+        order: 2;
+      }
+      & > .search-bar {
+        order: 3;
+        flex: 1 1 100%;
+        width: 100%;
+      }
+
+      & .menu-bar .favorite:hover {
+        color: #fff;
+        &:before {
+          background-image: url("../assets/icons/favorite-white-icon.svg");
+        }
+      }
+    }
+  }
+}
+
+@keyframes gradient {
+  0% {
+    background-position: 200% 0;
+  }
+  50% {
+    background-position: 100% 0;
+  }
+  100% {
+    background-position: 0% 0;
   }
 }
 </style>

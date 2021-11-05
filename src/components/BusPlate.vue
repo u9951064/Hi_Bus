@@ -8,7 +8,7 @@
 
 <script>
 export default {
-  name: 'BusPlate',
+  name: "BusPlate",
   props: {
     city: {
       type: String,
@@ -27,36 +27,38 @@ export default {
   },
   methods: {
     loadVehicles() {
-      if(this.plateNumbers.length === 0) {
+      if (this.plateNumbers.length === 0) {
         return;
       }
-      this.$store.dispatch('vehicleInfo/loadVehicles', {
+      this.$store.dispatch("vehicleInfo/loadVehicles", {
         city: this.city,
         plateNumbers: this.plateNumbers,
       });
-    }
+    },
   },
   computed: {
     plateCount() {
       return this.plateNumbers.length;
     },
     firstPlate() {
-      return this.plateNumbers[0] || '';
+      return this.plateNumbers[0] || "";
     },
     busVehicleInfo() {
-      if(!this.firstPlate) {
+      if (!this.firstPlate) {
         return null;
       }
-      return this.$store.state.vehicleInfo.busVehicleMap[this.firstPlate] || null;
+      return (
+        this.$store.state.vehicleInfo.busVehicleMap[this.firstPlate] || null
+      );
     },
     isFraternity() {
-      if(!this.busVehicleInfo || !('vehicleType' in this.busVehicleInfo)) {
+      if (!this.busVehicleInfo || !("vehicleType" in this.busVehicleInfo)) {
         return false;
       }
       return this.busVehicleInfo.vehicleType === 1;
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
 <style scoped lang="scss">
@@ -64,10 +66,10 @@ export default {
   display: inline-flex;
   padding: 0.25rem 0.75rem;
   border-radius: 100rem;
-  border: 1px solid #CACFDE;
+  border: 1px solid #cacfde;
   white-space: nowrap;
-  color: #8C90AB;
-  background: #FFF;
+  color: #8c90ab;
+  background: #fff;
   font-size: 0.75rem;
   justify-content: center;
   align-items: center;

@@ -8,21 +8,38 @@
 
 <script>
 export default {
-  name: 'SearchSuggestionInput',
+  name: "SearchSuggestionInput",
   data() {
     return {
       options: [
-        '紅', '綠', '橘', '藍', '棕', '黃', 'F', 'R', 'T', '小', '幹線', '先導', '內科', '市民', '南軟', '貓空', '跳蛙', '夜間', 
+        "紅",
+        "綠",
+        "橘",
+        "藍",
+        "棕",
+        "黃",
+        "F",
+        "R",
+        "T",
+        "小",
+        "幹線",
+        "先導",
+        "內科",
+        "市民",
+        "南軟",
+        "貓空",
+        "跳蛙",
+        "夜間",
       ],
-    }
+    };
   },
   methods: {
     clickBtn(value) {
-      this.$emit('input');
-      this.$store.commit('routeSelector/setSearchKeyword', value);
-    }
+      this.$emit("input");
+      this.$store.commit("routeSelector/setSearchKeyword", value);
+    },
   },
-}
+};
 </script>
 
 <style scoped lang="scss">
@@ -31,7 +48,7 @@ export default {
   flex-direction: row;
   flex-wrap: wrap;
   align-items: flex-start;
-  justify-content:left;
+  justify-content: left;
 
   & .option-btn {
     padding: 0.3rem 0.5rem;
@@ -41,14 +58,14 @@ export default {
     cursor: pointer;
 
     & .option {
-      border: 1px solid #8C90AB;
+      border: 1px solid #8c90ab;
       border-radius: 1000px;
       padding: 0.5rem 1rem;
       white-space: nowrap;
     }
 
-    &:hover .option{
-      background: #F4F5F9;
+    &:hover .option {
+      background: #f4f5f9;
     }
   }
 }

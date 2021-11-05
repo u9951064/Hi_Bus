@@ -80,7 +80,7 @@ const busRouteModule = {
             const subRouteNameEn = `${s.SubRouteName.En}` == `${i.RouteName.En}0` ? `${i.RouteName.En}` : `${s.SubRouteName.En}`;
             const headSign = s.Headsign || (s.Direction == 0 ? `${i.DepartureStopNameZh}→${i.DestinationStopNameZh}` : `${i.DestinationStopNameZh}→${i.DepartureStopNameZh}`);
             const headSignEn = s.Headsign || (s.Direction == 0 ? `${i.DepartureStopNameEn}→${i.DestinationStopNameEn}` : `${i.DestinationStopNameEn}→${i.DepartureStopNameEn}`);
-            
+
             saveItems.push({
               routeUID: `${i.RouteUID}`,
               subRouteUID: `${s.SubRouteUID}-${s.Direction}`,
@@ -162,11 +162,11 @@ const busRouteModule = {
       return result;
     },
     getRoutesInList: state => (city, uniqueIndexes) => {
-      if (uniqueIndexes.length === 0 ) {
+      if (uniqueIndexes.length === 0) {
         return {};
       }
       const cityObject = state.cityOptions.find(o => o.city === city);
-      if(!cityObject) {
+      if (!cityObject) {
         return {};
       }
 
