@@ -35,7 +35,7 @@ const routes = [
       {
         path: 'result',
         name: 'SearchResult',
-        beforeRouteUpdate: (to, from, next) => {
+        beforeEnter: (to, from, next) => {
           if (store.state.routeSelector.inputKeyword == '') {
             next({
               name: 'Home'

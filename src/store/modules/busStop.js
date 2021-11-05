@@ -10,6 +10,7 @@ const busStopModule = {
     busRouteStopMap: {},
     stopArrivalInfos: {},
     muteUpdateArrivals: {},
+    updateArrivalGap: 15000,
   }),
 
   actions: {
@@ -180,10 +181,11 @@ const busStopModule = {
           return c;
         }, {});
       });
+
       commit('saveStopArrivalInfos', {
         uniqueIndex,
         stopInfos,
-        muteUpdateArrivals: Object.keys(state.busRouteStopMap) !== Object.keys(stopInfos) ? currentTimestamp : (currentTimestamp + 10),
+        muteUpdateArrivals: currentTimestamp + state.updateArrivalGap,
       });
     },
   },
@@ -216,6 +218,7 @@ const busStopModule = {
       const {uniqueIndex, direction} = route;
       return (state.stopArrivalInfos[uniqueIndex] || {})[direction] || {};
     },
+    getNextUpdateTimestamp: state => (uniqueIndex) => state.muteUpdateArrivals[uniqueIndex] || 0,
   }
 };
 

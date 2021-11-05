@@ -7,12 +7,8 @@
             <img src="../assets/icons/arrow-dark.svg" />
           </a>
         </div>
-        <div class="col-auto text-right">
-          <div class="refresh-info row flex-warp">
-            <div class="col-auto text-center">10秒後更新</div>
-            <div class="col-auto text-right">更新</div>
-            <progress class="col-12" max="100" value="32"></progress>
-          </div>
+        <div class="col-4 text-right">
+          <ProgressCounter :nextUpdateTimestamp="nextUpdateTimestamp" @update="reloadArrival"/>
         </div>
       </div>
       <div class="route-header col-auto">
@@ -73,6 +69,7 @@ import store from "@/store";
 import HereMap from "@/components/HereMap.vue";
 import FavoriteBtn from "@/components/FavoriteBtn.vue";
 import StopInfoRecord from "@/components/StopInfoRecord.vue";
+import ProgressCounter from "@/components/ProgressCounter.vue";
 
 const initialHandler = async (to, from, next) => {
   const uniqueIndex = String(to.params.uniqueIndex || "").trim();
@@ -99,15 +96,11 @@ const initialHandler = async (to, from, next) => {
 
 export default {
   name: "TracingBus",
-  data() {
-    return {
-      reloadTimmer: null,
-    };
-  },
   components: {
     HereMap,
     FavoriteBtn,
     StopInfoRecord,
+    ProgressCounter,
   },
   beforeRouteEnter: initialHandler,
   beforeRouteUpdate: initialHandler,
@@ -152,12 +145,24 @@ export default {
     },
     focusStop(position) {
       this.$refs.busMap.setCenter(position.positionLon, position.positionLat);
-    }
+    },
+    reloadArrival() {
+      if(!this.selectedRoute) {
+        return;
+      }
+      store.dispatch("busStop/updateArrivalBus", this.selectedRoute);
+    },
   },
   computed: {
     ...mapState("routeSelector", {
       selectedRoute: "selectedRoute",
     }),
+    nextUpdateTimestamp() {
+      if(!this.selectedRoute) {
+        return Number.POSITIVE_INFINITY;
+      }
+      return this.$store.getters['busStop/getNextUpdateTimestamp'](this.selectedRoute.uniqueIndex);
+    },
     stops() {
       return this.$store.getters["busStop/getStops"](this.selectedRoute);
     },
@@ -188,6 +193,8 @@ export default {
   align-items: stretch;
   height: 100%;
   padding: 1.5rem 1.5rem 0;
+
+  
 
   & .nav {
     justify-content: space-between;
