@@ -31,7 +31,10 @@ export default {
   },
   created() {
     this.mapObject.platform = new window.H.service.Platform({apiKey});
-    this.mapObject.layer = this.mapObject.platform.createDefaultLayers();
+    this.mapObject.layer = this.mapObject.platform.createDefaultLayers({ 
+      lg: 'CHT',
+      lg2: 'ENG',
+    });
   },
   mounted() {
     this.initializeHereMap();
@@ -51,6 +54,7 @@ export default {
           ],
           zoom: 11,
           center: { lat: 25.0681944993822, lng: 121.397454504827 },
+          pixelRatio: window.devicePixelRatio || 1,
         }
       );
       addEventListener("resize", () => map.getViewPort().resize());
@@ -118,6 +122,9 @@ export default {
       //this.drawBusRoutePath();
       this.drawStopMarker();
     },
+    setCenter(lng, lat) {
+      this.mapObject.map.setCenter({lat, lng});
+    }
   },
   computed: {
     stops() {

@@ -2,8 +2,8 @@
   <div class="list-page">
     <div class="container result-block">
       <div class="result-info">
-        <span>共找到 {{resultCount}} 個公車路線</span>
-        <span class="tag" v-for="c in cityList" :key="c.city">{{ c.cityName }}</span>
+        <span>共找到 <span class="result-count">{{resultCount}}</span> 個公車路線</span>
+        <a class="tag" v-for="c in cityList" :key="c.city" @click="scrollToCity(c.city)">{{ c.cityName }}</a>
       </div>
       <div class="result-table">
         <div class="table-header">
@@ -16,12 +16,12 @@
           </div>
         </div>
         <div class="table-content">
-          <div class="table-container">
+          <div class="table-container" ref="scoller">
             <div class="city-group" v-for="(c, i) in searchResults" :key="i">
-              <div class="city-name">{{ c.cityName }}</div>
-              <div class="table-row pointer" v-for="r in c.routes" :key="r.uniqueIndex" @click="goTrading(r)">
-                <div class="bus-number">{{ r.subRouteName }}</div>
-                <div class="bus-headsign">{{ r.headSign }}</div>
+              <div class="city-name" :ref="c.city">{{ c.cityName }}</div>
+              <div class="table-row pointer" v-for="r in c.routes" :key="r.uniqueIndex" @click="goTracing(r)">
+                <div class="bus-number" v-html="replaceSymbol(r.subRouteName)"></div>
+                <div class="bus-headsign" v-html="replaceSymbol(r.headSign)"></div>
                 <div class="bus-favorite">
                   <FavoriteBtn :route="r"/>
                 </div>
@@ -35,6 +35,7 @@
 </template>
 
 <script>
+import replaceSymbol from '@/utils/replaceSymbol'
 import FavoriteBtn from '@/components/FavoriteBtn.vue'
 
 export default {
@@ -49,23 +50,22 @@ export default {
     FavoriteBtn
   },
   methods: {
-    goTrading(route) {
+    replaceSymbol(text) {
+      return replaceSymbol(text);
+    },
+    goTracing(route) {
       return this.$router.push({
         name: 'TracingBus',
         params: {
           uniqueIndex: route.uniqueIndex,
         }
       });
+    },
+    scrollToCity(city) {
+      this.$refs[city].scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   },
   computed: {
-    // searchResults() {
-    //   const r = this.$store.getters['busRoute/searchRoutes'](
-    //     this.$store.state.routeSelector.selectedCity,
-    //     this.$store.state.routeSelector.inputKeyword
-    //   );
-    //   return Object.values(records).filter(r => r.routes.length !== 0);
-    // },
     searchResults() {
       return Object.values(this.records).filter(r => r.routes.length !== 0);
     },
@@ -199,14 +199,30 @@ export default {
 
   & .result-info {
     padding: 1.5rem 0;
+    white-space: nowrap;
+    overflow-y: auto;
+
+    & .result-count {
+      color: #5468FF;
+    }
 
     & .tag {
+      cursor: pointer;
       margin: 0 0.25rem;
       padding: 0.5rem 1.25rem;
       background-color: #FFF;
       color: #5468FF;
       border: 1px solid #5468FF;
       border-radius: 1000px;
+
+      &:hover {
+        background: #E7E9FD;
+      }
+
+      &:active {
+        color: #FFFFFF;
+        background: #5468FF;
+      }
     }
   }
 }

@@ -132,7 +132,7 @@ export default {
 
 <style scoped lang="scss">
 .search {
-  max-width: 550px;
+  max-width: 650px;
   width: 100%;
   margin: auto;
   display: flex;

@@ -8,7 +8,7 @@
 
 <script>
 export default {
-  name: 'BusPlat',
+  name: 'BusPlate',
   props: {
     city: {
       type: String,
@@ -23,16 +23,17 @@ export default {
     this.loadVehicles();
   },
   beforeUpdate() {
-    this.loadVehicles();
+    //this.loadVehicles();
   },
   methods: {
     loadVehicles() {
-      if(this.plateCount > 0) {
-        this.$store.dispatch('vehicleInfo/loadVehicles', {
-          city: this.city,
-          plateNumbers: this.plateNumbers,
-        });
+      if(this.plateNumbers.length === 0) {
+        return;
       }
+      this.$store.dispatch('vehicleInfo/loadVehicles', {
+        city: this.city,
+        plateNumbers: this.plateNumbers,
+      });
     }
   },
   computed: {

@@ -3,8 +3,8 @@
     <div class="city-group" v-for="c in searchResults" :key="c.city">
       <div class="city-name">{{ c.cityName }}</div>
       <div class="route-item" v-for="r in c.routes" :key="r.uniqueIndex" @click="selectRoute(r)">
-        <div class="route-item-name">{{ r.subRouteName}}</div>
-        <div class="route-item-headSign">{{ r.headSign }}</div>
+        <div class="route-item-name" v-html="replaceSymbol(r.subRouteName)"></div>
+        <div class="route-item-headSign" v-html="replaceSymbol(r.headSign)"></div>
       </div>
     </div>
     <div v-if="searchResults.length === 0">查無符合的結果</div>
@@ -12,6 +12,7 @@
 </template>
 
 <script>
+import replaceSymbol from '@/utils/replaceSymbol'
 export default {
   name: 'SearchSuggestionList',
   props: {
@@ -24,9 +25,10 @@ export default {
       required: true,
     }
   },
-  mounted() {
-  },
   methods: {
+    replaceSymbol(text) {
+      return replaceSymbol(text);
+    },
     selectRoute(route) {
       this.$emit('input');
       this.$store.commit('routeSelector/setSelectedRoute', route);

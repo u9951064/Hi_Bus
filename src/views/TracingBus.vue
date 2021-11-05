@@ -38,6 +38,7 @@
         </div>
       </div>
       <div class="stop-header row col-auto">
+        <div class="col-1">站序</div>
         <div class="col-3">預估到站</div>
         <div class="col">站名</div>
         <div class="col-4">車牌號碼及位置</div>
@@ -47,30 +48,21 @@
           v-for="(o, i) in stops"
           :key="selectedRoute.subRouteUID + '-' + o.stopUID"
         >
-          <div v-if="i > 0" class="divider"></div>
-          <div class="stop-item row">
-            <div class="arrival-time col-3">
-              <div>{{ getEstimateTimeLabel(getArrivalInfo(o.stopUID)) }}</div>
-            </div>
-            <div class="stop-name col">{{ o.stopName }}</div>
-            <div class="plate-number col-3">
-              <BusPlate
-                :city="selectedRoute.city"
-                :plateNumbers="getArrivalInfo(o.stopUID).plateNumbers || []"
-              />
-            </div>
-            <div
-              class="bus-line col-1"
-              :class="{
-                active: getArrivalInfo(o.stopUID).plateNumbers.length !== 0,
-              }"
-            ></div>
-          </div>
+          <div v-if="i !== 0" class="divider"></div>
+          <StopInfoRecord
+            :index="i"
+            :selectedRoute="selectedRoute"
+            :stopInfo="o"
+            :arrivalInfo="getArrivalInfo(o.stopUID)"
+            @click="focusStop(o.stopPosition)"
+          />
         </template>
       </div>
     </div>
     <div class="bus-map-block">
-      <HereMap :busStops="stops" />
+      <!-- <keep-alive> -->
+        <HereMap :busStops="stops" ref="busMap"/>
+      <!-- </keep-alive> -->
     </div>
   </div>
 </template>
@@ -78,9 +70,9 @@
 <script>
 import { mapState } from "vuex";
 import store from "@/store";
-import BusPlate from "@/components/BusPlate.vue";
 import HereMap from "@/components/HereMap.vue";
 import FavoriteBtn from "@/components/FavoriteBtn.vue";
+import StopInfoRecord from "@/components/StopInfoRecord.vue";
 
 const initialHandler = async (to, from, next) => {
   const uniqueIndex = String(to.params.uniqueIndex || "").trim();
@@ -113,9 +105,9 @@ export default {
     };
   },
   components: {
-    BusPlate,
     HereMap,
     FavoriteBtn,
+    StopInfoRecord,
   },
   beforeRouteEnter: initialHandler,
   beforeRouteUpdate: initialHandler,
@@ -155,60 +147,12 @@ export default {
       }
       return "其他路線";
     },
-    getEstimateTimeLabel(arrivalInfo) {
-      switch (`${arrivalInfo.stopStatus}`) {
-        case "4":
-          return "今日未營運";
-        case "3":
-          return "末班車已過";
-        case "2":
-          return "交管不停靠";
-        case "1":
-          if (arrivalInfo.estimateTime === Number.MAX_SAFE_INTEGER) {
-            return "尚未發車";
-          } else {
-            return ((timestampOffset) => {
-              timestampOffset =
-                timestampOffset === Number.MAX_SAFE_INTEGER
-                  ? 0
-                  : timestampOffset;
-              const estimateTime = new Date(
-                new Date().getTime() + timestampOffset * 1e3
-              );
-              const hourString = `${
-                estimateTime.getHours() < 10 ? "0" : ""
-              }${estimateTime.getHours()}`;
-              const minuteString = `${
-                estimateTime.getMinutes() < 10 ? "0" : ""
-              }${estimateTime.getMinutes()}`;
-              return `${hourString} : ${minuteString}`;
-            })(arrivalInfo.estimateTime || Number.MAX_SAFE_INTEGER);
-          }
-        case "0":
-          if (arrivalInfo.estimateTime === Number.MAX_SAFE_INTEGER) {
-            return "尚未發車";
-          } else {
-            return ((timestampOffset) => {
-              timestampOffset =
-                timestampOffset === Number.MAX_SAFE_INTEGER
-                  ? 0
-                  : timestampOffset;
-              if (timestampOffset < 15) {
-                return "即將進站";
-              }
-              if (timestampOffset <= 60) {
-                return `${timestampOffset} 秒`;
-              }
-              return `${Math.floor(timestampOffset / 60)} 分`;
-            })(arrivalInfo.estimateTime || Number.MAX_SAFE_INTEGER);
-          }
-        default:
-          return "更新中";
-      }
-    },
     selectDirection(route) {
       this.$store.commit("routeSelector/setSelectedRoute", route);
     },
+    focusStop(position) {
+      this.$refs.busMap.setCenter(position.positionLon, position.positionLat);
+    }
   },
   computed: {
     ...mapState("routeSelector", {
@@ -343,92 +287,10 @@ export default {
     overflow-y: auto;
     overflow-x: hidden;
 
-    & .stop-item {
-    }
-
     & .divider {
       background: #edeef2;
       height: 1px;
       width: calc(100% * 11 / 12);
-    }
-
-    & .arrival-time {
-      padding: 0.75rem 0;
-      & > * {
-        display: inline-block;
-        padding: 0.5rem;
-        color: #09182d;
-        background: #f4f5f9;
-        border: 1px solid #8c90ab;
-        border-radius: 9999rem;
-        width: 7rem;
-      }
-    }
-
-    & .stop-name {
-      padding: 0.75rem 0;
-      white-space: nowrap;
-      overflow: hidden;
-      text-align: left;
-    }
-
-    & .plate-number {
-      padding: 0.75rem 0;
-      white-space: nowrap;
-      overflow: hidden;
-      text-align: right;
-    }
-
-    & .bus-line {
-      align-self: stretch;
-      position: relative;
-
-      &:after {
-        content: "";
-        background: #fff;
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        margin: auto;
-        width: 0.25rem;
-        height: 0.25rem;
-        border-radius: 50%;
-        border: 2px solid #cacfde;
-        z-index: 2;
-      }
-
-      &.active:after {
-        background: #00dcd1;
-        width: 0.5rem;
-        height: 0.5rem;
-        border-radius: 50%;
-        border: 2px solid #fff;
-        -webkit-box-shadow: 0 0 0 1px #00dcd1;
-        box-shadow: 0 0 0 1px #00dcd1;
-      }
-    }
-
-    & .divider ~ .stop-item {
-      & .bus-line {
-        &:before {
-          content: "";
-          position: absolute;
-          width: 2px;
-          top: 0;
-          bottom: 0;
-          left: 0;
-          right: 0;
-          margin: auto;
-          background: #cacfde;
-          transform: translateY(-50%);
-          z-index: 1;
-        }
-        &.active:before {
-          background: linear-gradient(180deg, #cacfde 0%, #00dcd1 100%);
-        }
-      }
     }
   }
 }

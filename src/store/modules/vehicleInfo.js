@@ -41,29 +41,41 @@ const vehicleInfoModule = {
         return;
       }
 
-      console.log('trigger', missingVehicles)
-
       // 從 API 取得
       const { data: vehicleRecords } = await MotcApi.get(
         city == "InterBus" ?
           `/v2/Bus/Vehicle/InterCity` :
           `/v2/Bus/Vehicle/City/${city}`,
         {
-          '$filter': 'PlateNumb in (' + missingVehicles.map(p => `'${p}'`).join(',') + ')',
+          params: {
+            '$filter': 'PlateNumb in (' + missingVehicles.map(p => `'${p}'`).join(',') + ')'
+          },
         }
       );
-      if (!vehicleRecords) {
-        return;
-      }
 
+      // 整理寫入資料
+      const fetchMissingVehicles = new Set(missingVehicles);
       const saveRecords = vehicleRecords.map(r => {
+        const plateNumb = String(r.PlateNumb);
+        fetchMissingVehicles.delete(plateNumb);
         return {
-          plateNumber: String(r.PlateNumb),
+          plateNumber: plateNumb,
           vehicleType: parseInt(r.VehicleType),
           city,
         }
       });
+      fetchMissingVehicles.forEach(p => {
+        // 查不到的資料就是當作一般公車
+        saveRecords.push({
+          plateNumber: p,
+          vehicleType: 0,
+          city,
+        });
+      });
 
+      if(saveRecords.length === 0) {
+        return;
+      }
       commit('addVehicles', saveRecords);
     },
   },
