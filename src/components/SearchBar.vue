@@ -1,5 +1,5 @@
 <template>
-  <div class="search" :class="{ active: active }">
+  <div class="search" :class="{ active: active, 'home-search': atHomePage }">
     <select
       class="city-selector"
       v-model.trim="selectedCity"
@@ -57,6 +57,13 @@ export default {
   components: {
     SearchSuggestionList,
     SearchSuggestionInput,
+  },
+  props: {
+    atHomePage: {
+      type: Boolean,
+      required: false,
+      default: false,
+    }
   },
   data() {
     return {
@@ -120,7 +127,9 @@ export default {
       },
     },
     searchIconSrc() {
-      if (this.active) {
+      if(this.atHomePage) {
+        return require("../assets/icons/search-white-icon.svg");
+      } else if (this.active) {
         return require("../assets/icons/search-dark-icon.svg");
       } else {
         return require("../assets/icons/search-white-icon.svg");
@@ -131,6 +140,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
+/** 搜尋頁模式 */
 .search {
   max-width: 650px;
   width: 100%;
@@ -142,7 +152,6 @@ export default {
   align-items: center;
   background: #252e4f;
   border-radius: 0.5rem;
-  padding: 0 0.75rem;
   position: relative;
 
   &.active {
@@ -243,6 +252,30 @@ export default {
 
   &:not(.active) .suggestion-block {
     display: none;
+  }
+}
+
+/** 首頁 layout 模式 */
+.search.home-search {
+  background: #FFF;
+  border: 2px solid #5468FF;
+
+  & .separator, &.active .separator {
+    border-right: 1px solid #5468FF;
+  }
+
+  & select,
+  & input,
+  & input::placeholder {
+    color: #000;
+  }
+
+  & .search-btn {
+    background: #5468FF;
+  }
+
+  & .suggestion-block {
+    top: calc(100% + 3px);
   }
 }
 </style>

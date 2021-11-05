@@ -1,7 +1,9 @@
 <template>
-  <div class="home ">
-    <h1 class="home-slogan col-auto">Hi，你今天想搭乘輛公車？</h1>
-    <div class="home-search col-auto"><SearchBar /></div>
+  <div class="home-page">
+    <h1 class="home-slogan-block col-auto">Hi，你今天想搭乘輛公車？</h1>
+    <div class="home-search-block col-auto">
+      <SearchBar :atHomePage="true"/>
+    </div>
   </div>
 </template>
 
@@ -24,7 +26,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.home {
+.home-page {
   width: 100%;
   height: 100%;
   display: flex;
@@ -33,14 +35,14 @@ export default {
   justify-content: center;
   align-items: stretch;
 
-  & .home-slogan {
+  & .home-slogan-block {
     font-weight: 900;
     font-size: 1.25rem;
     letter-spacing: 0.06em;
     padding: 0 0 2rem 0;
   }
 
-  & .home-search {
+  & .home-search-block {
     padding: 0 0 2rem 0;
   }
 }
