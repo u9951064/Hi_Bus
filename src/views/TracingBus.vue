@@ -223,10 +223,9 @@ export default {
   & .back-btn {
     & .link {
       display: inline-flex;
-      padding: 0.75rem;
+      padding: 0.75rem 0;
       cursor: pointer;
       border-radius: 100rem;
-      background-color: #edeef2;
       &:hover {
         background-color: #f4f5f9;
       }
