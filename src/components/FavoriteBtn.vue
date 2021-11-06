@@ -46,14 +46,14 @@ export default {
   width: auto;
   white-space: nowrap;
   color: #8c90ab;
-  font-size: 0.9rem;
+  font-size: 0.875rem;
   & .label {
     display: none;
   }
   &:before {
     content: "";
-    width: 1rem;
-    height: 1rem;
+    width: 1.125rem;
+    height: 1.125rem;
     background-size: cover;
     display: inline-block;
     background-image: url("../assets/icons/favorite-empty-icon.svg");
@@ -75,6 +75,11 @@ export default {
     & .label {
       display: inline;
       margin-left: 0.2rem;
+    }
+
+    &:before {
+      width: 0.75rem;
+      height: 0.75rem;
     }
 
     &:hover {

@@ -2,8 +2,11 @@
   <div class="list-page">
     <div class="container result-block">
       <div class="result-info">
-        <span v-if="isFavoritePage">已收藏 <span class="result-count">{{ resultCount }}</span> 個公車路線</span>
-        <span v-else>共找到 <span class="result-count">{{ resultCount }}</span> 個公車路線</span>
+        <span class="result-string">
+          <template v-if="isFavoritePage">已收藏</template>
+          <template v-else>共找到</template>
+          <span class="result-count">{{ resultCount }}</span> 個公車路線</span
+        >
         <a
           class="tag"
           v-for="c in cityList"
@@ -14,24 +17,24 @@
       </div>
       <div class="result-table">
         <div class="table-header">
-          <div class="table-container">
-            <div class="table-row">
+          <div class="table-row">
+            <div class="bus-info-block">
               <div class="bus-number">公車路線</div>
               <div class="bus-headsign">起始站與終點站</div>
-              <div class="bus-favorite">收藏最愛</div>
             </div>
+            <div class="bus-favorite">收藏最愛</div>
           </div>
         </div>
-        <div class="table-content">
-          <div class="table-container" ref="scoller">
-            <div class="city-group" v-for="(c, i) in searchResults" :key="i">
-              <div class="city-name" :ref="c.city">{{ c.cityName }}</div>
-              <div
-                class="table-row pointer"
-                v-for="r in c.routes"
-                :key="r.uniqueIndex"
-                @click="goTracing(r)"
-              >
+        <div class="table-content" ref="scoller">
+          <div class="city-group" v-for="(c, i) in searchResults" :key="i">
+            <div class="city-name" :ref="c.city">{{ c.cityName }}</div>
+            <div
+              class="table-row pointer"
+              v-for="r in c.routes"
+              :key="r.uniqueIndex"
+              @click="goTracing(r)"
+            >
+              <div class="bus-info-block">
                 <div
                   class="bus-number"
                   v-html="replaceSymbol(r.subRouteName)"
@@ -40,9 +43,9 @@
                   class="bus-headsign"
                   v-html="replaceSymbol(r.headSign)"
                 ></div>
-                <div class="bus-favorite">
-                  <FavoriteBtn :route="r" />
-                </div>
+              </div>
+              <div class="bus-favorite">
+                <FavoriteBtn :route="r" />
               </div>
             </div>
           </div>
@@ -115,7 +118,7 @@ export default {
     display: flex;
     flex-direction: column;
     flex-wrap: nowrap;
-    justify-items: stretch;
+    justify-content: stretch;
     align-items: stretch;
     height: 100%;
 
@@ -140,7 +143,6 @@ export default {
     display: flex;
     flex-direction: column;
     flex-wrap: nowrap;
-    justify-items: stretch;
     align-items: stretch;
     height: 100%;
     padding-bottom: 1rem;
@@ -157,85 +159,141 @@ export default {
     & > .table-header {
       flex: 0 0 auto;
       height: auto;
-      max-height: 100%;
-      border-bottom: 1px solid #edeef2;
-      padding: 0.25rem 0;
-    }
-
-    & .table-container {
-      max-width: 1100px;
-      width: 100%;
-      margin: auto;
-    }
-
-    & .table-content {
-      overflow: hidden;
-    }
-    & .table-content > .table-container {
-      overflow-y: auto;
-      max-height: 100%;
     }
   }
 
-  & .table-row {
+  & .table-row,
+  & .bus-info-block {
     display: flex;
     flex-direction: row;
-    flex-wrap: nowrap;
-    justify-items: center;
+    justify-content: center;
     align-items: center;
+    flex-wrap: wrap;
 
     & > * {
       flex-basis: 0;
       flex-grow: 1;
       max-width: 100%;
-      padding: 0.5rem;
       text-align: left;
     }
 
-    & > .bus-number {
-      flex: 1 1 30%;
-      width: 30%;
-      max-width: 30%;
-      font-weight: bold;
-    }
-
     & > .bus-favorite {
-      flex: 0 0 auto;
-      width: auto;
+      text-align: center;
+      flex: 0 0 calc(7rem + 0.75rem + 0.75rem);
+      max-width: calc(7rem + 0.75rem + 0.75rem);
+      padding-left: 0.75rem;
+      padding-right: 0.75rem;
+
+      @media (max-width: 768px) {
+        flex: 0 0 3rem;
+        max-width: 3rem;
+        padding-right: 0;
+      }
     }
 
-    & ~ .table-row {
-      border-top: 1px solid #edeef2;
+    & > .bus-number {
+      flex: 0 0 25%;
+      max-width: 25%;
+      padding-left: 1.5rem;
+      padding-right: 0.75rem;
+      @media (max-width: 768px) {
+        flex: 1 1 100%;
+        max-width: 100%;
+        padding-left: 0;
+        padding-right: 0;
+      }
+    }
+
+    & > .bus-headsign {
+      padding-left: 1.5rem;
+      padding-right: 0.75rem;
+      @media (max-width: 768px) {
+        flex: 1 1 100%;
+        max-width: 100%;
+        padding-left: 0;
+        padding-right: 0;
+      }
     }
   }
 
-  & .table-content .table-row:hover {
-    background: #f7f7fa;
+  & .table-content,
+  & .table-header {
+    padding: 0.75rem 3.25rem;
+    @media (max-width: 768px) {
+      padding: 0.75rem 1.25rem;
+    }
+  }
+
+  & .table-header {
+    color: #8c90ab;
+    font-size: 0.875rem;
+    border-bottom: 1px solid #cacfde;
+    @media (max-width: 768px) {
+      display: none;
+    }
+  }
+
+  & .table-content {
+    overflow-y: scroll;
+    & .table-row {
+      font-size: 1rem;
+      letter-spacing: 0.05em;
+      padding: 0.5rem 0;
+      border-bottom: 1px solid #e7e9f2;
+
+      &:hover {
+        background: #f8f8fb;
+      }
+
+      & .bus-number {
+        font-weight: bold;
+      }
+    }
   }
 
   & .city-name {
     text-align: left;
-    padding: 1rem 0.5rem 0.5rem;
     color: #5468ff;
+    font-weight: 700;
+    font-size: 0.75rem;
+    padding: 1.25rem 1.5rem 0;
+    @media (max-width: 768px) {
+      padding: 1.25rem 0 0;
+    }
   }
 
   & .result-info {
     padding: 1.5rem 0;
     white-space: nowrap;
     overflow-y: auto;
+    font-size: 0.875rem;
+
+    & .result-string {
+      padding-right: 1rem;
+      @media(max-width: 768px) {
+        padding-left: 1.25rem;
+        padding-right: 0.75rem;
+      }
+    }
+    
 
     & .result-count {
+      font-weight: 700;
       color: #5468ff;
     }
 
     & .tag {
       cursor: pointer;
-      margin: 0 0.25rem;
+      margin-right: 1rem;
       padding: 0.5rem 1.25rem;
       background-color: #fff;
       color: #5468ff;
       border: 1px solid #5468ff;
       border-radius: 1000px;
+
+      @media (max-width: 768px) {
+        margin-right: 0.5rem;
+      }
 
       &:hover {
         background: #e7e9fd;
@@ -246,37 +304,6 @@ export default {
         background: #5468ff;
       }
     }
-  }
-}
-
-@media (max-width: 768px) {
-  .list-page {
-    & .table-header {
-      display: none;
-    }
-
-    & .table-row {
-      justify-content: space-between;
-      flex-wrap: wrap;
-
-      & .bus-number {
-        flex-basis: 0;
-        flex-grow: 1;
-        max-width: 100%;
-      }
-
-      & .bus-headsign {
-        order: 3;
-        flex: 1 1 100%;
-        width: 100%;
-      }
-      
-      & .bus-favorite {
-        order: 2;
-      }
-    }
-
-    
   }
 }
 </style>

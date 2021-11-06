@@ -4,11 +4,14 @@
 
 <style lang="scss">
 @import "~normalize.css/normalize.css";
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700&family=Noto+Sans+TC:wght@300;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;500&display=swap');
 
 html,
 body {
   width: 100%;
   height: 100%;
+  font-family: Montserrat, 'Noto Sans TC';
   font-stretch: normal;
   font-style: normal;
   line-height: normal;
@@ -21,7 +24,6 @@ body {
 }
 
 .app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;

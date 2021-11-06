@@ -29,6 +29,11 @@ const routes = [
         path: '',
         name: 'Home',
         meta: { hideLayoutSearchBar: true },
+        beforeEnter: (to, from, next) => {
+          store.commit('routeSelector/setSearchCity', '');
+          store.commit('routeSelector/setSearchKeyword', '');
+          next();
+        },
         component: () => import(/* webpackChunkName: "HomePage" */ '../views/Home.vue'),
       },
       {
