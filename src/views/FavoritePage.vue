@@ -1,5 +1,5 @@
 <template>
-  <ListPage :records="searchResults" />
+  <ListPage :records="searchResults" :isFavoritePage="true"/>
 </template>
 
 <script>

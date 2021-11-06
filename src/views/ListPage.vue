@@ -2,10 +2,8 @@
   <div class="list-page">
     <div class="container result-block">
       <div class="result-info">
-        <span
-          >共找到
-          <span class="result-count">{{ resultCount }}</span> 個公車路線</span
-        >
+        <span v-if="isFavoritePage">已收藏 <span class="result-count">{{ resultCount }}</span> 個公車路線</span>
+        <span v-else>共找到 <span class="result-count">{{ resultCount }}</span> 個公車路線</span>
         <a
           class="tag"
           v-for="c in cityList"
@@ -61,6 +59,11 @@ import FavoriteBtn from "@/components/FavoriteBtn.vue";
 export default {
   name: "ListPage",
   props: {
+    isFavoritePage: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
     records: {
       type: Object,
       required: true,
