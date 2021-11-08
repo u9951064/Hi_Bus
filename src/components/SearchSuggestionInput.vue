@@ -47,24 +47,37 @@ export default {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+  justify-content: flex-start;
   align-items: flex-start;
-  justify-content: left;
 
-  & .option-btn {
-    padding: 0.3rem 0.5rem;
-    flex: 0 0 20%;
-    width: 20%;
-    max-width: 20%;
-    cursor: pointer;
+  & > .option-btn {
+    flex: 0 0 calc(100% / 9);
+    max-width: calc(100% / 9);
 
-    & .option {
-      border: 1px solid #8c90ab;
-      border-radius: 1000px;
-      padding: 0.5rem 1rem;
-      white-space: nowrap;
+    @media(max-width: 768px) {
+      flex: 0 0 calc(100% / 6);
+      max-width: calc(100% / 6);
     }
 
-    &:hover .option {
+    @media(max-width: 576px) {
+      flex: 0 0 calc(100% / 4);
+      max-width: calc(100% / 4);
+    }
+
+    padding: 0.375rem;
+    cursor: pointer;
+
+    & > .option {
+      border: 1px solid #8c90ab;
+      border-radius: 1000px;
+      padding: 0.5rem 0;
+      white-space: nowrap;
+      text-align: center;
+      font-weight: 400;
+      font-size: 0.875rem;
+    }
+
+    &:hover > .option {
       background: #f4f5f9;
     }
   }

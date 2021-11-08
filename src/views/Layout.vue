@@ -95,7 +95,7 @@ export default {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    align-items: stretch;
+    align-items: center;
     justify-items: center;
 
     & > * {
@@ -114,6 +114,8 @@ export default {
       flex: 0 0 auto;
       width: auto;
       max-width: 100%;
+      padding: 0.75rem 0;
+      display: inline-flex;
     }
 
     & .menu-bar {
@@ -135,13 +137,15 @@ export default {
           margin-right: 0.2rem;
         }
 
-        &:hover {
-          color: #ffc42d;
-
-          &:before {
-            background-image: url("../assets/icons/favorite-yellow-icon.svg");
+        @media (min-width: 768px) {
+          &:hover {
+            color: #ffc42d;
+            &:before {
+              background-image: url("../assets/icons/favorite-yellow-icon.svg");
+            }
           }
         }
+        
       }
     }
   }
@@ -159,13 +163,6 @@ export default {
         order: 3;
         flex: 1 1 100%;
         width: 100%;
-      }
-
-      & .menu-bar .favorite:hover {
-        color: #fff;
-        &:before {
-          background-image: url("../assets/icons/favorite-white-icon.svg");
-        }
       }
     }
   }

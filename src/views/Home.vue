@@ -1,6 +1,7 @@
 <template>
   <div class="home-page">
-    <h1 class="home-slogan-block col-auto">Hi，你今天想搭乘輛公車？</h1>
+    <h1 class="home-title-block col-auto">Hi BUS!</h1>
+    <h2 class="home-slogan-block col-auto">今天想搭乘哪輛公車呢？</h2>
     <div class="home-search-block col-auto">
       <SearchBar :atHomePage="true" />
     </div>
@@ -32,14 +33,24 @@ export default {
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: stretch;
+  padding: 10% 0 0 0;
+
+  & .home-title-block {
+    margin: 0;
+    font-weight: 900;
+    font-size: 2rem;
+    letter-spacing: 0.06em;
+    padding: 0 0 1rem 0;
+  }
 
   & .home-slogan-block {
-    font-weight: 900;
-    font-size: 1.25rem;
+    margin: 0;
+    font-weight: 700;
+    font-size: 1.5rem;
     letter-spacing: 0.06em;
-    padding: 0 0 2rem 0;
+    padding: 0 0 1.5rem 0;
   }
 
   & .home-search-block {

@@ -74,42 +74,43 @@ export default {
   width: 100%;
   max-width: 100%;
 
-  & .city-group ~ .city-group {
-    padding-top: 0.75rem;
-  }
-
-  & .city-name {
-    color: #5468ff;
+  & > .city-group {
     text-align: left;
-  }
-
-  & .route-item {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    justify-items: center;
-    align-items: center;
-    border-bottom: 1px solid #edeef2;
-
-    &:hover {
-      background: #f7f7fa;
-      cursor: pointer;
+    & > .city-name {
+      color: #5468FF;
+      padding: 0.25rem 0;
+      letter-spacing: 0.02em;
+      font-size: 0.75rem;
     }
 
-    & > * {
-      flex-basis: 0;
-      flex-grow: 1;
-      max-width: 100%;
-      align-content: left;
-      padding-top: 0.5rem;
-      padding-bottom: 0.5rem;
-      text-align: left;
-    }
+    & > .route-item {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      align-items: center;
+      justify-content: flex-start;
+      border-bottom: 1px solid #E7E9F2;
 
-    & .route-item-name {
-      flex: 1 1 30%;
-      width: 30%;
-      max-width: 30%;
+      & > .route-item-name {
+        flex: 1 1 30%;
+        max-width: 30%;
+        font-weight: 600;
+        font-size: 1rem;
+        padding: 0.75rem 0;
+      }
+
+      & > .route-item-headSign {
+        flex: 1 1 70%;
+        max-width: 70%;
+        font-size: 1rem;
+        padding: 0.75rem 0 0.75rem 0.25rem;
+      }
+
+      @media(min-width: 768px) {
+        &:hover {
+          background: #F8F8FB;
+        }
+      }
     }
   }
 }

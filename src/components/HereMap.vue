@@ -29,7 +29,6 @@ export default {
     this.mapObject.platform = new window.H.service.Platform({ apiKey });
     this.mapObject.layer = this.mapObject.platform.createDefaultLayers({
       lg: "CHT",
-      lg2: "ENG",
     });
   },
   mounted() {

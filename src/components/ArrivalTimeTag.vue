@@ -7,7 +7,7 @@
 </template>
 
 <script>
-const nearbyThreshold = 30;
+const nearbyThreshold = 60;
 
 // 預計時間 XX:XX
 const generateTimeAtString = function (timestampOffset) {
@@ -59,13 +59,13 @@ export default {
 
       switch (this.stopStatus) {
         case "4":
-          result.label = "今日未營運";
+          result.label = "未營運";
           break;
         case "3":
-          result.label = "今日未營運";
+          result.label = "末班駛離";
           break;
         case "2":
-          result.label = "交管不停靠";
+          result.label = "不停靠";
           break;
         case "1":
           result.label = generateTimeAtString(this.estimateTime);
@@ -75,7 +75,7 @@ export default {
         case "0":
           result.label = generateCountDownString(this.estimateTime);
           result.class =
-            result.label === "即將進站" ? "status-nearby" : "status-estimate";
+            result.label === "進站中" ? "status-nearby" : "status-estimate";
           break;
         default:
           result.label = "更新中";

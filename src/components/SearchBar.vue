@@ -127,10 +127,8 @@ export default {
       },
     },
     searchIconSrc() {
-      if (this.atHomePage) {
-        return require("../assets/icons/search-white-icon.svg");
-      } else if (this.active) {
-        return require("../assets/icons/search-dark-icon.svg");
+      if (this.atHomePage || this.active) {
+        return require("../assets/icons/search-purple-icon.svg");
       } else {
         return require("../assets/icons/search-white-icon.svg");
       }
@@ -140,143 +138,118 @@ export default {
 </script>
 
 <style scoped lang="scss">
-/** 搜尋頁模式 */
 .search {
-  max-width: 650px;
   width: 100%;
+  max-width: 600px;
   margin: auto;
   display: flex;
   flex-direction: row;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
   justify-content: center;
   align-items: center;
-  background: #252e4f;
-  border-radius: 0.5rem;
+  border-radius: 0.375rem;
+  background: #252E4F;
   position: relative;
+  font-size: 0.875rem;
+  border: 1px solid #252E4F;
+  color: #FFF;
 
-  &.active {
-    background: #ffffff;
-    border-radius: 0.5rem 0.5rem 0 0;
-  }
-
-  & > * {
-    flex-basis: 0;
-    -ms-flex-positive: 1;
-    flex-grow: 1;
-    max-width: 100%;
-    align-content: center;
-  }
-
-  & .city-selector,
-  & .search-btn {
+  & > .city-selector {
+    border: none;
     flex: 0 0 auto;
     width: auto;
-    max-width: 100%;
+    border: 0;
+    outline: none;
+    background-color: transparent;
+    color: #FFF;
+    padding: 0.5rem 0 0.5rem 1.5rem;
   }
 
-  & .separator {
-    flex: 0 0 0.75rem;
-    width: 0.75rem;
+  & > .separator {
+    flex: 0 0 0;
+    width: 0;
     height: 1rem;
+    padding-left: 0.875rem;
     border-right: 1px solid #fff;
   }
 
-  &.active .separator {
-    border-right: 1px solid #c3cbe4;
-  }
+  & > .keyword-input {
+    flex-basis: 0;
+    flex-grow: 1;
+    max-width: 100%;
+    border: none;
+    outline: none;
+    background-color: transparent;
+    color: #FFF;
+    padding: 0.5rem 0 0.5rem 0.875rem;
 
-  & .search-btn {
-    cursor: pointer;
-    padding: 0.5rem 1.25rem;
-    align-self: center;
-    align-content: center;
-    & img {
-      width: 1rem;
-      height: 1rem;
+    &::placeholder {
+      color: #FFF;
     }
   }
 
-  & select,
-  & input,
-  & input::placeholder {
-    color: #fff;
-  }
-
-  &.active select,
-  &.active input,
-  &.active input::placeholder {
-    color: #040d2e;
-  }
-
-  & input:focus,
-  & select:focus {
-    outline: none;
-  }
-
-  & select,
-  & input {
-    background: none;
-    padding: 0 0.75rem;
+  & > .search-btn {
+    cursor: pointer;
     border: none;
+    flex: 0 0 auto;
+    width: auto;
+    align-self: stretch;
+    display: flex;
+    align-items: center;
+    padding: 0 1.25rem 0 0.25rem;
   }
 
-  & .suggestion-block {
+  & > .suggestion-block {
     position: absolute;
-    z-index: 5;
-    flex: 1 1 100%;
-    width: 100%;
-    background: #fff;
+    display: none;
     top: 100%;
-    border-radius: 0 0 0.5rem 0.5rem;
-    box-shadow: 0px 0.25rem 1rem rgb(228 231 240 / 80%);
+    left: -1px;
+    right: -1px;
+    max-height: 45vh;
+    flex: 1 1 100%;
+    padding: 0 1.25rem 1.25rem;
+    overflow-y: auto;
+
+    @media(max-width: 768px) {
+      max-height: 60vh;
+    }
 
     &:before {
-      content: "";
-      display: block;
-      width: calc(100% - 1.5rem);
-      height: 1px;
-      background: #c3cbe4;
-      margin: auto;
-    }
-
-    & > .suggestion-inner {
+      content: '';
       display: block;
       width: 100%;
-      height: auto;
-      max-height: 40vh;
-      overflow-x: hidden;
-      overflow-y: auto;
-      padding: 0.5rem 0.75rem;
+      margin: auto;
+      border-top: 1px solid #CACFDE;
+      height: 1.25rem;
     }
   }
 
-  &:not(.active) .suggestion-block {
-    display: none;
-  }
-}
+  &.home-search, & > .suggestion-block, &.active {
+    color: #040D2E;
+    background: #FFF;
+    border: 1px solid #5468FF;
 
-/** 首頁 layout 模式 */
-.search.home-search {
-  background: #fff;
-  border: 2px solid #5468ff;
+    & > .keyword-input, & > .city-selector {
+      color: #8C90AB;
+      &::placeholder {
+        color: #8C90AB;
+      }
+    }
 
-  & .separator,
-  &.active .separator {
-    border-right: 1px solid #5468ff;
-  }
-
-  & select,
-  & input,
-  & input::placeholder {
-    color: #000;
+    & > .separator {
+      border-color: #8C90AB;
+    }
   }
 
-  & .search-btn {
-    background: #5468ff;
-  }
+  &.active {
+    border-bottom-color: transparent;
+    border-radius: 0.375rem 0.375rem 0 0;
 
-  & .suggestion-block {
-    top: calc(100% + 3px);
+    & > .suggestion-block {
+      display: block;
+      border-top: none;
+      border-radius: 0 0 0.375rem 0.375rem;
+    }
   }
 }
 </style>
