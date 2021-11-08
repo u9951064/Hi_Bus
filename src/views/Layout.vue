@@ -1,7 +1,7 @@
 <template>
   <div class="layout">
     <header>
-      <div class="container header-layout">
+      <div class="container header-layout" :class="{'hide-mobile': mobileFullPageMode}">
         <img
           class="logo btn"
           src="../assets/logo.svg"
@@ -17,7 +17,7 @@
       </div>
     </header>
     <router-view />
-    <footer>Copyright &copy; 2021 Double J. ALL Rights Reserved.</footer>
+    <footer :class="{'hide-mobile': mobileFullPageMode}">Copyright &copy; 2021 Double J. ALL Rights Reserved.</footer>
   </div>
 </template>
 
@@ -45,6 +45,9 @@ export default {
     needHideSearchBar() {
       return !!(this.$route.meta.hideLayoutSearchBar || false);
     },
+    mobileFullPageMode() {
+      return !!(this.$route.meta.mobileFullPageMode || false);
+    }
   },
 };
 </script>
@@ -88,6 +91,13 @@ export default {
       background-size: 200%;
       animation: gradient 3s ease infinite;
     }
+  }
+
+  & > footer {
+    letter-spacing: 0.08em;
+    font-size: 0.75rem;
+    font-weight: 300;
+    color: #8C90AB;
   }
 
   & .header-layout {

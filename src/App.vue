@@ -139,4 +139,11 @@ body {
 .app .pointer {
   cursor: pointer;
 }
+
+@media(max-width: 768px) {
+  .app .hide-mobile {
+    display: none !important;
+  }
+}
+
 </style>

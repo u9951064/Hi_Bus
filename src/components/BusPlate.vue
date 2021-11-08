@@ -64,14 +64,22 @@ export default {
 <style scoped lang="scss">
 .bus-plate {
   display: inline-flex;
-  padding: 0.25rem 0.75rem;
-  border-radius: 100rem;
-  border: 1px solid #cacfde;
-  white-space: nowrap;
-  color: #8c90ab;
-  background: #fff;
-  font-size: 0.75rem;
   justify-content: center;
   align-items: center;
+  white-space: nowrap;
+  padding: 0.5rem 1rem;
+  border-radius: 100rem;
+  background: #fff;
+  border: 1px solid #cacfde;
+  color: #8c90ab;
+  font-weight: 300;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+
+  @media (max-width: 768px) {
+    padding: 0.25rem;
+    font-size: 0.75rem;
+    letter-spacing: 0.02em;
+  }
 }
 </style>

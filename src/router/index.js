@@ -28,7 +28,7 @@ const routes = [
       {
         path: '',
         name: 'Home',
-        meta: { hideLayoutSearchBar: true },
+        meta: { hideLayoutSearchBar: true, mobileFullPageMode: false },
         beforeEnter: (to, from, next) => {
           store.commit('routeSelector/setSearchCity', '');
           store.commit('routeSelector/setSearchKeyword', '');
@@ -48,19 +48,19 @@ const routes = [
             next();
           }
         },
-        meta: { hideLayoutSearchBar: false },
+        meta: { hideLayoutSearchBar: false, mobileFullPageMode: false },
         component: () => import(/* webpackChunkName: "ResultPage" */ '../views/SearchResultPage.vue'),
       },
       {
         path: 'favorites',
         name: 'Favorite',
-        meta: { hideLayoutSearchBar: false },
+        meta: { hideLayoutSearchBar: false, mobileFullPageMode: false },
         component: () => import(/* webpackChunkName: "ResultPage" */ '../views/FavoritePage.vue'),
       },
       {
         path: 'tracing/:uniqueIndex',
         name: 'TracingBus',
-        meta: { hideLayoutSearchBar: false },
+        meta: { hideLayoutSearchBar: false, mobileFullPageMode: true },
         component: () => import(/* webpackChunkName: "TracingBus" */ '../views/TracingBus.vue'),
       },
     ],

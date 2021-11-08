@@ -1,6 +1,6 @@
 <template>
   <div class="stop-info-record row">
-    <div class="stop-sequence col-1">
+    <div class="stop-sequence col-1 hide-mobile">
       {{ stopInfo.stopSequence }}
     </div>
     <div class="arrival-time col-3">
@@ -70,7 +70,7 @@ export default {
   & .plate-number {
     padding: 0.75rem 0;
     white-space: nowrap;
-    overflow: hidden;
+    overflow: visible;
     text-align: right;
   }
 
@@ -118,7 +118,21 @@ export default {
       z-index: 1;
     }
     &:not(.hide-line).active:before {
-      background: linear-gradient(180deg, #cacfde 0%, #00dcd1 100%);
+      background: linear-gradient(0deg, #cacfde 0%, #00dcd1 100%);
+      background-size: 100% 200%;
+      animation: gradient-vertical 1.5s ease infinite;
+    }
+
+    @keyframes gradient-vertical {
+      0% {
+        background-position: 0 200%;
+      }
+      50% {
+        background-position: 0 100%;
+      }
+      100% {
+        background-position: 0 0;
+      }
     }
   }
 }

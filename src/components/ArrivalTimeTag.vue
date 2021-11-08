@@ -2,7 +2,7 @@
   <div
     class="arrival-time-tag"
     :class="tagAttr.class"
-    v-text="tagAttr.label"
+    v-html="tagAttr.label"
   ></div>
 </template>
 
@@ -29,11 +29,15 @@ const generateCountDownString = function (timestampOffset) {
   timestampOffset =
     timestampOffset === Number.MAX_SAFE_INTEGER ? 0 : timestampOffset;
   if (timestampOffset <= nearbyThreshold) {
-    return "即將進站";
+    return "進站中";
   }
   return timestampOffset <= 60
-    ? `${Math.floor(timestampOffset / 10) * 10} 秒`
-    : `${Math.floor(timestampOffset / 60)} 分`;
+    ? `${
+        Math.floor(timestampOffset / 10) * 10
+      } <span style="font-size:0.725rem;font-weight:400;">秒</span>`
+    : `${Math.floor(
+        timestampOffset / 60
+      )} <span style="font-size:0.725rem;font-weight:400;">分</span>`;
 };
 
 export default {
@@ -93,20 +97,35 @@ export default {
   justify-content: center;
   align-items: center;
   padding: 0.5rem 0;
-  color: #09182d;
-  background: #ffffff;
-  border: 1px solid #8c90ab;
-  border-radius: 9999rem;
-  width: 7rem;
+  border-radius: 100rem;
+  width: 6rem;
+  letter-spacing: 0.08em;
+
+  @media (max-width: 768px) {
+    width: 5rem;
+    letter-spacing: 0.02em;
+  }
+
+  &.status-empty {
+    color: #8c90ab;
+    background: #fff;
+    border: 1px solid #cacfde;
+    font-size: 0.875rem;
+  }
 
   &.status-nearby {
+    color: #fff;
     background: #ff6464;
-    color: #ffffff;
     border: 1px solid #ff6464;
+    font-size: 0.875rem;
   }
 
   &.status-estimate {
-    background: #f4f5f9;
+    font-weight: bold;
+    color: #040d2e;
+    background: #f8f8fb;
+    border: 1px solid #8c90ab;
+    font-size: 1.125rem;
   }
 }
 </style>

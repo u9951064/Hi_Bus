@@ -1,9 +1,8 @@
 <template>
   <div class="progress-counter">
-    <div class="col-auto text-center">{{ updateRemiderLabel }}</div>
-    <div class="col-auto text-right">更新</div>
+    <div class="countdown-status">{{ updateRemiderLabel }}</div>
     <div
-      class="progress col-12"
+      class="progress-bar"
       :class="{ animated: updateRemiderTime >= 300 }"
       ref="progressBar"
     ></div>
@@ -72,16 +71,18 @@ export default {
 };
 </script>
 
+
 <style scoped lang="scss">
 .progress-counter {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  align-items: center;
-  max-width: 15rem;
-  justify-content: space-between;
-
-  & .progress {
+  width: 100%;
+  & > .countdown-status {
+    width: 100%;
+    padding: 0.5rem 0;
+    text-align: right;
+    font-size: 0.75rem;
+    color: #8c90ab;
+  }
+  & > .progress-bar {
     position: relative;
     height: 2px;
     width: 100%;
