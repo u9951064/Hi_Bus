@@ -7,7 +7,7 @@
       <ArrivalTimeTag :arrivalInfo="arrivalInfo" />
     </div>
     <div class="stop-name col">{{ stopInfo.stopName }}</div>
-    <div class="plate-number col-3">
+    <div class="plate-number col-auto">
       <BusPlate
         :city="selectedRoute.city"
         :plateNumbers="arrivalInfo.plateNumbers || []"

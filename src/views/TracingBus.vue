@@ -33,15 +33,15 @@
         </div>
       </div>
       <div class="route-header">
-        <div class="route-number">
-          {{ selectedRoute.subRouteName }}
-        </div>
+        <div class="route-number" v-html="busRouteName"></div>
         <div class="favorite-btn">
           <FavoriteBtn :route="selectedRoute" />
         </div>
-        <div class="route-head-sign" :class="{ 'hide-mobile': !collapseOpen }">
-          {{ selectedRoute.headSign }}
-        </div>
+        <div
+          class="route-head-sign"
+          :class="{ 'hide-mobile': !collapseOpen }"
+          v-html="busHeadSign"
+        ></div>
       </div>
       <div class="route-directions" v-if="routeGroup.length > 1">
         <div
@@ -90,6 +90,7 @@
 <script>
 import { mapState } from "vuex";
 import store from "@/store";
+import replaceSymbol from "@/utils/replaceSymbol";
 import HereMap from "@/components/HereMap.vue";
 import FavoriteBtn from "@/components/FavoriteBtn.vue";
 import StopInfoRecord from "@/components/StopInfoRecord.vue";
@@ -214,6 +215,18 @@ export default {
     routeDirections() {
       return this.routeGroup.map((r) => r.direction);
     },
+    busHeadSign() {
+      if (!this.selectedRoute) {
+        return '';
+      }
+      return replaceSymbol(this.selectedRoute.headSign);
+    },
+    busRouteName() {
+      if (!this.selectedRoute) {
+        return '';
+      }
+      return replaceSymbol(this.selectedRoute.subRouteName);
+    }
   },
 };
 </script>
@@ -272,6 +285,15 @@ export default {
           & > img {
             width: 1rem;
           }
+        }
+
+        & > .show-map-btn span{
+          display: inline-block;
+          padding: 0.375rem 0.875rem;
+          border: 1px solid #CACFDE;
+          border-radius: 1000rem;
+          font-size: 0.625rem;
+          color: #8C90AB;
         }
       }
     }
