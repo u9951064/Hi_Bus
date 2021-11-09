@@ -10,11 +10,11 @@
       >
         <div
           class="route-item-name"
-          v-html="replaceSymbol(r.subRouteName)"
+          v-html="getSearchText(r.subRouteName)"
         ></div>
         <div
           class="route-item-headSign"
-          v-html="replaceSymbol(r.headSign)"
+          v-html="getSearchText(r.headSign)"
         ></div>
       </div>
     </div>
@@ -23,7 +23,9 @@
 </template>
 
 <script>
-import replaceSymbol from "@/utils/replaceSymbol";
+import replaceSymbol from "@/utils/replaceSymbol"
+import highlightKeyword from "@/utils/highlightKeyword"
+
 export default {
   name: "SearchSuggestionList",
   props: {
@@ -37,8 +39,8 @@ export default {
     },
   },
   methods: {
-    replaceSymbol(text) {
-      return replaceSymbol(text);
+    getSearchText(text) {
+      return highlightKeyword(replaceSymbol(text), this.inputKeyword);
     },
     selectRoute(route) {
       this.$emit("input");

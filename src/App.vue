@@ -4,14 +4,14 @@
 
 <style lang="scss">
 @import "~normalize.css/normalize.css";
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700&family=Noto+Sans+TC:wght@300;500&display=swap&subset=latin');
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;500&display=swap&subset=chinese-traditional');
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700&family=Noto+Sans+TC:wght@300;500&display=swap&subset=latin");
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;500&display=swap&subset=chinese-traditional");
 
 html,
 body {
   width: 100%;
   height: 100%;
-  font-family: 'Montserrat', 'Noto Sans TC';
+  font-family: "Montserrat", "Noto Sans TC";
   font-stretch: normal;
   font-style: normal;
   line-height: normal;
@@ -140,10 +140,17 @@ body {
   cursor: pointer;
 }
 
-@media(max-width: 768px) {
+@media (max-width: 768px) {
   .app .hide-mobile {
     display: none !important;
   }
 }
 
+.app .name-arrow-icon {
+  display: inline-block;
+  padding: 0 0.5rem 0.125rem;
+}
+.app span.search-highlight {
+  color: #5468FF !important;
+}
 </style>
