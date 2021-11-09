@@ -76,8 +76,11 @@ export default {
     };
   },
   created() {
+    const pixelRatio = window.devicePixelRatio || 1;
     this.mapObject.platform = new window.H.service.Platform({ apiKey });
     this.mapObject.layer = this.mapObject.platform.createDefaultLayers({
+      tileSize: pixelRatio === 1 ? 256 : 512,
+      ppi: pixelRatio === 1 ? undefined : 320,
       lg: "CHT",
     });
   },
