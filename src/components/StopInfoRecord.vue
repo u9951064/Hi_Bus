@@ -56,6 +56,11 @@ export default {
 
 <style scoped lang="scss">
 .stop-info-record {
+  @media (min-width: 1025px) {
+    &:hover {
+      background: #f8f8fb;
+    }
+  }
   & .arrival-time {
     padding: 0.75rem 0;
   }
