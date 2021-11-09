@@ -148,11 +148,11 @@ export default {
   justify-content: center;
   align-items: center;
   border-radius: 0.375rem;
-  background: #252E4F;
+  background: #252e4f;
   position: relative;
   font-size: 0.875rem;
-  border: 1px solid #252E4F;
-  color: #FFF;
+  border: 1px solid #252e4f;
+  color: #fff;
 
   & > .city-selector {
     border: none;
@@ -161,7 +161,7 @@ export default {
     border: 0;
     outline: none;
     background-color: transparent;
-    color: #FFF;
+    color: #fff;
     padding: 0.5rem 0 0.5rem 1.5rem;
   }
 
@@ -180,11 +180,11 @@ export default {
     border: none;
     outline: none;
     background-color: transparent;
-    color: #FFF;
+    color: #fff;
     padding: 0.5rem 0 0.5rem 0.875rem;
 
     &::placeholder {
-      color: #FFF;
+      color: #fff;
     }
   }
 
@@ -209,35 +209,39 @@ export default {
     flex: 1 1 100%;
     padding: 0 1.25rem 1.25rem;
     overflow-y: auto;
+    z-index: 6;
 
-    @media(max-width: 768px) {
+    @media (max-width: 768px) {
       max-height: 60vh;
     }
 
     &:before {
-      content: '';
+      content: "";
       display: block;
       width: 100%;
       margin: auto;
-      border-top: 1px solid #CACFDE;
+      border-top: 1px solid #cacfde;
       height: 1.25rem;
     }
   }
 
-  &.home-search, & > .suggestion-block, &.active {
-    color: #040D2E;
-    background: #FFF;
-    border: 1px solid #5468FF;
+  &.home-search,
+  & > .suggestion-block,
+  &.active {
+    color: #040d2e;
+    background: #fff;
+    border: 1px solid #5468ff;
 
-    & > .keyword-input, & > .city-selector {
-      color: #8C90AB;
+    & > .keyword-input,
+    & > .city-selector {
+      color: #8c90ab;
       &::placeholder {
-        color: #8C90AB;
+        color: #8c90ab;
       }
     }
 
     & > .separator {
-      border-color: #8C90AB;
+      border-color: #8c90ab;
     }
   }
 

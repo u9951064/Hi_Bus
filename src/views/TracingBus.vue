@@ -70,7 +70,7 @@
             :selectedRoute="selectedRoute"
             :stopInfo="o"
             :arrivalInfo="getArrivalInfo(o.stopUID)"
-            @click="focusStop(o.stopPosition)"
+            @click="focusStop(o)"
           />
           <div class="divider"></div>
         </template>
@@ -81,7 +81,13 @@
         <img src="../assets/icons/close-icon.svg" />
       </div>
       <!-- <keep-alive> -->
-      <HereMap :busStops="stops" ref="busMap" />
+      <HereMap
+        :busStops="stops"
+        :arrivalInfos="arrivalInfos"
+        :busRouteName="busRouteName"
+        :busHeadSign="busHeadSign"
+        ref="busMap"
+      />
       <!-- </keep-alive> -->
     </div>
   </div>
@@ -176,8 +182,8 @@ export default {
     selectDirection(route) {
       this.$store.commit("routeSelector/setSelectedRoute", route);
     },
-    focusStop(position) {
-      this.$refs.busMap.setCenter(position.positionLon, position.positionLat);
+    focusStop(stopInfo) {
+      this.$refs.busMap.openInfoBox(stopInfo);
     },
     reloadArrival() {
       if (!this.selectedRoute) {
@@ -217,16 +223,16 @@ export default {
     },
     busHeadSign() {
       if (!this.selectedRoute) {
-        return '';
+        return "";
       }
       return replaceSymbol(this.selectedRoute.headSign);
     },
     busRouteName() {
       if (!this.selectedRoute) {
-        return '';
+        return "";
       }
       return replaceSymbol(this.selectedRoute.subRouteName);
-    }
+    },
   },
 };
 </script>
@@ -287,13 +293,13 @@ export default {
           }
         }
 
-        & > .show-map-btn span{
+        & > .show-map-btn span {
           display: inline-block;
           padding: 0.375rem 0.875rem;
-          border: 1px solid #CACFDE;
+          border: 1px solid #cacfde;
           border-radius: 1000rem;
           font-size: 0.625rem;
-          color: #8C90AB;
+          color: #8c90ab;
         }
       }
     }

@@ -234,7 +234,7 @@ export default {
   }
 
   & .table-content {
-    overflow-y: scroll;
+    overflow-y: auto;
     & .table-row {
       font-size: 1rem;
       letter-spacing: 0.05em;
@@ -270,12 +270,11 @@ export default {
 
     & .result-string {
       padding-right: 1rem;
-      @media(max-width: 768px) {
+      @media (max-width: 768px) {
         padding-left: 1.25rem;
         padding-right: 0.75rem;
       }
     }
-    
 
     & .result-count {
       font-weight: 700;
