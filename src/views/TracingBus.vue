@@ -47,7 +47,7 @@
         <div
           class="direction-item"
           v-for="r in routeGroup"
-          :key="r.subRouteUID + '-' + r.direction"
+          :key="r.subRouteUID"
           :class="{ active: selectedRoute.subRouteUID == r.subRouteUID }"
           @click="selectDirection(r)"
         >

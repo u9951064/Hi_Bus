@@ -1,3 +1,4 @@
+import getSubRouteUID from '@/utils/getSubRouteUID';
 import MotcApi from '../../libs/MotcApi'
 
 /**
@@ -50,7 +51,8 @@ const busStopModule = {
       const saveData = {};
       stopOfRoutes.forEach(r => {
         const subRouteName = `${r.SubRouteName.Zh_tw}` == `${r.RouteName.Zh_tw}0` ? `${r.RouteName.Zh_tw}` : `${r.SubRouteName.Zh_tw}`;
-        const uniqueIndex = `${city}|${subRouteName}`;
+        const subRouteUID = getSubRouteUID(r.SubRouteUID);
+        const uniqueIndex = `${city}|${subRouteUID}`;
         const direction = `${r.Direction}`;
         if (!(uniqueIndex in saveData)) {
           saveData[uniqueIndex] = {};
@@ -86,9 +88,14 @@ const busStopModule = {
         return null;
       }
 
+      // 還沒有取得站點資料
+      if(!(uniqueIndex in state.busRouteStopMap)) {
+        return null;
+      }
+
       // 重新撈取間隔檢查
       const currentTimestamp = new Date().getTime();
-      if ((state.muteUpdateArrivals[subRouteUID] || 0) >= currentTimestamp) {
+      if ((state.muteUpdateArrivals[uniqueIndex] || 0) >= currentTimestamp) {
         return;
       }
 
@@ -157,12 +164,11 @@ const busStopModule = {
         }
         return c;
       }, {});
-
-      const routePaths = state.busRouteStopMap[uniqueIndex];
+      
       const stopInfos = {};
       const existBus = {};
-      Object.keys(routePaths).forEach(d => {
-        stopInfos[d] = routePaths[d].reduce((c, s) => {
+      Object.keys(state.busRouteStopMap[uniqueIndex]).forEach(d => {
+        stopInfos[d] = state.busRouteStopMap[uniqueIndex][d].reduce((c, s) => {
           c[s.stopUID] = arrivalTimeMap[s.stopUID] || {
             stopUID: s.stopUID,
             routeUID,

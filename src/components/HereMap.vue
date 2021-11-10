@@ -17,12 +17,14 @@
           <img src="../assets/icons/close-icon.svg" />
         </a>
         <div class="map-stop-name">{{ activeStop.stopName }}</div>
-        <div class="map-route-info">
-          <div class="map-route-name" v-html="busRouteName"></div>
-          <div class="map-head-sign" v-html="busHeadSign"></div>
-        </div>
-        <div class="map-arrival-tag">
-          <ArrivalTimeTag :arrivalInfo="currentArrivalInfo" />
+        <div class="map-info-inner">
+          <div class="map-route-info">
+            <div class="map-route-name" v-html="busRouteName"></div>
+            <div class="map-head-sign" v-html="busHeadSign"></div>
+          </div>
+          <div class="map-arrival-tag">
+            <ArrivalTimeTag :arrivalInfo="currentArrivalInfo" />
+          </div>
         </div>
       </div>
     </div>
@@ -331,14 +333,16 @@ export default {
       if (this.initialized && this.setupCurrentBusStopData()) {
         this.hideInfoBox();
         this.drawStopMarker(this.busStops);
-        const rect = this.mapObject.stopGroup.getBoundingBox();
-        this.mapObject.map.getViewModel().setLookAtData(
-          {
-            position: rect.getCenter(),
-            bounds: rect,
-          },
-          true
-        );
+        if (this.busStops.length > 0) {
+          const rect = this.mapObject.stopGroup.getBoundingBox();
+          this.mapObject.map.getViewModel().setLookAtData(
+            {
+              position: rect.getCenter(),
+              bounds: rect,
+            },
+            true
+          );
+        }
       }
       return this.busStops;
     },
@@ -419,15 +423,10 @@ export default {
     width: 100%;
     max-width: 20rem;
     padding: 1.25rem;
-    display: flex;
-    flex-wrap: wrap;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
     background: rgba(255, 255, 255, 0.97);
     border-radius: 0.5rem;
     text-align: left;
-    margin: -43% -50%;
+    margin: -48% -50%;
     box-shadow: 0px 5px 20px rgba(228, 231, 240, 0.8);
 
     &::after {
@@ -439,7 +438,7 @@ export default {
       right: 0;
       margin: auto;
       border-style: solid;
-      border-width: 0.5rem 0.8rem 0 0.5rem;
+      border-width: 0.5rem 0.5rem 0 0.5rem;
       width: 0;
       z-index: 5;
       border-color: #ffffff transparent transparent transparent;
@@ -470,35 +469,44 @@ export default {
       overflow: hidden;
     }
 
-    & > .map-route-info {
-      flex-basis: 0;
-      flex-grow: 1;
-      max-height: 100%;
+    & > .map-info-inner {
+      display: flex;
+      flex-wrap: nowrap;
+      flex-direction: row;
+      justify-content: center;
+      align-items: flex-end;
 
-      & > .map-route-name {
-        padding: 0.5rem 0 0.25rem;
-        color: #040d2e;
-        display: block;
-        overflow: hidden;
-        font-size: 1rem;
-        font-weight: 700;
-        white-space: nowrap;
+      & > .map-route-info {
+        flex-basis: 0;
+        flex-grow: 1;
+        max-height: 100%;
+        overflow-x: hidden;
+
+        & > .map-route-name {
+          padding: 0.5rem 0 0.25rem;
+          color: #040d2e;
+          display: block;
+          overflow: hidden;
+          font-size: 1rem;
+          font-weight: 700;
+          white-space: nowrap;
+        }
+
+        & > .map-head-sign {
+          color: #040d2e;
+          display: block;
+          overflow: hidden;
+          font-size: 0.875rem;
+          font-weight: 500;
+          white-space: nowrap;
+        }
       }
 
-      & > .map-head-sign {
-        color: #040d2e;
-        display: block;
-        overflow: hidden;
-        font-size: 0.875rem;
-        font-weight: 500;
-        white-space: nowrap;
+      & > .map-arrival-tag {
+        flex: 0 0 auto;
+        width: auto;
+        max-width: 100%;
       }
-    }
-
-    & > .map-arrival-tag {
-      flex: 0 0 auto;
-      width: auto;
-      max-width: 100%;
     }
   }
 }

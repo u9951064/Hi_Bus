@@ -1,3 +1,4 @@
+import getSubRouteUID from '@/utils/getSubRouteUID';
 import GistApi from '../../libs/GistApi'
 import MotcApi from '../../libs/MotcApi'
 
@@ -79,7 +80,8 @@ const busRouteModule = {
             const subRouteName = `${s.SubRouteName.Zh_tw}` == `${i.RouteName.Zh_tw}0` ? `${i.RouteName.Zh_tw}` : `${s.SubRouteName.Zh_tw}`;
             const subRouteNameEn = `${s.SubRouteName.En}` == `${i.RouteName.En}0` ? `${i.RouteName.En}` : `${s.SubRouteName.En}`;
             const headSign = s.Headsign || (s.Direction == 0 ? `${i.DepartureStopNameZh}→${i.DestinationStopNameZh}` : `${i.DestinationStopNameZh}→${i.DepartureStopNameZh}`);
-            const headSignEn = s.Headsign || (s.Direction == 0 ? `${i.DepartureStopNameEn}→${i.DestinationStopNameEn}` : `${i.DestinationStopNameEn}→${i.DepartureStopNameEn}`);
+            const headSignEn = s.HeadsignEn || (s.Direction == 0 ? `${i.DepartureStopNameEn}→${i.DestinationStopNameEn}` : `${i.DestinationStopNameEn}→${i.DepartureStopNameEn}`);
+            const subRouteUID = getSubRouteUID(s.SubRouteUID);
 
             saveItems.push({
               routeUID: `${i.RouteUID}`,
@@ -92,7 +94,7 @@ const busRouteModule = {
               headSign,
               headSignEn,
               city,
-              uniqueIndex: `${city}|${subRouteName}`,
+              uniqueIndex: `${city}|${subRouteUID}`,
               searchPatten: `${subRouteName} ${i.RouteName.Zh_tw} ${s.Headsign || ''}`,
             });
           });

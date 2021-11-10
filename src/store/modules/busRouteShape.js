@@ -1,3 +1,4 @@
+import getSubRouteUID from '@/utils/getSubRouteUID';
 import MotcApi from '../../libs/MotcApi'
 
 /**
@@ -21,12 +22,13 @@ const busRouteShapeModule = {
         return;
       }
 
-      const { routeName, subRouteName, uniqueIndex, direction } = payload;
+      const {routeUID, subRouteUID, uniqueIndex, direction} = payload;
       const storeKey = `${uniqueIndex}|${direction}`;
       if(storeKey === state.currentStoreKey) {
         return;
       }
 
+      const querySubRouteUID = getSubRouteUID(subRouteUID.replace(/-\d*$/, ''));
       await dispatch('loadRouteShapeMap', payload);
 
       const matchedGeometry = {
@@ -34,10 +36,10 @@ const busRouteShapeModule = {
         geometry: [],
       };
       let pool = {};
-      if(subRouteName in state.routeGeometries && state.routeGeometries[subRouteName].length !== 0) {
-        pool = state.routeGeometries[subRouteName];
-      } else if(routeName in state.routeGeometries && state.routeGeometries[routeName].length !== 0) {
-        pool = state.routeGeometries[routeName];
+      if(querySubRouteUID in state.routeGeometries && state.routeGeometries[querySubRouteUID].length !== 0) {
+        pool = state.routeGeometries[querySubRouteUID];
+      } else if(routeUID in state.routeGeometries && state.routeGeometries[routeUID].length !== 0) {
+        pool = state.routeGeometries[routeUID];
       }
       if(Object.keys(pool).length === 0) {
         commit('setCurrentShape', matchedGeometry);
@@ -91,13 +93,12 @@ const busRouteShapeModule = {
       };
 
       shapeList.forEach(p => {
-        const { Zh_tw: subRouteName } = (!p.SubRouteName.Zh_tw || `${p.SubRouteName.Zh_tw}` == `${p.RouteName.Zh_tw}0`) ? p.RouteName : p.SubRouteName;
-        if (!(subRouteName in saveRecord.records)) {
-          saveRecord.records[subRouteName] = {};
+        const routeUID = !p.SubRouteUID ? p.RouteUID : getSubRouteUID(p.SubRouteUID);
+        if (!(routeUID in saveRecord.records)) {
+          saveRecord.records[routeUID] = {};
         }
-
         const geometry = p.Geometry.replace(/^LINESTRING\(/, '').replace(/\)$/, '').split(',').map(pos => { return pos.split(' '); });
-        saveRecord.records[subRouteName][`${p.Direction}`] = geometry;
+        saveRecord.records[routeUID][`${p.Direction}`] = geometry;
       });
 
       window.localStorage.setItem(`busRouteShape/${routeSaveKey}`, JSON.stringify(saveRecord));
