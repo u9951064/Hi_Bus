@@ -78,11 +78,17 @@ const router = createRouter({
 })
 
 router.beforeEach(async (to, from, next) => {
+  document.getElementById('loading-cover').classList.remove('hide');
   await Promise.all([
     store.dispatch('busRoute/init'),
     store.dispatch('vehicleInfo/init'),
     store.dispatch('favoritePool/init'),
   ]);
+  next();
+})
+
+router.beforeResolve((to, from, next) => {
+  document.getElementById('loading-cover').classList.add('hide');
   next();
 })
 
