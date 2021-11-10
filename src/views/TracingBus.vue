@@ -86,6 +86,7 @@
         :arrivalInfos="arrivalInfos"
         :busRouteName="busRouteName"
         :busHeadSign="busHeadSign"
+        :busRoute="selectedRoute"
         ref="busMap"
       />
       <!-- </keep-alive> -->
