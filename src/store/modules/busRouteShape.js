@@ -15,6 +15,13 @@ const busRouteShapeModule = {
   }),
 
   actions: {
+    reset: () => {
+      Object.keys(window.localStorage).forEach(k => {
+        if(/^busRouteShape\//.test(k)) {
+          window.localStorage.removeItem(k);
+        }
+      });
+    },
     loadShape: async ({ state, commit, dispatch }, payload) => {
       if (!payload) {
         commit('clearCurrentShape');

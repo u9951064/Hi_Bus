@@ -15,6 +15,9 @@ const busStopModule = {
   }),
 
   actions: {
+    reset: () => {
+      window.localStorage.removeItem('busStop/busRouteStopMap');
+    },
     init: ({ commit }) => {
       // 讀取儲存的快取資料
       const storedDataString = window.localStorage.getItem('busStop/busRouteStopMap') || '';

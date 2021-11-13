@@ -9,6 +9,9 @@ const favoritePoolModule = {
   }),
 
   actions: {
+    reset: () => {
+      window.localStorage.removeItem('busStop/favoritePool');
+    },
     init({ commit }) {
       // 讀取儲存的快取資料
       const storedDataString = window.localStorage.getItem('busStop/favoritePool') || '';

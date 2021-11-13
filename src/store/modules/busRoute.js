@@ -15,6 +15,10 @@ const busRouteModule = {
   }),
 
   actions: {
+    reset: () => {
+      window.localStorage.removeItem('busRoutes/cityOptions');
+      window.localStorage.removeItem('busRoutes/routes');
+    },
     init: async ({ state, dispatch, commit }) => {
       if (state.isInitialized) {
         return;

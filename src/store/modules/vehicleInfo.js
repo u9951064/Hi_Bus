@@ -11,6 +11,9 @@ const vehicleInfoModule = {
   }),
 
   actions: {
+    reset: () => {
+      window.localStorage.removeItem('vehicleInfo/busVehicleMap');
+    },
     init: ({ commit }) => {
       // 讀取儲存的快取資料
       const storedDataString = window.localStorage.getItem('vehicleInfo/busVehicleMap') || '';

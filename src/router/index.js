@@ -79,6 +79,20 @@ const router = createRouter({
 
 router.beforeEach(async (to, from, next) => {
   document.getElementById('loading-cover').classList.remove('hide');
+
+  // 判斷上次更新日期，如果超過一天則重新下載
+  if (parseInt(window.localStorage.getItem('busVersion/updatedAt') || 0) < new Date().getTime()) {
+    console.log('rrr');
+    await Promise.all([
+      store.dispatch('busRoute/reset'),
+      store.dispatch('vehicleInfo/reset'),
+      store.dispatch('busRouteShape/reset'),
+      store.dispatch('busStop/reset'),
+    ]);
+    window.localStorage.setItem('busVersion/updatedAt', new Date().getTime() + 86400 * 1e3);
+  }
+
+  // 下載路線資料
   await Promise.all([
     store.dispatch('busRoute/init'),
     store.dispatch('vehicleInfo/init'),
