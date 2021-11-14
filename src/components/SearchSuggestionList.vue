@@ -40,7 +40,7 @@ export default {
   },
   methods: {
     getSearchText(text) {
-      return highlightKeyword(replaceSymbol(text), this.inputKeyword);
+      return replaceSymbol(highlightKeyword(text, this.inputKeyword));
     },
     selectRoute(route) {
       this.$emit("input");
