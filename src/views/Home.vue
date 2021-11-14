@@ -39,7 +39,7 @@ export default {
   flex-wrap: nowrap;
   justify-content: flex-start;
   align-items: stretch;
-  padding: 10% 0 0 0;
+  padding: 5% 0 0 0;
 
   background-repeat: no-repeat;
   background-size: 100% auto;

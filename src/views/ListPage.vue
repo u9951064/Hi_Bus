@@ -3,10 +3,11 @@
     <div class="container result-block">
       <div class="result-info">
         <span class="result-string">
-          <template v-if="isFavoritePage">已收藏</template>
-          <template v-else>共找到</template>
-          <span class="result-count">{{ resultCount }}</span> 個公車路線</span
-        >
+          <span v-if="isFavoritePage">共收藏</span>
+          <span v-else>共找到</span>
+          <span class="result-count">{{ resultCount }}</span>
+          <span>個公車路線</span>
+        </span>
         <a
           class="tag"
           v-for="c in cityList"
@@ -273,6 +274,9 @@ export default {
       @media (max-width: 768px) {
         padding-left: 1.25rem;
         padding-right: 0.75rem;
+      }
+      & > * ~ * {
+        margin-left: 0.25rem;
       }
     }
 
