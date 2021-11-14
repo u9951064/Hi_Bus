@@ -2,36 +2,25 @@
   <div class="tracing-page" :class="{ open: collapseOpen }">
     <div class="bus-info-block" :class="{ open: collapseOpen }">
       <div class="mobile-control-bar">
-        <div
+        <!-- <div
           v-if="!collapseOpen"
           class="collapse-btn"
           @click="changeCollapse(true)"
         >
           <img src="../assets/icons/collapse-top-icon.svg" />
-        </div>
+        </div> -->
         <div v-if="collapseOpen" class="back-btn" @click="backToResult">
-          <img src="../assets/icons/close-icon.svg" />
+          <img src="../assets/icons/back-icon.svg" />
         </div>
         <div
           v-if="collapseOpen"
           class="show-map-btn"
           @click="changeCollapse(false)"
         >
-          <span>切換地圖</span>
+          <span>顯示地圖</span>
         </div>
       </div>
 
-      <div class="nav">
-        <div class="back-btn" @click="backToResult">
-          <img src="../assets/icons/arrow-dark.svg" />
-        </div>
-        <div class="process-bar" v-show="collapseOpen">
-          <ProgressCounter
-            :nextUpdateTimestamp="nextUpdateTimestamp"
-            @update="reloadArrival"
-          />
-        </div>
-      </div>
       <div class="route-header">
         <div class="route-number" v-html="busRouteName"></div>
         <div class="favorite-btn">
@@ -54,7 +43,7 @@
           {{ getDriectionLabel(r) }}
         </div>
       </div>
-      <div class="stop-header row" :class="{ 'hide-mobile': !collapseOpen }">
+      <div class="stop-header row hide-mobile">
         <div class="col-1 text-center hide-mobile">站序</div>
         <div class="col-3 text-center">預估到站</div>
         <div class="col text-left">站名</div>
@@ -75,11 +64,25 @@
           <div class="divider"></div>
         </template>
       </div>
+      <div class="nav">
+        <div class="process-bar" v-show="collapseOpen">
+          <ProgressCounter
+            :nextUpdateTimestamp="nextUpdateTimestamp"
+            @update="reloadArrival"
+          />
+        </div>
+      </div>
     </div>
     <div class="bus-map-block">
-      <div v-if="!collapseOpen" class="back-btn" @click="backToResult">
-        <img src="../assets/icons/close-icon.svg" />
-      </div>
+      <template v-if="!collapseOpen">
+        <div class="back-btn" @click="backToResult">
+          <img src="../assets/icons/back-icon.svg" />
+        </div>
+        <div class="toggle-map-btn" @click="changeCollapse(true)">
+          <span>關閉地圖</span>
+        </div>
+      </template>
+      
       <!-- <keep-alive> -->
       <HereMap
         :busStops="stops"
@@ -290,7 +293,7 @@ export default {
           background: #fff;
 
           & > img {
-            width: 1rem;
+            height: 0.75rem;
           }
         }
 
@@ -299,7 +302,7 @@ export default {
           padding: 0.375rem 0.875rem;
           border: 1px solid #cacfde;
           border-radius: 1000rem;
-          font-size: 0.625rem;
+          font-size: 0.875rem;
           color: #8c90ab;
         }
       }
@@ -325,11 +328,25 @@ export default {
         align-items: center;
         border-radius: 50%;
         background: #fff;
-        box-shadow: 0px 0px 10px #8c90ab;
+        border: 1px solid #cacfde;
 
         & > img {
-          width: 1rem;
+          height: 0.75rem;
         }
+      }
+
+      & > .toggle-map-btn span {
+        position: absolute;
+        z-index: 5;
+        top: 0.875rem;
+        right: 0.5rem;
+        display: inline-block;
+        padding: 0.375rem 0.875rem;
+        border: 1px solid #cacfde;
+        border-radius: 1000rem;
+        font-size: 0.875rem;
+        color: #8c90ab;
+        background: #FFF;
       }
     }
 
@@ -391,23 +408,12 @@ export default {
       flex-wrap: nowrap;
       flex-direction: row;
       align-items: center;
-      @media (max-width: 1025px) {
-        border-top: 1px solid #cacfde;
-        order: 20;
-      }
-      & > .back-btn {
-        @media (max-width: 1025px) {
-          display: none;
-        }
-      }
 
       & > .process-bar {
-        flex: 0 0 50%;
-        max-width: 50%;
-        padding: 0 0 0.75rem 0;
+        flex: 0 0 100%;
+        max-width: 100%;
+        padding: 0;
         @media (max-width: 1025px) {
-          flex: 0 0 100%;
-          max-width: 100%;
           padding: 0rem 1rem 0.5rem 1rem;
         }
       }
@@ -421,6 +427,7 @@ export default {
       flex-direction: row;
       justify-content: space-between;
       align-items: center;
+      padding-bottom: 0.5rem;
 
       & > .route-number {
         flex-basis: 0;
@@ -453,6 +460,8 @@ export default {
       flex-direction: row;
       justify-content: center;
       align-items: stretch;
+      padding-bottom: 0.25rem;
+
       & > .direction-item {
         flex-basis: 0;
         flex-grow: 1;

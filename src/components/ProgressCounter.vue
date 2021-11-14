@@ -84,17 +84,19 @@ export default {
   }
   & > .progress-bar {
     position: relative;
-    height: 2px;
+    height: 4px;
     width: 100%;
-    background-color: #00dcd1;
+    background-color: #cacfde;
+    border-radius: 9999rem;
 
     &.animated:before {
       content: "";
       position: absolute;
-      background-color: #cacfde;
+      background-color: #e7e9f2;
       width: 0px;
-      height: 2px;
+      height: 4px;
       right: 0;
+      border-radius: 9999rem;
       animation-name: progres;
       animation-duration: 16s;
       animation-iteration-count: 1;

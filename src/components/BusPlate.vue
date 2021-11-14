@@ -1,7 +1,11 @@
 <template>
   <div class="bus-plate" v-if="plateCount !== 0">
-    <img src="../assets/icons/bus-icon.svg" />
-    <img v-if="isFraternity" src="../assets/icons/fraternity-icon.svg" />
+    <img class="plate-bus" src="../assets/icons/bus-icon.svg" />
+    <img
+      v-if="isFraternity"
+      class="plate-fraternity"
+      src="../assets/icons/fraternity-icon.svg"
+    />
     <span>{{ firstPlate }}</span>
   </div>
 </template>
@@ -80,6 +84,10 @@ export default {
     padding: 0.25rem;
     font-size: 0.75rem;
     letter-spacing: 0.02em;
+  }
+
+  & > * ~ * {
+    margin-left: 0.25rem;
   }
 }
 </style>

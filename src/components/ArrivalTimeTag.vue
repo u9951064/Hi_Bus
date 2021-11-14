@@ -99,11 +99,10 @@ export default {
   padding: 0.5rem 0;
   border-radius: 100rem;
   width: 6rem;
-  letter-spacing: 0.08em;
+  letter-spacing: -0.02em;
 
   @media (max-width: 768px) {
     width: 5rem;
-    letter-spacing: 0.02em;
   }
 
   &.status-empty {

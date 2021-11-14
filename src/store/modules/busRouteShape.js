@@ -104,7 +104,7 @@ const busRouteShapeModule = {
         if (!(routeUID in saveRecord.records)) {
           saveRecord.records[routeUID] = {};
         }
-        const geometry = p.Geometry.replace(/^LINESTRING\(/, '').replace(/\)$/, '').split(',').map(pos => { return pos.split(' '); });
+        const geometry = p.Geometry.replace(/^LINESTRING\s*\(/, '').replace(/\)$/, '').split(',').map(pos => { return pos.trim().split(' '); });
         saveRecord.records[routeUID][`${p.Direction}`] = geometry;
       });
 

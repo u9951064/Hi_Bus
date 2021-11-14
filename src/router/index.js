@@ -82,7 +82,6 @@ router.beforeEach(async (to, from, next) => {
 
   // 判斷上次更新日期，如果超過一天則重新下載
   if (parseInt(window.localStorage.getItem('busVersion/updatedAt') || 0) < new Date().getTime()) {
-    console.log('rrr');
     await Promise.all([
       store.dispatch('busRoute/reset'),
       store.dispatch('vehicleInfo/reset'),
