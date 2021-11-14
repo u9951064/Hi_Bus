@@ -5,7 +5,7 @@
 <style lang="scss">
 @import "~normalize.css/normalize.css";
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700&family=Noto+Sans+TC:wght@300;500&display=swap&subset=latin");
-@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;500&display=swap&subset=chinese-traditional");
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;500;700&display=swap&subset=chinese-traditional");
 
 html,
 body {

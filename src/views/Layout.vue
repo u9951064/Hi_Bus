@@ -101,7 +101,7 @@ export default {
   }
 
   & .header-layout {
-    padding: 1rem;
+    padding: 0.5rem;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
