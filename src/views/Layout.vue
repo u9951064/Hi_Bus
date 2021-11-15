@@ -17,7 +17,7 @@
       </div>
     </header>
     <router-view />
-    <footer :class="{'hide-mobile': mobileFullPageMode}">Copyright &copy; 2021 Double J. ALL Rights Reserved.</footer>
+    <footer :class="{'hide-mobile': mobileFullPageMode}">&copy; Hi BUS! | Designed by Joyce | Developed by Josh.</footer>
   </div>
 </template>
 
