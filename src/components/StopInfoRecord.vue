@@ -56,6 +56,7 @@ export default {
 
 <style scoped lang="scss">
 .stop-info-record {
+  cursor: pointer;
   @media (min-width: 1025px) {
     &:hover {
       background: #f8f8fb;

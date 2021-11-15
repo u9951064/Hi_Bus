@@ -163,6 +163,7 @@ export default {
     background-color: transparent;
     color: #fff;
     padding: 0.5rem 0 0.5rem 1.5rem;
+    cursor: pointer;
   }
 
   & > .separator {

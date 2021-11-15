@@ -82,7 +82,7 @@
           <span>關閉地圖</span>
         </div>
       </template>
-      
+
       <!-- <keep-alive> -->
       <HereMap
         :busStops="stops"
@@ -346,7 +346,7 @@ export default {
         border-radius: 1000rem;
         font-size: 0.875rem;
         color: #8c90ab;
-        background: #FFF;
+        background: #fff;
       }
     }
 
@@ -463,6 +463,7 @@ export default {
       padding-bottom: 0.25rem;
 
       & > .direction-item {
+        cursor: pointer;
         flex-basis: 0;
         flex-grow: 1;
         max-width: 100%;
@@ -481,6 +482,7 @@ export default {
           border-radius: 0 0.375rem 0.375rem 0;
         }
         &.active {
+          cursor: initial;
           color: #fff;
           background: #5468ff;
         }
