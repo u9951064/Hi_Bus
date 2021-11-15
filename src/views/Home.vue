@@ -7,7 +7,7 @@
     <div class="home-search-block col-auto">
       <SearchBar :atHomePage="true" />
     </div>
-    <img class="bus-animation" src="../assets/gif/bus.gif" />
+    <img class="bus-animation" src="../../public/gif/bus.gif" />
   </div>
 </template>
 
@@ -44,12 +44,12 @@ export default {
   background-repeat: no-repeat;
   background-size: 100% auto;
   background-position: center 80%;
-  background-image: url("../assets/img/bg-xl.svg");
+  background-image: url("../../public/img/bg-xl.svg");
   @media (max-width: 1023px) {
-    background-image: url("../assets/img/bg-md.svg");
+    background-image: url("../../public/img/bg-md.svg");
   }
   @media (max-width: 767px) {
-    background-image: url("../assets/img/bg-sm.svg");
+    background-image: url("../../public/img/bg-sm.svg");
   }
 
   & > .bus-animation {

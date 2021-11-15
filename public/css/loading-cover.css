@@ -1,27 +1,129 @@
 @charset "UTF-8";
 
 #loading-cover {
-    position       : fixed;
-    top            : 0;
-    bottom         : 0;
-    left           : 0;
-    right          : 0;
-    background     : #f4f5f9;
-    display        : flex;
-    flex-direction : column;
-    justify-content: center;
-    align-items    : center;
-    text-align     : center;
+    position           : fixed;
+    top                : 0;
+    bottom             : 0;
+    left               : 0;
+    right              : 0;
+    background         : #f4f5f9;
+    background-image   : url('../img/bg-xl.svg');
+    background-size    : 100% auto;
+    background-position: center center;
+    background-repeat  : no-repeat;
+}
+
+@media(max-width: 1023px) {
+    #loading-cover {
+        background-image: url('../img/bg-md.svg');
+    }
+}
+
+@media(max-width: 767px) {
+    #loading-cover {
+        background-image: url('../img/bg-sm.svg');
+    }
 }
 
 #loading-cover.hide {
     display: none !important;
 }
 
-#loading-cover .loading-cover-img {
-    width: 15vw;
-}
+
 
 #loading-cover .loading-cover-text {
-    color: #2c3e50;
+    position  : absolute;
+    color     : #2c3e50;
+    text-align: center;
+    font-size : 1.5rem;
+    left      : 0;
+    right     : 0;
+    top       : 25%;
+}
+
+#loading-cover .loading-copyright {
+    position      : absolute;
+    bottom        : 0;
+    left          : 0;
+    right         : 0;
+    text-align    : center;
+    letter-spacing: 0.08em;
+    font-size     : 0.75rem;
+    font-weight   : 300;
+    color         : #8C90AB;
+}
+
+#loading-cover .loading-cover-img {
+    position                 : absolute;
+    bottom                   : 20%;
+    animation-name           : bus-animation;
+    animation-iteration-count: infinite;
+    animation-duration       : 23s;
+    width                    : 15%;
+}
+
+@keyframes bus-animation {
+    0% {
+        left: -20%;
+    }
+
+    30% {
+        left: 20%;
+    }
+
+    60% {
+        left: 60%;
+    }
+
+    100% {
+        left: 120%;
+    }
+}
+
+@media(max-width: 1023px) {
+    @keyframes bus-animation {
+        0% {
+            left: -30%;
+        }
+
+        30% {
+            left: 20%;
+        }
+
+        60% {
+            left: 60%;
+        }
+
+        100% {
+            left: 130%;
+        }
+    }
+
+    #loading-cover .loading-cover-img {
+        animation-duration: 18s;
+        width             : 25%;
+        bottom            : 30%;
+    }
+}
+
+@media(max-width: 767px) {
+    @keyframes bus-animation {
+        0% {
+            left: -60%;
+        }
+
+        40% {
+            left: 30%;
+        }
+
+        100% {
+            left: 160%;
+        }
+    }
+
+    #loading-cover .loading-cover-img {
+        animation-duration: 15s;
+        width             : 40%;
+        bottom            : 23%;
+    }
 }

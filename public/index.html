@@ -5,10 +5,35 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1,maximum-scale=1,user-scalable=no">
-  <link rel="icon" href="<%= BASE_URL %>favicon.ico">
-  <title>
-    <%= htmlWebpackPlugin.options.title %>
-  </title>
+  <link rel="apple-touch-icon" sizes="57x57" href="./favicon/apple-icon-57x57.png">
+  <link rel="apple-touch-icon" sizes="60x60" href="./favicon/apple-icon-60x60.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="./favicon/apple-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="./favicon/apple-icon-76x76.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="./favicon/apple-icon-114x114.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="./favicon/apple-icon-120x120.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="./favicon/apple-icon-144x144.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="./favicon/apple-icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="./favicon/apple-icon-180x180.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="./favicon/android-icon-192x192.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="./favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="96x96" href="./favicon/favicon-96x96.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="./favicon/favicon-16x16.png">
+  <link rel="manifest" href="./favicon/manifest.json">
+  <meta name="msapplication-TileColor" content="#ffffff">
+  <meta name="msapplication-TileImage" content="./favicon/ms-icon-144x144.png">
+  <meta name="theme-color" content="#ffffff">
+  <title>Hi Bus! 今天想要搭乘哪輛公車呢？</title>
+  <meta name="keywords" content="Bus,公車,F2E,到站資訊,公車路線">
+  <meta name="author" content="Josh, Joyce">
+  <meta name="copyright" content="Hi BUS!  | Design Joyce | Frontend Josh">
+  <meta name="description" content="Hi Bus!今天想要搭乘哪輛公車呢？全台最強公車路線查詢系統，追蹤到站時刻與公車即時動態。">
+  <meta property="og:site_name" content="Hi Bus! 今天想要搭乘哪輛公車呢？" />
+  <meta property="og:locale" content="zh_tw" />
+  <meta property="og:type" content="og:locale" />
+  <meta property="og:title" content="Hi Bus! 今天想要搭乘哪輛公車呢？" />
+  <meta property="og:description" content="Hi Bus!今天想要搭乘哪輛公車呢？全台最強公車路線查詢系統，追蹤到站時刻與公車即時動態。" />
+  <meta property="og:image"
+    content="http://static01.nyt.com/images/2015/02/19/arts/international/19iht-btnumbers19A/19iht-btnumbers19A-facebookJumbo-v2.jpg" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" type="text/css" href="./css/loading-cover.css" />
@@ -17,13 +42,13 @@
 
 <body>
   <noscript>
-    <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled.
-        Please enable it to continue.</strong>
+    <strong>Hi Bus! 道路阻塞，請使用別的瀏覽器試試看</strong>
   </noscript>
   <div id="app" class="app"></div>
   <div id="loading-cover">
-    <div class="loading-cover-img"></div>
+    <img class="loading-cover-img" src="./gif/bus.gif" />
     <div class="loading-cover-text">公車即將到站，請稍後!</div>
+    <div class="loading-copyright">© Hi BUS! | Design Joyce | Frontend Josh</div>
   </div>
   <!-- Here assets start-->
   <script type="text/javascript" charset="UTF-8" src="https://js.api.here.com/v3/3.1/mapsjs-core.js"></script>
