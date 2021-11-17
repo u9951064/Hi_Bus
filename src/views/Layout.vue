@@ -17,7 +17,7 @@
       </div>
     </header>
     <router-view />
-    <footer :class="{'hide-mobile': mobileFullPageMode}">&copy; Hi BUS! | Designed by Joyce | Developed by Josh.</footer>
+    <footer :class="{'hide-mobile': mobileFooterMode}">&copy; Hi BUS! | Designed by Joyce | Developed by Josh.</footer>
   </div>
 </template>
 
@@ -47,6 +47,9 @@ export default {
     },
     mobileFullPageMode() {
       return !!(this.$route.meta.mobileFullPageMode || false);
+    },
+    mobileFooterMode() {
+      return !!(this.$route.meta.mobileFullPageMode || false) || !!(this.$route.meta.mobileHideFooterMode || false);
     }
   },
 };

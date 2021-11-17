@@ -11,27 +11,55 @@ const nearbyStopModule = {
   namespaced: true,
 
   state: () => ({
+    GPSState: undefined,
     geolocation: {
       lng: 121.397454504827,
       lat: 25.0681944993822,
     },
     stations: {},
-    arrivalRoutes: {}
+    arrivalRoutes: {},
+    focusStation: '',
   }),
 
   actions: {
-    reset: ({commit}) => {
+    reset: ({ commit }) => {
       commit('setupStations', {});
       commit('setupArrivalRoutes', {});
+      commit('setupFocusStation', '');
     },
-    load: async ({ commit }) => {
-      const geolocationPosition = await getGeolocation();
-      commit('setupGeolocation', geolocationPosition.coords);
+    loadNearby: async ({ state, dispatch }) => {
+      await dispatch("loadGPS");
+      if (state.GPSState) {
+        await Promise.all([
+          dispatch("loadStations"),
+          dispatch("updateArrival"),
+        ]);
+      }
+    },
+    loadGPS: async ({ commit }) => {
+      try {
+        // 嘗試要求取得 GPS 位置
+        const geolocationPosition = await getGeolocation();
+        if (!geolocationPosition.coords) {
+          commit('setupGPSState', false);
+        } else {
+          commit('setupGeolocation', geolocationPosition.coords);
+          commit('setupGPSState', true);
+        }
+      } catch (e) {
+        // 取得 GPS 失敗
+        commit('setupGPSState', false);
+      }
     },
     loadStations: async ({ state, commit }) => {
+      if (!state.GPSState) {
+        commit('setupStations', {});
+        return;
+      }
+
       // 從 API 取得
       const { data: stationRecords } = await MotcApi.get(
-        '/v2/Bus/Station/NearBy',
+        '/v2/Bus/Station/Nearby',
         {
           params: {
             '$spatialFilter': `nearby(${state.geolocation.lat},${state.geolocation.lng}, 500)`
@@ -47,7 +75,7 @@ const nearbyStopModule = {
           { latitude: state.geolocation.lat, longitude: state.geolocation.lng },
         );
 
-        if(!(stationName in stations)) {
+        if (!(stationName in stations)) {
           stations[stationName] = {
             stationName: stationName,
             position: {
@@ -65,7 +93,7 @@ const nearbyStopModule = {
           stations[stationName].stopUIDs.add(d.StopUID);
         });
 
-        if(stations[stationName].distance < distance) {
+        if (stations[stationName].distance < distance) {
           stations[stationName].position = {
             lng: s.StationPosition.PositionLon,
             lat: s.StationPosition.PositionLat,
@@ -75,9 +103,15 @@ const nearbyStopModule = {
       });
       commit('setupStations', stations);
     },
-    updateArrival: async ({rootState, state, commit}) => {
+    updateArrival: async ({ rootState, state, commit }) => {
+      if (!state.GPSState) {
+        commit('setupArrivalRoutes', {});
+        return;
+      }
+
+      // 從 API 取得
       const { data: arrivalTimeResponse } = await MotcApi.get(
-        `/v2/Bus/RealTimeNearStop/NearBy`,
+        `/v2/Bus/RealTimeNearStop/Nearby`,
         {
           params: {
             '$spatialFilter': `nearby(${state.geolocation.lat},${state.geolocation.lng}, 500)`
@@ -85,12 +119,12 @@ const nearbyStopModule = {
         }
       );
 
-      if((arrivalTimeResponse || []).length === 0) {
+      if ((arrivalTimeResponse || []).length === 0) {
         commit('setupArrivalRoutes', {});
       }
 
       // 預先建立路由查詢資料表
-      const arrivalRouteMap = arrivalTimeResponse.reduce((c,r) => {
+      const arrivalRouteMap = arrivalTimeResponse.reduce((c, r) => {
         c[getSubRouteUID(`${r.SubRouteUID}`) + `-${r.Direction}`] = null;
         return c;
       }, {});
@@ -102,7 +136,7 @@ const nearbyStopModule = {
 
       const stopArrivalInfos = arrivalTimeResponse.reduce((c, r) => {
         const routeRecord = arrivalRouteMap[getSubRouteUID(`${r.SubRouteUID}`) + `-${r.Direction}`];
-        if(!routeRecord) { // 沒有對應的路由，跳過不處理
+        if (!routeRecord) { // 沒有對應的路由，跳過不處理
           return c;
         }
 
@@ -110,7 +144,7 @@ const nearbyStopModule = {
         if (!(stopUID in c)) {
           c[stopUID] = {};
         }
-        if(!(routeRecord.subRouteUID in c[stopUID])) {
+        if (!(routeRecord.subRouteUID in c[stopUID])) {
           c[stopUID][routeRecord.subRouteUID] = {
             stopUID,
             estimateTime: Number.MAX_SAFE_INTEGER,
@@ -129,6 +163,9 @@ const nearbyStopModule = {
   },
 
   mutations: {
+    setupGPSState(state, payload) {
+      state.GPSState = payload;
+    },
     setupGeolocation(state, payload) {
       state.geolocation.lng = payload.longitude;
       state.geolocation.lat = payload.latitude;
@@ -140,20 +177,28 @@ const nearbyStopModule = {
     setupArrivalRoutes(state, payload) {
       state.arrivalRoutes = payload;
       console.log(payload);
+    },
+    setupFocusStation(state, payload) {
+      state.focusStation = payload;
     }
   },
 
   getters: {
-    getNearByList: (state) => {
+    getNearbyList: (state) => {
       return Object.values(state.stations).sort((a, b) => a.distance - b.distance);
     },
-    getStationArrival: (state) => (stopUIDs) => {
-      return [...stopUIDs].reduce((c,stopUID) => {
-        if(stopUID in state.arrivalRoutes) {
-          c.push(...state.arrivalRoutes[stopUID]);
+    currentStation: state => state.stations[state.focusStation] || null,
+    currentStationArrival: (state, getters) => {
+      const result = [];
+      if (!getters.currentStation) {
+        return result;
+      }
+      getters.currentStation.stopUIDs.forEach(stopUID => {
+        if (stopUID in state.arrivalRoutes) {
+          result.push(...Object.values(state.arrivalRoutes[stopUID]));
         }
-        return c;
-      }, []);
+      });
+      return result;
     }
   },
 };
