@@ -1,4 +1,3 @@
-// import getSubRouteUID from '@/utils/getSubRouteUID';
 import MotcApi from '../../libs/MotcApi'
 import getGeolocation from '@/utils/getGeolocation'
 import { getDistance } from 'geolib';
@@ -110,33 +109,54 @@ const nearbyStopModule = {
       }
 
       // 從 API 取得
-      const { data: arrivalTimeResponse } = await MotcApi.get(
-        `/v2/Bus/RealTimeNearStop/Nearby`,
+      const { data: arrivalBusResponse } = await MotcApi.get(
+        '/v2/Bus/EstimatedTimeOfArrival/NearBy',
         {
           params: {
             '$spatialFilter': `nearby(${state.geolocation.lat},${state.geolocation.lng}, 500)`
           }
         }
       );
-
-      if ((arrivalTimeResponse || []).length === 0) {
+      if ((arrivalBusResponse || []).length === 0) {
         commit('setupArrivalRoutes', {});
       }
 
-      // 預先建立路由查詢資料表
-      const arrivalRouteMap = arrivalTimeResponse.reduce((c, r) => {
-        c[getSubRouteUID(`${r.SubRouteUID}`) + `-${r.Direction}`] = null;
+      // 查詢對應路由資料，組成待查詢的表
+      const routeUIDToRoutesMap = arrivalBusResponse.reduce((c, r) => {
+        c[`${r.RouteUID}-${r.Direction}`] = [];
         return c;
       }, {});
       rootState.busRoute.routes.forEach(r => {
-        if (r.subRouteUID in arrivalRouteMap) {
-          arrivalRouteMap[r.subRouteUID] = r;
+        const groupKey = `${r.routeUID}-${r.direction}`;
+        if (groupKey in routeUIDToRoutesMap) {
+          routeUIDToRoutesMap[groupKey].push(r);
         }
       });
+      Object.keys(routeUIDToRoutesMap).forEach(groupKey => {
+        routeUIDToRoutesMap[groupKey].sort((a, b) => a.subRouteName > b.subRouteName ? 1 : -1);
+      });
 
-      const stopArrivalInfos = arrivalTimeResponse.reduce((c, r) => {
-        const routeRecord = arrivalRouteMap[getSubRouteUID(`${r.SubRouteUID}`) + `-${r.Direction}`];
-        if (!routeRecord) { // 沒有對應的路由，跳過不處理
+      const stopArrivalInfos = arrivalBusResponse.reduce((c, r) => {
+        const possibleRoutes = routeUIDToRoutesMap[`${r.RouteUID}-${r.Direction}`] || [];
+        if (possibleRoutes.length === 0) { // 沒有可能對應的路由，跳過不處理
+          return c;
+        }
+
+        let routeRecord = null;
+        if (!routeRecord && 'SubRouteUID' in r && !r.SubRouteUID) {
+          const subRouteUID = getSubRouteUID(`${r.SubRouteUID}`) + `-${r.Direction}`;
+          routeRecord = possibleRoutes.find(d => subRouteUID === d.subRouteUID) || routeRecord;
+        }
+        if (!routeRecord && 'SubRouteName' in r && !r.SubRouteName.Zh_tw) {
+          routeRecord = possibleRoutes.find(d => `${r.SubRouteName.Zh_tw}` === d.subRouteName) || routeRecord;
+        }
+        if (!routeRecord && 'RouteName' in r && !r.RouteName.Zh_tw) {
+          routeRecord = possibleRoutes.find(d => `${r.RouteName.Zh_tw}` === d.subRouteName) || routeRecord;
+        }
+        if (!routeRecord) {
+          routeRecord = possibleRoutes.find(d => d.routeName === d.subRouteName) || possibleRoutes[0];
+        }
+        if (!routeRecord) { // 查無符合的路由，跳過不處理
           return c;
         }
 
@@ -148,7 +168,7 @@ const nearbyStopModule = {
           c[stopUID][routeRecord.subRouteUID] = {
             stopUID,
             estimateTime: Number.MAX_SAFE_INTEGER,
-            stopStatus: parseInt(r.StopStatus),
+            stopStatus: parseInt(r.StopStatus || 0),
             ...routeRecord,
           };
         }

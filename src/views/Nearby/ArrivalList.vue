@@ -1,7 +1,7 @@
 <template>
   <div class="nearby-arrival">
     <div class="row nav">
-      <div class="col title text-left">{{ currentStation.stationName }}</div>
+      <div class="col title text-left">{{ !currentStation ? '' : currentStation.stationName }}</div>
       <!-- <div class="col-auto pointer" @click="updatePosition">
         <img src="../../assets/icons/reload-icon.svg" alt="更新" />
       </div> -->
