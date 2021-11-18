@@ -89,7 +89,7 @@ const busRouteModule = {
 
             saveItems.push({
               routeUID: `${i.RouteUID}`,
-              subRouteUID: `${s.SubRouteUID}-${s.Direction}`,
+              subRouteUID: `${subRouteUID}-${s.Direction}`,
               routeName: `${i.RouteName.Zh_tw}`,
               routeNameEn: `${i.RouteName.En}`,
               subRouteName: subRouteName,

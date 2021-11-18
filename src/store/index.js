@@ -5,6 +5,7 @@ import routeSelector from './modules/routeSelector'
 import vehicleInfo from './modules/vehicleInfo'
 import favoritePool from './modules/favoritePool'
 import busRouteShape from './modules/busRouteShape'
+import nearbyStop from './modules/nearbyStop'
 
 export default createStore({
   modules: {
@@ -14,5 +15,6 @@ export default createStore({
     routeSelector,
     favoritePool,
     busRouteShape,
+    nearbyStop,
   },
 })

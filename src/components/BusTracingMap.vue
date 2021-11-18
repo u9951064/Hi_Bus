@@ -1,5 +1,5 @@
 <template>
-  <div class="here-map">
+  <div class="bus-tracing-map">
     <div
       class="map-container"
       ref="hereMap"
@@ -37,7 +37,7 @@ import { apiKey } from "@/configs/HereMapConfig";
 import ArrivalTimeTag from "@/components/ArrivalTimeTag.vue";
 
 export default {
-  name: "HereMap",
+  name: "BusTracingMap",
   components: {
     ArrivalTimeTag,
   },
@@ -280,15 +280,16 @@ export default {
         {
           icon: new H.map.DomIcon(infoBlock, {
             onAttach: function (clonedElement) {
-              clonedElement
-                .querySelector(".map-close-btn")
-                .addEventListener("click", closeMethod);
+              const el = clonedElement.querySelector(".map-close-btn");
+              el.addEventListener("click", closeMethod);
+              el.addEventListener("touchstart", closeMethod);
+                
             },
             // the function is called every time marker leaves the viewport
             onDetach: function (clonedElement) {
-              clonedElement
-                .querySelector(".map-close-btn")
-                .removeEventListener("click", closeMethod);
+              const el = clonedElement.querySelector(".map-close-btn");
+              el.removeEventListener("click", closeMethod);
+              el.removeEventListener("touchstart", closeMethod);
             },
           }),
           zIndex: 4,
@@ -377,7 +378,7 @@ export default {
 </script>
 
 <style lang="scss">
-.here-map {
+.bus-tracing-map {
   width: 100%;
   height: 100%;
 

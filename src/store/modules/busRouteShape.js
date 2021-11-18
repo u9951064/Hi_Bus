@@ -17,7 +17,7 @@ const busRouteShapeModule = {
   actions: {
     reset: () => {
       Object.keys(window.localStorage).forEach(k => {
-        if(/^busRouteShape\//.test(k)) {
+        if (/^busRouteShape\//.test(k)) {
           window.localStorage.removeItem(k);
         }
       });
@@ -29,13 +29,13 @@ const busRouteShapeModule = {
         return;
       }
 
-      const {routeUID, subRouteUID, uniqueIndex, direction} = payload;
+      const { routeUID, subRouteUID, uniqueIndex, direction } = payload;
       const storeKey = `${uniqueIndex}|${direction}`;
-      if(storeKey === state.currentStoreKey) {
+      if (storeKey === state.currentStoreKey) {
         return;
       }
 
-      const querySubRouteUID = getSubRouteUID(subRouteUID.replace(/-\d*$/, ''));
+      const querySubRouteUID = subRouteUID.replace(/-\d*$/, '');
       await dispatch('loadRouteShapeMap', payload);
 
       const matchedGeometry = {
@@ -43,17 +43,17 @@ const busRouteShapeModule = {
         geometry: [],
       };
       let pool = {};
-      if(querySubRouteUID in state.routeGeometries && state.routeGeometries[querySubRouteUID].length !== 0) {
+      if (querySubRouteUID in state.routeGeometries && state.routeGeometries[querySubRouteUID].length !== 0) {
         pool = state.routeGeometries[querySubRouteUID];
-      } else if(routeUID in state.routeGeometries && state.routeGeometries[routeUID].length !== 0) {
+      } else if (routeUID in state.routeGeometries && state.routeGeometries[routeUID].length !== 0) {
         pool = state.routeGeometries[routeUID];
       }
-      if(Object.keys(pool).length === 0) {
+      if (Object.keys(pool).length === 0) {
         commit('setCurrentShape', matchedGeometry);
         return;
       }
-      
-      if(direction in pool) {
+
+      if (direction in pool) {
         matchedGeometry.geometry = pool[direction];
       } else {
         const d = Object.keys(pool).sort()[0];
