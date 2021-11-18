@@ -149,7 +149,7 @@ const nearbyStopModule = {
         }
         if (!routeRecord && 'SubRouteName' in r && !!r.SubRouteName.Zh_tw) {
           const subRouteName = `${r.SubRouteName.Zh_tw}` == `${r.RouteName.Zh_tw}0` ? `${r.RouteName.Zh_tw}` : `${r.SubRouteName.Zh_tw}`;
-          
+
           routeRecord = possibleRoutes.find(d => subRouteName === d.subRouteName) || routeRecord;
         }
         if (!routeRecord && 'RouteName' in r && !!r.RouteName.Zh_tw) {
@@ -194,11 +194,9 @@ const nearbyStopModule = {
     },
     setupStations(state, payload) {
       state.stations = payload;
-      console.log(payload);
     },
     setupArrivalRoutes(state, payload) {
       state.arrivalRoutes = payload;
-      console.log(payload);
     },
     setupFocusStation(state, payload) {
       state.focusStation = payload;

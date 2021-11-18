@@ -48,12 +48,12 @@ export default {
     selectStation(stationName) {
       this.$store.commit("nearbyStop/setupFocusStation", stationName);
       this.$router.push({
-        name: 'NearbyArrivals',
+        name: "NearbyArrivals",
         params: {
           stationName,
         },
       });
-    }
+    },
   },
   computed: {
     ...mapGetters("nearbyStop", {
@@ -72,13 +72,14 @@ export default {
   justify-content: flex-start;
   align-items: stretch;
   padding: 1.5rem 2.5rem;
-  @media(max-width: 767px) {
+  @media (max-width: 767px) {
     padding: 1rem 0.75rem 0.25rem;
   }
 
   & > .nav {
     flex: 0 0 auto;
     max-height: 100%;
+    padding-bottom: 0.5rem;
 
     & > .title {
       font-size: 1.5rem;
@@ -122,7 +123,7 @@ export default {
       @media (max-width: 768px) {
         padding: 0.5rem 0;
       }
-      
+
       @media (min-width: 1025px) {
         &:hover {
           background-color: #f8f8fb;
@@ -131,8 +132,8 @@ export default {
       }
 
       & > .station-content > .station-name {
-        font-size: 1.5rem;
-        @media(max-width: 767px) {
+        font-size: 1rem;
+        @media (max-width: 767px) {
           font-size: 1.25rem;
         }
       }
@@ -152,7 +153,7 @@ export default {
       flex: 0 0 75%;
       overflow: hidden;
 
-      @media(max-width: 767px) {
+      @media (max-width: 767px) {
         flex: 0 0 100%;
       }
     }
@@ -162,7 +163,7 @@ export default {
       overflow: hidden;
       font-size: 0.75rem;
 
-      @media(max-width: 767px) {
+      @media (max-width: 767px) {
         flex: 0 0 100%;
         text-align: left;
       }

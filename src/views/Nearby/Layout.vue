@@ -20,7 +20,6 @@ export default {
   name: "NearbyLayout",
   components: {},
   beforeRouteEnter: initialHandler,
-  // beforeRouteUpdate: initialHandler,
   data() {
     return {};
   },
@@ -49,7 +48,7 @@ export default {
       bottom: 0;
       right: 0;
       left: 0;
-      height: 40%;
+      height: 45%;
       background: #fff;
       box-shadow: 0px -6px 20px rgba(228, 231, 240, 0.8);
       overflow-y: hidden;

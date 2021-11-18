@@ -122,9 +122,12 @@ const initialHandler = async (to, from, next) => {
       },
     });
   } else {
-    store.commit("routeSelector/setSelectedRoute", routeItems[0]);
-    await store.dispatch("busStop/loadBusStop", routeItems[0]);
-    store.dispatch("busStop/updateArrivalBus", routeItems[0]);
+    const direction = "direction" in to.query ? `${to.query.direction}` : null;
+    const routeItem =
+      routeItems.find((r) => r.direction == direction) || routeItems[0];
+    store.commit("routeSelector/setSelectedRoute", routeItem);
+    await store.dispatch("busStop/loadBusStop", routeItem);
+    store.dispatch("busStop/updateArrivalBus", routeItem);
     next();
   }
 };
