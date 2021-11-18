@@ -2,7 +2,7 @@
   <div class="nearby-station-list">
     <div class="row nav">
       <div class="col title text-left">附近公車站牌 <span>500m內</span></div>
-      <div class="col-auto pointer" @click="updatePosition">
+      <div class="col-auto pointer" :class="{loading: isGPSLoading}" @click="updatePosition">
         <img src="../../assets/icons/reload-icon.svg" alt="更新" />
       </div>
     </div>
@@ -22,11 +22,11 @@
       >
         <div class="station-content">
           <div class="station-name">{{ s.stationName }}</div>
-          <div class="station-count">{{ s.routeCount }}條路線</div>
+          <div class="station-count">{{ s.routeCount }} 條路線</div>
         </div>
         <div class="station-distance">
           <span class="distance-tag"
-            ><img src="../../assets/icons/bubble-orange-icon.svg" />{{
+            ><img src="../../assets/icons/bubble-orange-icon.svg" /> {{
               s.distance
             }}m</span
           >
@@ -37,14 +37,17 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from "vuex";
+import GPSStateConst from '@/constants/GPSStateConst';
+import { mapGetters, mapState } from "vuex";
 
 export default {
   name: "NearbyStationList",
   methods: {
-    ...mapActions("nearbyStop", {
-      updatePosition: "loadNearby",
-    }),
+    updatePosition() {
+      if(!this.isGPSLoading) {
+        this.$store.dispatch('nearbyStop/loadNearby');
+      }
+    },
     selectStation(stationName) {
       this.$store.commit("nearbyStop/setupFocusStation", stationName);
       this.$router.push({
@@ -56,9 +59,15 @@ export default {
     },
   },
   computed: {
+    ...mapState("nearbyStop", {
+      GPSState: "GPSState",
+    }),
     ...mapGetters("nearbyStop", {
       nearbyStopList: "getNearbyList",
     }),
+    isGPSLoading() {
+      return this.GPSState === GPSStateConst.LOADING;
+    }
   },
 };
 </script>
@@ -94,6 +103,22 @@ export default {
         color: #8c90ab;
         font-size: 0.75rem;
         font-weight: 300;
+      }
+    }
+
+    & .loading > img {
+      animation-name: loading-rotate;
+      animation-duration: 1s;
+      animation-iteration-count: infinite;
+      animation-timing-function: linear;
+    }
+
+    @keyframes loading-rotate {
+      0% {
+        transform: rotate(0deg);
+      }
+      100% {
+        transform: rotate(360deg);
       }
     }
   }

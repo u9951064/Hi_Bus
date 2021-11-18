@@ -2,14 +2,7 @@
   <div class="tracing-page" :class="{ open: collapseOpen }">
     <div class="bus-info-block" :class="{ open: collapseOpen }">
       <div class="mobile-control-bar">
-        <!-- <div
-          v-if="!collapseOpen"
-          class="collapse-btn"
-          @click="changeCollapse(true)"
-        >
-          <img src="../assets/icons/collapse-top-icon.svg" />
-        </div> -->
-        <div v-if="collapseOpen" class="back-btn" @click="backToResult">
+        <div v-if="collapseOpen" class="back-btn" @click="goBack">
           <img src="../assets/icons/back-icon.svg" />
         </div>
         <div
@@ -75,7 +68,7 @@
     </div>
     <div class="bus-map-block">
       <template v-if="!collapseOpen">
-        <div class="back-btn" @click="backToResult">
+        <div class="back-btn" @click="goBack">
           <img src="../assets/icons/back-icon.svg" />
         </div>
         <div class="toggle-map-btn" @click="changeCollapse(true)">
@@ -84,7 +77,7 @@
       </template>
 
       <!-- <keep-alive> -->
-      <HereMap
+      <BusTracingMap
         :busStops="stops"
         :arrivalInfos="arrivalInfos"
         :busRouteName="busRouteName"
@@ -101,7 +94,7 @@
 import { mapState } from "vuex";
 import store from "@/store";
 import replaceSymbol from "@/utils/replaceSymbol";
-import HereMap from "@/components/HereMap.vue";
+import BusTracingMap from "@/components/BusTracingMap.vue";
 import FavoriteBtn from "@/components/FavoriteBtn.vue";
 import StopInfoRecord from "@/components/StopInfoRecord.vue";
 import ProgressCounter from "@/components/ProgressCounter.vue";
@@ -135,7 +128,7 @@ const initialHandler = async (to, from, next) => {
 export default {
   name: "TracingBus",
   components: {
-    HereMap,
+    BusTracingMap,
     FavoriteBtn,
     StopInfoRecord,
     ProgressCounter,
@@ -161,14 +154,8 @@ export default {
         }
       );
     },
-    backToResult() {
-      return this.$router.push({
-        name: "SearchResult",
-        query: {
-          city: this.$store.state.routeSelector.selectedCity,
-          keyword: this.$store.state.routeSelector.inputKeyword,
-        },
-      });
+    goBack() {
+      return this.$router.back();
     },
     getDriectionLabel(route) {
       const stops = this.$store.getters["busStop/getStops"](route);

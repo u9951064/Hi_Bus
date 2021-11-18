@@ -3,13 +3,16 @@
     <div class="nearby-info">
       <router-view />
     </div>
-    <div class="nearby-map"></div>
+    <div class="nearby-map">
+      <NearbyStopMap :centerPoint="currentGPS" :busStations="nearbyStopList" />
+    </div>
   </div>
 </template>
 
 <script>
 import store from "@/store";
 import { mapGetters, mapState } from "vuex";
+import NearbyStopMap from '@/components/NearbyStopMap.vue';
 
 const initialHandler = async (to, from, next) => {
   await store.dispatch("nearbyStop/loadNearby");
@@ -18,7 +21,9 @@ const initialHandler = async (to, from, next) => {
 
 export default {
   name: "NearbyLayout",
-  components: {},
+  components: {
+    NearbyStopMap,
+  },
   beforeRouteEnter: initialHandler,
   data() {
     return {};

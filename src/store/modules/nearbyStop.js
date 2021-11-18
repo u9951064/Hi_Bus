@@ -1,7 +1,8 @@
 import MotcApi from '../../libs/MotcApi'
 import getGeolocation from '@/utils/getGeolocation'
-import { getDistance } from 'geolib';
-import getSubRouteUID from '@/utils/getSubRouteUID';
+import { getDistance } from 'geolib'
+import getSubRouteUID from '@/utils/getSubRouteUID'
+import GPSStateConst from '@/constants/GPSStateConst'
 
 /**
  * 附近站點資料
@@ -10,10 +11,14 @@ const nearbyStopModule = {
   namespaced: true,
 
   state: () => ({
-    GPSState: undefined,
+    GPSState: GPSStateConst.EMPTY,
     geolocation: {
       lng: 121.397454504827,
       lat: 25.0681944993822,
+    },
+    lastQueryGPS: {
+      lng: 0,
+      lat: 0,
     },
     stations: {},
     arrivalRoutes: {},
@@ -28,7 +33,7 @@ const nearbyStopModule = {
     },
     loadNearby: async ({ state, dispatch }) => {
       await dispatch("loadGPS");
-      if (state.GPSState) {
+      if (state.GPSState === GPSStateConst.SUCCESS) {
         await Promise.all([
           dispatch("loadStations"),
           dispatch("updateArrival"),
@@ -36,23 +41,32 @@ const nearbyStopModule = {
       }
     },
     loadGPS: async ({ commit }) => {
+      commit('setupGPSState', GPSStateConst.LOADING);
       try {
         // 嘗試要求取得 GPS 位置
         const geolocationPosition = await getGeolocation();
         if (!geolocationPosition.coords) {
-          commit('setupGPSState', false);
+          commit('setupGPSState', GPSStateConst.FAILED);
         } else {
           commit('setupGeolocation', geolocationPosition.coords);
-          commit('setupGPSState', true);
+          commit('setupGPSState', GPSStateConst.SUCCESS);
         }
       } catch (e) {
         // 取得 GPS 失敗
-        commit('setupGPSState', false);
+        commit('setupGPSState', GPSStateConst.PERMISSION_DENIED);
       }
     },
     loadStations: async ({ state, commit }) => {
-      if (!state.GPSState) {
+      if (state.GPSState !== GPSStateConst.SUCCESS) {
         commit('setupStations', {});
+        return;
+      }
+
+      // 移動距離太短，不進行查詢
+      if(getDistance(
+          { latitude: state.lastQueryGPS.lat, longitude: state.lastQueryGPS.lng },
+          { latitude: state.geolocation.lat, longitude: state.geolocation.lng }
+        ) < 5) {
         return;
       }
 
@@ -101,9 +115,10 @@ const nearbyStopModule = {
         }
       });
       commit('setupStations', stations);
+      commit('setupLastQueryGPS');
     },
     updateArrival: async ({ rootState, state, commit }) => {
-      if (!state.GPSState) {
+      if (state.GPSState !== GPSStateConst.SUCCESS) {
         commit('setupArrivalRoutes', {});
         return;
       }
@@ -200,6 +215,9 @@ const nearbyStopModule = {
     },
     setupFocusStation(state, payload) {
       state.focusStation = payload;
+    },
+    setupLastQueryGPS(state) {
+      state.lastQueryGPS = state.GPSState;
     }
   },
 

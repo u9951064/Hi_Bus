@@ -1,6 +1,9 @@
 <template>
   <div class="nearby-arrival">
     <div class="row nav" v-if="!!currentStation">
+      <div class="back-btn" @click="goBack">
+        <img src="../../assets/icons/back-icon.svg" />
+      </div>
       <div class="col title text-left">
         {{ currentStation.stationName }}
         <span class="distance-tag"
@@ -9,13 +12,11 @@
           }}m</span
         >
       </div>
-      <!-- <div class="col-auto pointer" @click="updatePosition">
-        <img src="../../assets/icons/reload-icon.svg" alt="更新" />
-      </div> -->
     </div>
     <div class="table-header row hide-mobile">
       <div class="arrival-time">預估到站</div>
       <div class="route-content">公車路線/起始站與終點站</div>
+      <div class="bus-favorite">收藏最愛</div>
     </div>
     <div class="table-body">
       <div
@@ -31,6 +32,9 @@
           <div class="route-no">{{ r.subRouteName }}</div>
           <div class="route-name" v-html="replaceSymbol(r.headSign)"></div>
         </div>
+        <div class="bus-favorite">
+          <FavoriteBtn :route="r" />
+        </div>
       </div>
     </div>
     <div class="process-bar">
@@ -45,8 +49,9 @@
 <script>
 import store from "@/store";
 import { mapGetters } from "vuex";
-import ArrivalTimeTag from "@/components/ArrivalTimeTag";
-import ProgressCounter from "@/components/ProgressCounter";
+import ArrivalTimeTag from "@/components/ArrivalTimeTag.vue";
+import ProgressCounter from "@/components/ProgressCounter.vue";
+import FavoriteBtn from "@/components/FavoriteBtn.vue";
 import replaceSymbol from "@/utils/replaceSymbol";
 
 const initialHandler = async (to) => {
@@ -73,8 +78,12 @@ export default {
   components: {
     ArrivalTimeTag,
     ProgressCounter,
+    FavoriteBtn,
   },
   methods: {
+    goBack() {
+      return this.$router.back();
+    },
     replaceSymbol(text) {
       return replaceSymbol(text);
     },
@@ -132,6 +141,23 @@ export default {
       letter-spacing: 0.02em;
       color: #040d2e;
       font-weight: bold;
+    }
+
+    & > .back-btn {
+      flex: 0 0 auto;
+      max-width: 100%;
+      text-align: center;
+      width: 2rem;
+      height: 2rem;
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 50%;
+      background: #fff;
+
+      & > img {
+        height: 0.75rem;
+      }
     }
   }
 
@@ -194,6 +220,20 @@ export default {
 
     & > .route-name {
       font-size: 1rem;
+    }
+  }
+
+  & .bus-favorite {
+    text-align: center;
+    flex: 0 0 calc(7rem + 0.75rem + 0.75rem);
+    max-width: calc(7rem + 0.75rem + 0.75rem);
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+
+    @media (max-width: 768px) {
+      flex: 0 0 3rem;
+      max-width: 3rem;
+      padding-right: 0;
     }
   }
 
