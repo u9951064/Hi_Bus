@@ -20,6 +20,7 @@ const nearbyStopModule = {
       lng: 0,
       lat: 0,
     },
+    lastArrivalUpdatedAt: 0,
     stations: {},
     arrivalRoutes: {},
     focusStation: '',
@@ -31,14 +32,12 @@ const nearbyStopModule = {
       commit('setupArrivalRoutes', {});
       commit('setupFocusStation', '');
     },
-    loadNearby: async ({ state, dispatch }) => {
+    loadNearby: async ({ dispatch }) => {
       await dispatch("loadGPS");
-      if (state.GPSState === GPSStateConst.SUCCESS) {
-        await Promise.all([
-          dispatch("loadStations"),
-          dispatch("updateArrival"),
-        ]);
-      }
+      await Promise.all([
+        dispatch("loadStations"),
+        dispatch("updateArrival"),
+      ]);
     },
     loadGPS: async ({ commit }) => {
       commit('setupGPSState', GPSStateConst.LOADING);
@@ -123,6 +122,14 @@ const nearbyStopModule = {
         return;
       }
 
+      // 移動距離太短，不進行查詢
+      if(getDistance(
+          { latitude: state.lastQueryGPS.lat, longitude: state.lastQueryGPS.lng },
+          { latitude: state.geolocation.lat, longitude: state.geolocation.lng }
+        ) < 5 && new Date().getTime() < state.lastArrivalUpdatedAt + 5000) {
+        return;
+      }
+
       // 從 API 取得
       const { data: arrivalBusResponse } = await MotcApi.get(
         '/v2/Bus/EstimatedTimeOfArrival/NearBy',
@@ -135,6 +142,7 @@ const nearbyStopModule = {
       if ((arrivalBusResponse || []).length === 0) {
         commit('setupArrivalRoutes', {});
       }
+      commit('setupLastArrivalUpdatedAt');
 
       // 查詢對應路由資料，組成待查詢的表
       const routeUIDToRoutesMap = arrivalBusResponse.reduce((c, r) => {
@@ -217,7 +225,10 @@ const nearbyStopModule = {
       state.focusStation = payload;
     },
     setupLastQueryGPS(state) {
-      state.lastQueryGPS = state.GPSState;
+      state.lastQueryGPS = state.geolocation;
+    },
+    setupLastArrivalUpdatedAt(state) {
+      state.lastArrivalUpdatedAt = new Date().getTime();
     }
   },
 

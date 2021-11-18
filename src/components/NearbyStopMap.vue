@@ -104,7 +104,6 @@ export default {
     },
     drawCenterMarker() {
       this.mapObject.centerGroup.removeAll();
-      console.log("rrr");
       const H = window.H;
       const markerDom = document.createElement("div");
       markerDom.innerHTML = `
