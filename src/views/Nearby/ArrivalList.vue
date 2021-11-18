@@ -33,16 +33,15 @@ import store from "@/store";
 import { mapGetters } from "vuex";
 import ArrivalTimeTag from "@/components/ArrivalTimeTag";
 
-const initialHandler = async (to, from, next) => {
+const initialHandler = async (to) => {
   const stationName = String(to.params.stationName || "").trim();
   store.commit("nearbyStop/setupFocusStation", stationName);
   if (!store.getters["nearbyStop/currentStation"]) {
-    next({
+    return {
       name: "NearbyStations",
-    });
-  } else {
-    next();
+    };
   }
+  return null;
 };
 
 export default {

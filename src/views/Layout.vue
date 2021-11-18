@@ -1,7 +1,10 @@
 <template>
   <div class="layout">
     <header>
-      <div class="container header-layout" :class="{'hide-mobile': mobileFullPageMode}">
+      <div
+        class="container header-layout"
+        :class="{ 'hide-mobile': mobileFullPageMode }"
+      >
         <img
           class="logo btn"
           src="../assets/logo.svg"
@@ -12,12 +15,19 @@
           <SearchBar v-if="!needHideSearchBar" />
         </div>
         <div class="menu-bar">
-          <a class="favorite btn" @click="goToFavorite">我的最愛</a>
+          <a class="nearby btn" @click="goToNearBy">
+            <span class="menu-text">附近站牌</span>
+          </a>
+          <a class="favorite btn" @click="goToFavorite">
+            <span class="menu-text">我的最愛</span>
+          </a>
         </div>
       </div>
     </header>
     <router-view />
-    <footer :class="{'hide-mobile': mobileFooterMode}">&copy; Hi BUS! | Designed by Joyce | Developed by Josh.</footer>
+    <footer :class="{ 'hide-mobile': mobileFooterMode }">
+      &copy; Hi BUS! | Designed by Joyce | Developed by Josh.
+    </footer>
   </div>
 </template>
 
@@ -40,6 +50,11 @@ export default {
         name: "Favorite",
       });
     },
+    goToNearBy() {
+      return this.$router.push({
+        name: "NearbyStations",
+      });
+    },
   },
   computed: {
     needHideSearchBar() {
@@ -49,8 +64,11 @@ export default {
       return !!(this.$route.meta.mobileFullPageMode || false);
     },
     mobileFooterMode() {
-      return !!(this.$route.meta.mobileFullPageMode || false) || !!(this.$route.meta.mobileHideFooterMode || false);
-    }
+      return (
+        !!(this.$route.meta.mobileFullPageMode || false) ||
+        !!(this.$route.meta.mobileHideFooterMode || false)
+      );
+    },
   },
 };
 </script>
@@ -100,7 +118,7 @@ export default {
     letter-spacing: 0.08em;
     font-size: 0.75rem;
     font-weight: 300;
-    color: #8C90AB;
+    color: #8c90ab;
   }
 
   & .header-layout {
@@ -135,7 +153,12 @@ export default {
       align-self: center;
       color: #fff;
 
-      & .favorite {
+      & > * ~ * {
+        margin-left: 0.25rem;
+      }
+
+      & > .nearby,
+      & > .favorite {
         display: inline-flex;
         justify-content: center;
         align-items: center;
@@ -145,20 +168,46 @@ export default {
           content: "";
           height: 1rem;
           width: 1rem;
-          background-image: url("../assets/icons/favorite-white-icon.svg");
-          background-size: cover;
+          background-size: contain;
+          background-repeat: no-repeat;
+          background-position: center;
+          margin-left: 0.2rem;
           margin-right: 0.2rem;
         }
 
-        @media (min-width: 768px) {
+        @media (min-width: 769px) {
           &:hover {
             color: #ffc42d;
-            &:before {
-              background-image: url("../assets/icons/favorite-yellow-icon.svg");
-            }
           }
         }
-        
+      }
+
+      & > .nearby {
+        &:before {
+          background-image: url("../assets/icons/bubble-white-icon.svg");
+        }
+        @media (min-width: 769px) {
+          &:hover:before {
+            background-image: url("../assets/icons/bubble-yellow-icon.svg");
+          }
+        }
+      }
+
+      & > .favorite {
+        &:before {
+          background-image: url("../assets/icons/favorite-white-icon.svg");
+        }
+        @media (min-width: 769px) {
+          &:hover:before {
+            background-image: url("../assets/icons/favorite-yellow-icon.svg");
+          }
+        }
+      }
+
+      @media (max-width: 767px) {
+        & .menu-text {
+          display: none;
+        }
       }
     }
   }

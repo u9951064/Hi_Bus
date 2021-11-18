@@ -26,7 +26,7 @@
         </div>
         <div class="station-distance">
           <span class="distance-tag"
-            ><img src="../../assets/icons/station-icon.svg" />{{
+            ><img src="../../assets/icons/bubble-orange-icon.svg" />{{
               s.distance
             }}m</span
           >
@@ -129,6 +129,13 @@ export default {
           cursor: pointer;
         }
       }
+
+      & > .station-content > .station-name {
+        font-size: 1.5rem;
+        @media(max-width: 767px) {
+          font-size: 1.25rem;
+        }
+      }
     }
   }
 
@@ -144,11 +151,9 @@ export default {
     & > .station-name {
       flex: 0 0 75%;
       overflow: hidden;
-      font-size: 1.5rem;
 
       @media(max-width: 767px) {
         flex: 0 0 100%;
-        font-size: 1.25rem;
       }
     }
 

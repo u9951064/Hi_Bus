@@ -114,12 +114,12 @@ router.beforeEach(async (to, from, next) => {
     store.dispatch('vehicleInfo/init'),
     store.dispatch('favoritePool/init'),
   ]);
+
   next();
 })
 
-router.beforeResolve((to, from, next) => {
+router.afterEach(() => {
   document.getElementById('loading-cover').classList.add('hide');
-  next();
 })
 
 export default router

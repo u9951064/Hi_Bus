@@ -133,7 +133,7 @@ const nearbyStopModule = {
         }
       });
       Object.keys(routeUIDToRoutesMap).forEach(groupKey => {
-        routeUIDToRoutesMap[groupKey].sort((a, b) => a.subRouteName > b.subRouteName ? 1 : -1);
+        routeUIDToRoutesMap[groupKey].sort((a, b) => a.subRouteName.length - b.subRouteName.length);
       });
 
       const stopArrivalInfos = arrivalBusResponse.reduce((c, r) => {
@@ -143,14 +143,16 @@ const nearbyStopModule = {
         }
 
         let routeRecord = null;
-        if (!routeRecord && 'SubRouteUID' in r && !r.SubRouteUID) {
+        if (!routeRecord && 'SubRouteUID' in r && !!r.SubRouteUID) {
           const subRouteUID = getSubRouteUID(`${r.SubRouteUID}`) + `-${r.Direction}`;
           routeRecord = possibleRoutes.find(d => subRouteUID === d.subRouteUID) || routeRecord;
         }
-        if (!routeRecord && 'SubRouteName' in r && !r.SubRouteName.Zh_tw) {
-          routeRecord = possibleRoutes.find(d => `${r.SubRouteName.Zh_tw}` === d.subRouteName) || routeRecord;
+        if (!routeRecord && 'SubRouteName' in r && !!r.SubRouteName.Zh_tw) {
+          const subRouteName = `${r.SubRouteName.Zh_tw}` == `${r.RouteName.Zh_tw}0` ? `${r.RouteName.Zh_tw}` : `${r.SubRouteName.Zh_tw}`;
+          
+          routeRecord = possibleRoutes.find(d => subRouteName === d.subRouteName) || routeRecord;
         }
-        if (!routeRecord && 'RouteName' in r && !r.RouteName.Zh_tw) {
+        if (!routeRecord && 'RouteName' in r && !!r.RouteName.Zh_tw) {
           routeRecord = possibleRoutes.find(d => `${r.RouteName.Zh_tw}` === d.subRouteName) || routeRecord;
         }
         if (!routeRecord) {
