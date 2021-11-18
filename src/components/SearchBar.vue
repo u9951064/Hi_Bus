@@ -144,7 +144,7 @@ export default {
   margin: auto;
   display: flex;
   flex-direction: row;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   justify-content: center;
   align-items: center;
   border-radius: 0.375rem;
@@ -177,6 +177,7 @@ export default {
   & > .keyword-input {
     flex-basis: 0;
     flex-grow: 1;
+    min-width: 10rem;
     max-width: 100%;
     border: none;
     outline: none;

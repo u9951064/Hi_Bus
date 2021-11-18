@@ -87,4 +87,4 @@ Hi BUS!揮揮手搭乘公車開啟您的旅途!\
 
 ---
 
-&copy; Hi BUS! | Designed by Joyce | Developed by Josh.
+&copy; Hi BUS! | Designed by Joyce | Developed by Josh

@@ -229,7 +229,7 @@ export default {
     padding-left: 0.75rem;
     padding-right: 0.75rem;
 
-    @media (max-width: 768px) {
+    @media (max-width: 767px) {
       flex: 0 0 3rem;
       max-width: 3rem;
       padding-right: 0;

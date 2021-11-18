@@ -26,7 +26,7 @@
     </header>
     <router-view />
     <footer :class="{ 'hide-mobile': mobileFooterMode }">
-      &copy; Hi BUS! | Designed by Joyce | Developed by Josh.
+      &copy; Hi BUS! | Designed by Joyce | Developed by Josh
     </footer>
   </div>
 </template>
@@ -119,6 +119,19 @@ export default {
     font-size: 0.75rem;
     font-weight: 300;
     color: #8c90ab;
+    padding: 0.5rem 0;
+
+    @media(max-width: 767px) {
+      font-size: 0.75rem;
+      padding: 0.25rem 0 0.5rem;
+      letter-spacing: 0.08em;
+    }
+
+    @media(max-width: 330px) {
+      font-size: 0.5rem;
+      padding: 0 0 0.5rem;
+      letter-spacing: 0.01em;
+    }
   }
 
   & .header-layout {

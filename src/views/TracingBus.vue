@@ -461,8 +461,8 @@ export default {
         flex-direction: row;
         justify-content: center;
         align-items: center;
-        font-size: 0.75rem;
-        padding: 0.625rem 0;
+        font-size: 1rem;
+        padding: 0.5rem 0;
         border: 1px solid #5468ff;
         color: #5468ff;
         &:first-of-type {
@@ -475,6 +475,11 @@ export default {
           cursor: initial;
           color: #fff;
           background: #5468ff;
+        }
+
+        @media(max-width: 767px) {
+          font-size: 0.875rem;
+          padding: 0.5rem 0;
         }
       }
     }
