@@ -54,9 +54,7 @@ import ProgressCounter from "@/components/ProgressCounter.vue";
 import FavoriteBtn from "@/components/FavoriteBtn.vue";
 import replaceSymbol from "@/utils/replaceSymbol";
 
-const initialHandler = async (to) => {
-  const stationName = String(to.params.stationName || "").trim();
-  store.commit("nearbyStop/setupFocusStation", stationName);
+const initialHandler = async () => {
   if (!store.getters["nearbyStop/currentStation"]) {
     return {
       name: "NearbyStations",
@@ -82,6 +80,7 @@ export default {
   },
   methods: {
     goBack() {
+      this.$store.commit("nearbyStop/setupFocusStation", '');
       return this.$router.back();
     },
     replaceSymbol(text) {
