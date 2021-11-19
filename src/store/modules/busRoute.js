@@ -32,7 +32,6 @@ const busRouteModule = {
       // 讀取儲存的快取資料
       const storedData = browserStorage.getItem('busRoutes/cityOptions') || '';
       if (storedData instanceof Object && Object.keys(storedData).length) {
-        console.log(storedData)
         commit('setCityOptions', storedData);
         return;
       }

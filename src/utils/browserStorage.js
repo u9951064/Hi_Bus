@@ -1,7 +1,5 @@
-import LZUTF8 from "lzutf8";
-
 const setItem = function (key, data) {
-  const saveString = LZUTF8.compress(
+  const saveString = window.LZUTF8.compress(
     JSON.stringify(data),
     {
       outputEncoding: 'StorageBinaryString'
@@ -29,7 +27,7 @@ const getItem = function (key) {
   }
 
   try {
-    const jsonString = LZUTF8.decompress(
+    const jsonString = window.LZUTF8.decompress(
       storeValue,
       {
         inputEncoding: 'StorageBinaryString'
@@ -40,7 +38,6 @@ const getItem = function (key) {
   } catch (e) {
     return undefined;
   }
-  
 }
 
 export default {
