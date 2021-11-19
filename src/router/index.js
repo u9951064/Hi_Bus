@@ -1,6 +1,7 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import store from '@/store'
 import Layout from '../views/Layout.vue'
+import browserStorage from '@/utils/browserStorage';
 
 const routes = [
   {
@@ -98,14 +99,14 @@ router.beforeEach(async (to, from, next) => {
   document.getElementById('loading-cover').classList.remove('hide');
 
   // 判斷上次更新日期，如果超過一天則重新下載
-  if (parseInt(window.localStorage.getItem('busVersion/updatedAt') || 0) < new Date().getTime()) {
+  if (parseInt(browserStorage.getItem('busVersion/updatedAt') || 0) < new Date().getTime()) {
     await Promise.all([
       store.dispatch('busRoute/reset'),
       store.dispatch('vehicleInfo/reset'),
       store.dispatch('busRouteShape/reset'),
       store.dispatch('busStop/reset'),
     ]);
-    window.localStorage.setItem('busVersion/updatedAt', new Date().getTime() + 86400 * 1e3);
+    browserStorage.setItem('busVersion/updatedAt', new Date().getTime() + 86400 * 1e3);
   }
 
   // 下載路線資料

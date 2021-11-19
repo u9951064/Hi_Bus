@@ -1,3 +1,4 @@
+import browserStorage from '@/utils/browserStorage';
 import getSubRouteUID from '@/utils/getSubRouteUID';
 import GistApi from '../../libs/GistApi'
 import MotcApi from '../../libs/MotcApi'
@@ -16,8 +17,8 @@ const busRouteModule = {
 
   actions: {
     reset: () => {
-      window.localStorage.removeItem('busRoutes/cityOptions');
-      window.localStorage.removeItem('busRoutes/routes');
+      browserStorage.removeItem('busRoutes/cityOptions');
+      browserStorage.removeItem('busRoutes/routes');
     },
     init: async ({ state, dispatch, commit }) => {
       if (state.isInitialized) {
@@ -29,15 +30,13 @@ const busRouteModule = {
     },
     loadCityOption: async ({ commit }) => {
       // 讀取儲存的快取資料
-      const storedDataString = window.localStorage.getItem('busRoutes/cityOptions') || '';
-      if (storedDataString) {
-        const storedData = JSON.parse(storedDataString);
-        if (Object.keys(storedData).length) {
-          commit('setCityOptions', storedData);
-          return;
-        }
-        window.localStorage.removeItem('busRoutes/cityOptions');
+      const storedData = browserStorage.getItem('busRoutes/cityOptions') || '';
+      if (storedData instanceof Object && Object.keys(storedData).length) {
+        console.log(storedData)
+        commit('setCityOptions', storedData);
+        return;
       }
+      browserStorage.removeItem('busRoutes/cityOptions');
 
       const { data: cityList } = await GistApi.get('/V3/Map/Basic/City');
       commit('setCityOptions', cityList.map(c => {
@@ -53,15 +52,12 @@ const busRouteModule = {
     },
     loadRoutes: async ({ state, commit }) => {
       // 讀取儲存的快取資料
-      const storedDataString = window.localStorage.getItem('busRoutes/routes') || '';
-      if (storedDataString) {
-        const storedData = JSON.parse(storedDataString);
-        if (Object.keys(storedData).length) {
-          commit('addToCityRoute', storedData);
-          return;
-        }
-        window.localStorage.removeItem('busRoutes/routes');
+      const storedData = browserStorage.getItem('busRoutes/routes');
+      if (storedData instanceof Array && storedData.length) {
+        commit('addToCityRoute', storedData);
+        return;
       }
+      browserStorage.removeItem('busRoutes/routes');
 
       // 從 API 拉資料
       const requests = [];
@@ -114,11 +110,11 @@ const busRouteModule = {
     },
     setCityOptions(state, payload) {
       state.cityOptions.push(...payload);
-      window.localStorage.setItem('busRoutes/cityOptions', JSON.stringify(state.cityOptions));
+      browserStorage.setItem('busRoutes/cityOptions', state.cityOptions);
     },
     addToCityRoute(state, payload) {
       state.routes.push(...payload);
-      window.localStorage.setItem('busRoutes/routes', JSON.stringify(state.routes));
+      browserStorage.setItem('busRoutes/routes', state.routes);
     },
   },
   getters: {

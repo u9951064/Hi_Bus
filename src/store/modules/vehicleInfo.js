@@ -1,3 +1,4 @@
+import browserStorage from '@/utils/browserStorage';
 import MotcApi from '../../libs/MotcApi'
 
 /**
@@ -12,19 +13,16 @@ const vehicleInfoModule = {
 
   actions: {
     reset: () => {
-      window.localStorage.removeItem('vehicleInfo/busVehicleMap');
+      browserStorage.removeItem('vehicleInfo/busVehicleMap');
     },
     init: ({ commit }) => {
       // 讀取儲存的快取資料
-      const storedDataString = window.localStorage.getItem('vehicleInfo/busVehicleMap') || '';
-      if (storedDataString) {
-        const storedData = JSON.parse(storedDataString);
-        if (Object.keys(storedData).length) {
-          commit('setupVehicles', storedData);
-          return;
-        }
-        window.localStorage.removeItem('vehicleInfo/busVehicleMap');
+      const storedData = browserStorage.getItem('vehicleInfo/busVehicleMap') || '';
+      if (storedData instanceof Object && Object.keys(storedData).length) {
+        commit('setupVehicles', storedData);
+        return;
       }
+      browserStorage.removeItem('vehicleInfo/busVehicleMap');
     },
 
     loadVehicles: async ({ state, commit }, payload) => {
@@ -91,7 +89,7 @@ const vehicleInfoModule = {
       payload.forEach(r => {
         state.busVehicleMap[r.plateNumber] = r;
       });
-      window.localStorage.setItem('vehicleInfo/busVehicleMap', JSON.stringify(state.busVehicleMap));
+      browserStorage.setItem('vehicleInfo/busVehicleMap', JSON.stringify(state.busVehicleMap));
     },
   },
 };

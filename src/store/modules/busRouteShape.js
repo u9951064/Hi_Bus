@@ -1,3 +1,4 @@
+import browserStorage from '@/utils/browserStorage';
 import getSubRouteUID from '@/utils/getSubRouteUID';
 import MotcApi from '../../libs/MotcApi'
 
@@ -16,11 +17,7 @@ const busRouteShapeModule = {
 
   actions: {
     reset: () => {
-      Object.keys(window.localStorage).forEach(k => {
-        if (/^busRouteShape\//.test(k)) {
-          window.localStorage.removeItem(k);
-        }
-      });
+      browserStorage.removeWithRegex(/^busRouteShape\//);
     },
     loadShape: async ({ state, commit, dispatch }, payload) => {
       if (!payload) {
@@ -75,15 +72,12 @@ const busRouteShapeModule = {
       commit('clearRouteGeometries');
 
       // 讀取儲存的快取資料
-      const storedDataString = window.localStorage.getItem(`busRouteShape/${routeSaveKey}`) || '';
-      if (storedDataString) {
-        const storedData = JSON.parse(storedDataString);
-        if (!!storedData && storedData.saveKey == routeSaveKey && !!storedData.geometry) {
-          commit('setupRouteGeometries', storedData);
-          return;
-        }
-        window.localStorage.removeItem(`busRouteShape/${routeSaveKey}`);
+      const storedData = browserStorage.getItem(`busRouteShape/${routeSaveKey}`) || '';
+      if (!!storedData && storedData.saveKey == routeSaveKey && !!storedData.geometry) {
+        commit('setupRouteGeometries', storedData);
+        return;
       }
+      browserStorage.removeItem(`busRouteShape/${routeSaveKey}`);
 
       const { data: shapeList } = await MotcApi.get(
         city == 'InterBus' ?
@@ -108,7 +102,7 @@ const busRouteShapeModule = {
         saveRecord.records[routeUID][`${p.Direction}`] = geometry;
       });
 
-      window.localStorage.setItem(`busRouteShape/${routeSaveKey}`, JSON.stringify(saveRecord));
+      browserStorage.setItem(`busRouteShape/${routeSaveKey}`, saveRecord);
       commit('setupRouteGeometries', saveRecord);
     },
   },

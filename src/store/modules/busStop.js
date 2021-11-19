@@ -1,3 +1,4 @@
+import browserStorage from '@/utils/browserStorage';
 import getSubRouteUID from '@/utils/getSubRouteUID';
 import MotcApi from '../../libs/MotcApi'
 
@@ -16,19 +17,16 @@ const busStopModule = {
 
   actions: {
     reset: () => {
-      window.localStorage.removeItem('busStop/busRouteStopMap');
+      browserStorage.removeItem('busStop/busRouteStopMap');
     },
     init: ({ commit }) => {
       // 讀取儲存的快取資料
-      const storedDataString = window.localStorage.getItem('busStop/busRouteStopMap') || '';
-      if (storedDataString) {
-        const storedData = JSON.parse(storedDataString);
-        if (Object.keys(storedData).length) {
-          commit('saveBusStopMap', storedData);
-          return;
-        }
-        window.localStorage.removeItem('busStop/busRouteStopMap');
+      const storedData = browserStorage.getItem('busStop/busRouteStopMap') || '';
+      if (Object.keys(storedData).length) {
+        commit('saveBusStopMap', storedData);
+        return;
       }
+      browserStorage.removeItem('busStop/busRouteStopMap');
     },
     loadBusStop: async ({ state, commit }, payload) => {
       const { city, uniqueIndex, routeName } = payload;
@@ -204,7 +202,7 @@ const busStopModule = {
       Object.keys(payload).forEach(k => {
         state.busRouteStopMap[k] = payload[k];
       });
-      window.localStorage.setItem('busStop/busRouteStopMap', JSON.stringify(state.busRouteStopMap));
+      browserStorage.setItem('busStop/busRouteStopMap', state.busRouteStopMap);
     },
     saveStopArrivalInfos(state, payload) {
       const { uniqueIndex, stopInfos, muteUpdateArrivals } = payload;
