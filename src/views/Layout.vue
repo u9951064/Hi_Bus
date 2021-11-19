@@ -167,7 +167,7 @@ export default {
       color: #fff;
 
       & > * ~ * {
-        margin-left: 0.25rem;
+        margin-left: 1rem;
       }
 
       & > .nearby,

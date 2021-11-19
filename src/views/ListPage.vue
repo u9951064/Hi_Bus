@@ -27,6 +27,16 @@
           </div>
         </div>
         <div class="table-content" ref="scoller">
+          <div class="not-found" v-if="searchResults.length === 0">
+            <template v-if="isFavoritePage">
+              <span>
+                Oh，Hi BUS 還不知道您最愛的路線，您可以：<br/>
+                <a class="not-fond-option" @click="goToHome()"><img src="../assets/icons/search-purple-icon.svg"/> 搜尋路線</a>
+                <a class="not-fond-option" @click="goToNearBy()"><img src="../assets/icons/bubble-yellow-icon.svg"/> 附近站牌</a>
+              </span>
+            </template>
+            <span v-else>Oh，Hi BUS 找不到符合搜尋的結果，請再試看看其他的搜尋吧!</span>
+          </div>
           <div class="city-group" v-for="(c, i) in searchResults" :key="i">
             <div class="city-name" :ref="c.city">{{ c.cityName }}</div>
             <div
@@ -86,6 +96,16 @@ export default {
         params: {
           uniqueIndex: route.uniqueIndex,
         },
+      });
+    },
+    goToHome() {
+      return this.$router.push({
+        name: "Home",
+      });
+    },
+    goToNearBy() {
+      return this.$router.push({
+        name: "NearbyStations",
       });
     },
     scrollToCity(city) {
@@ -305,6 +325,30 @@ export default {
       &:active {
         color: #ffffff;
         background: #5468ff;
+      }
+    }
+  }
+
+  & .not-found {
+    font-weight: bold;
+    font-size: 1.125rem;
+    letter-spacing: 0.02em;
+    color: #040D2E;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 90%;
+
+    & .not-fond-option {
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      padding: 2rem 1rem;
+      font-weight: normal;
+
+      & > img {
+        padding-right: 0.55rem;
+        height: 1rem;
       }
     }
   }

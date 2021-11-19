@@ -12,6 +12,9 @@
         @back="goBack"
       />
     </div>
+    <div class="hint" v-if="getGPSHint !== ''">
+      <span v-html="getGPSHint"></span>
+    </div>
   </div>
 </template>
 
@@ -19,6 +22,7 @@
 import store from "@/store";
 import { mapGetters, mapState } from "vuex";
 import NearbyStopMap from "@/components/NearbyStopMap.vue";
+import GPSStateConst from "@/constants/GPSStateConst";
 
 const initialHandler = async (to, from, next) => {
   await store.dispatch("nearbyStop/loadNearby");
@@ -44,7 +48,7 @@ export default {
   methods: {
     selectStation(stationName) {
       this.$store.commit("nearbyStop/setupFocusStation", stationName);
-      this.$router[this.$route.name === 'NearbyArrivals' ? 'replace' : 'push']({
+      this.$router[this.$route.name === "NearbyArrivals" ? "replace" : "push"]({
         name: "NearbyArrivals",
         params: {
           stationName,
@@ -53,7 +57,7 @@ export default {
     },
     goBack() {
       return this.$router.back();
-    }
+    },
   },
   computed: {
     ...mapState("nearbyStop", {
@@ -63,6 +67,18 @@ export default {
       nearbyStopList: "getNearbyList",
       currentStation: "currentStation",
     }),
+    getGPSHint() {
+      switch (this.$store.state.nearbyStop.GPSState) {
+        case GPSStateConst.SUCCESS:
+          return "";
+        case GPSStateConst.LOADING:
+          return "GPS 定位中...";
+        case GPSStateConst.EMPTY:
+        case GPSStateConst.PERMISSION_DENIED:
+          return "請開啟 GPS 定位權限";
+      }
+      return "GPS 錯誤，請確定已經開啟定位權限";
+    },
   },
 };
 </script>
@@ -126,6 +142,25 @@ export default {
       overflow-y: hidden;
       box-shadow: 0px 5px 20px rgba(228, 231, 240, 0.8);
     }
+  }
+
+  .hint {
+    position: absolute;
+    z-index: 5;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    background: rgba(244,245,249, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.25rem;
+    letter-spacing: 0.02em;
+    font-weight: bold;
+    color: #040D2E;
+    padding-bottom: 10%;
   }
 }
 </style>
