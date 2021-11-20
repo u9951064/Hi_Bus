@@ -35,7 +35,7 @@
                 <a class="not-fond-option" @click="goToNearBy()"><img src="../assets/icons/bubble-yellow-icon.svg"/> 附近站牌</a>
               </span>
             </template>
-            <span v-else>Oh，Hi BUS 找不到符合搜尋的結果，請再試看看其他的搜尋吧!</span>
+            <span v-else>Oh，找不到符合搜尋的結果，請再試看看其他的搜尋吧！</span>
           </div>
           <div class="city-group" v-for="(c, i) in searchResults" :key="i">
             <div class="city-name" :ref="c.city">{{ c.cityName }}</div>
@@ -345,6 +345,7 @@ export default {
       align-items: center;
       padding: 2rem 1rem;
       font-weight: normal;
+      white-space: nowrap;
 
       & > img {
         padding-right: 0.55rem;

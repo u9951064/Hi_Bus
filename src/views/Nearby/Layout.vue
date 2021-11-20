@@ -11,6 +11,9 @@
         @focusStation="selectStation"
         @back="goBack"
       />
+      <div class="back-btn" v-if="currentStation" @click="goBack">
+        <img src="../../assets/icons/back-icon.svg" />
+      </div>
     </div>
     <div class="hint" v-if="getGPSHint !== ''">
       <span v-html="getGPSHint"></span>
@@ -112,6 +115,25 @@ export default {
       right: 0;
       left: 0;
       height: 60%;
+
+      & > .back-btn {
+        position: absolute;
+        z-index: 5;
+        top: 0.875rem;
+        left: 0.875rem;
+        width: 2rem;
+        height: 2rem;
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 50%;
+        background: #fff;
+        border: 1px solid #cacfde;
+
+        & > img {
+          height: 0.75rem;
+        }
+      }
     }
   }
 
@@ -141,6 +163,10 @@ export default {
       border-radius: 0 6px 6px 0;
       overflow-y: hidden;
       box-shadow: 0px 5px 20px rgba(228, 231, 240, 0.8);
+
+      & > .back-btn {
+        display: none;
+      }
     }
   }
 
@@ -152,14 +178,14 @@ export default {
     right: 0;
     bottom: 0;
     margin: auto;
-    background: rgba(244,245,249, 0.7);
+    background: rgba(244, 245, 249, 0.7);
     display: flex;
     justify-content: center;
     align-items: center;
     font-size: 1.25rem;
     letter-spacing: 0.02em;
     font-weight: bold;
-    color: #040D2E;
+    color: #040d2e;
     padding-bottom: 10%;
   }
 }

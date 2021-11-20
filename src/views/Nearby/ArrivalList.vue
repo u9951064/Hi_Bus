@@ -7,7 +7,7 @@
       <div class="col title text-left">
         {{ currentStation.stationName }}
         <span class="distance-tag"
-          ><img src="../../assets/icons/bubble-orange-icon.svg" />{{
+          ><img src="../../assets/icons/bubble-black-icon.svg" />{{
             currentStation.distance
           }}m</span
         >
@@ -80,7 +80,7 @@ export default {
   },
   methods: {
     goBack() {
-      this.$store.commit("nearbyStop/setupFocusStation", '');
+      this.$store.commit("nearbyStop/setupFocusStation", "");
       return this.$router.back();
     },
     replaceSymbol(text) {
@@ -156,6 +156,10 @@ export default {
 
       & > img {
         height: 0.75rem;
+      }
+
+      @media (max-width: 1023px) {
+        display: none;
       }
     }
   }

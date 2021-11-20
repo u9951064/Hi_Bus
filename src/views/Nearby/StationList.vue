@@ -2,7 +2,11 @@
   <div class="nearby-station-list">
     <div class="row nav">
       <div class="col title text-left">附近公車站牌 <span>500m內</span></div>
-      <div class="col-auto pointer" :class="{loading: isGPSLoading}" @click="updatePosition">
+      <div
+        class="col-auto pointer"
+        :class="{ loading: isGPSLoading }"
+        @click="updatePosition"
+      >
         <img src="../../assets/icons/reload-icon.svg" alt="更新" />
       </div>
     </div>
@@ -26,9 +30,8 @@
         </div>
         <div class="station-distance">
           <span class="distance-tag"
-            ><img src="../../assets/icons/bubble-orange-icon.svg" /> {{
-              s.distance
-            }}m</span
+            ><img src="../../assets/icons/bubble-black-icon.svg" />
+            {{ s.distance }}m</span
           >
         </div>
       </div>
@@ -37,15 +40,15 @@
 </template>
 
 <script>
-import GPSStateConst from '@/constants/GPSStateConst';
+import GPSStateConst from "@/constants/GPSStateConst";
 import { mapGetters, mapState } from "vuex";
 
 export default {
   name: "NearbyStationList",
   methods: {
     updatePosition() {
-      if(!this.isGPSLoading) {
-        this.$store.dispatch('nearbyStop/loadNearby');
+      if (!this.isGPSLoading) {
+        this.$store.dispatch("nearbyStop/loadNearby");
       }
     },
     selectStation(stationName) {
@@ -67,7 +70,7 @@ export default {
     }),
     isGPSLoading() {
       return this.GPSState === GPSStateConst.LOADING;
-    }
+    },
   },
 };
 </script>
@@ -222,6 +225,10 @@ export default {
     border: 1px solid #cacfde;
     border-radius: 100rem;
     width: 5.2rem;
+
+    & > img {
+      margin-right: 0.3rem;
+    }
   }
 }
 </style>

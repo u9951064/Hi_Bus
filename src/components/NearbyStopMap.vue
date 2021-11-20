@@ -14,6 +14,7 @@ import { markRaw } from "@vue/reactivity";
 import { apiKey } from "@/configs/HereMapConfig";
 
 const closeBtn = require("../assets/icons/close-icon.svg");
+const distanceTag = require("../assets/icons/bubble-black-icon.svg");
 
 export default {
   name: "NearbyStopMap",
@@ -105,7 +106,7 @@ export default {
       this.mapObject.map.addObject(this.mapObject.focusGroup);
 
       this.mapObject.stopGroup.addEventListener("tap", (evt) => {
-        this.$emit('focusStation', evt.target.getData().stationName);
+        this.$emit("focusStation", evt.target.getData().stationName);
       });
 
       this.$nextTick(() => {
@@ -138,7 +139,7 @@ export default {
         const marker = document.createElement("div");
         marker.innerHTML = `
           <div class="stop-marker">
-            <img src="${require("../assets/icons/bubble-orange-icon.svg")}" />
+            <img src="${distanceTag}" />
           </div>
         `;
         return new H.map.DomMarker(s.position, {
@@ -158,15 +159,17 @@ export default {
       const H = window.H;
       const markerDom = document.createElement("div");
       const closeMethod = () => {
-        this.$emit('back');
-      }
+        this.$emit("back");
+      };
       markerDom.innerHTML = `
         <div class="focus-marker">
           <a class="map-close-btn">
             <img src="${closeBtn}" />
           </a>
           <div class="map-station-name">${station.stationName}</div>
-          <div class="map-station-distance">距離 ${station.distance} m</div>
+          <div class="map-station-distance">與你的距離 <span class="distance-tag"
+          ><img src="${distanceTag}" /> ${station.distance} m</span
+          ></div>
         </div>
       `;
       const marker = new H.map.DomMarker(station.position, {
@@ -240,7 +243,10 @@ export default {
         this.drawFocusMarker(this.focusBusStation);
         if (this.focusBusStation) {
           this.$nextTick(() => {
-            this.setCenter(this.focusBusStation.position.lng, this.focusBusStation.position.lat);
+            this.setCenter(
+              this.focusBusStation.position.lng,
+              this.focusBusStation.position.lat
+            );
           });
         }
       }
@@ -331,16 +337,34 @@ export default {
     }
 
     & > .map-station-name {
-      color: #5468ff;
+      color: #040d2e;
       font-size: 1.25rem;
       font-weight: 700;
       white-space: nowrap;
       overflow: hidden;
+      padding-bottom: 1rem;
     }
 
     & > .map-station-distance {
       white-space: nowrap;
       overflow: hidden;
+
+      & > .distance-tag {
+        color: #8c90ab;
+        font-size: 0.75rem;
+        width: 5rem;
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        background: #f8f8fb;
+        border: 1px solid #cacfde;
+        border-radius: 100rem;
+        padding: 0.25rem 0;
+        & > img {
+          height: 1rem;
+          margin-right: 0.25rem;
+        }
+      }
     }
   }
 }
