@@ -6,7 +6,7 @@ module.exports = {
         : '/',
     productionSourceMap: process.env.NODE_ENV !== 'production',
     configureWebpack: {
-        plugins: [
+        plugins: process.env.NODE_ENV !== 'production' ? [] : [
             new JavaScriptObfuscator({
                 // 壓縮程式碼
                 compact: true,
