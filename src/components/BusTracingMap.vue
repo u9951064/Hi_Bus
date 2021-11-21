@@ -283,7 +283,6 @@ export default {
               const el = clonedElement.querySelector(".map-close-btn");
               el.addEventListener("click", closeMethod);
               el.addEventListener("touchstart", closeMethod);
-                
             },
             // the function is called every time marker leaves the viewport
             onDetach: function (clonedElement) {
@@ -388,6 +387,7 @@ export default {
   }
 
   & .stop-marker {
+    cursor: pointer;
     position: relative;
     display: block;
     margin: -150% -50%;
@@ -410,6 +410,7 @@ export default {
   }
 
   & .bus-marker {
+    cursor: pointer;
     position: relative;
     display: block;
     margin: -75% -50%;
@@ -421,13 +422,12 @@ export default {
 
   & .map-info-box {
     position: relative;
-    width: 100%;
-    max-width: 20rem;
+    width: 20rem;
     padding: 1.25rem;
     background: rgba(255, 255, 255, 0.97);
     border-radius: 0.5rem;
     text-align: left;
-    margin: -48% -50%;
+    margin: -55% -50%;
     box-shadow: 0px 5px 20px rgba(228, 231, 240, 0.8);
 
     &::after {
@@ -468,6 +468,7 @@ export default {
       font-weight: 700;
       white-space: nowrap;
       overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     & > .map-info-inner {
@@ -491,6 +492,9 @@ export default {
           font-size: 1rem;
           font-weight: 700;
           white-space: nowrap;
+          text-overflow: ellipsis;
+          overflow: hidden;
+          white-space: nowrap;
         }
 
         & > .map-head-sign {
@@ -499,6 +503,9 @@ export default {
           overflow: hidden;
           font-size: 0.875rem;
           font-weight: 500;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          overflow: hidden;
           white-space: nowrap;
         }
       }

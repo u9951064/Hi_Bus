@@ -64,8 +64,8 @@ export default {
   }
 }
 
-// 768px 以上
-@media (min-width: 768px) {
+// 1025px 以上
+@media (min-width: 1025px) {
   .favorite-btn {
     border-radius: 1000rem;
     border: 1px solid #cacfde;
@@ -98,6 +98,7 @@ export default {
     &.active,
     &.active:active,
     &.active:hover {
+      border-color: #00dcd1;
       background: #00dcd1;
       color: #fff;
 

@@ -42,7 +42,7 @@
         <div class="col text-left">站名</div>
         <div class="col-auto text-right">車牌號碼及位置</div>
       </div>
-      <div class="stop-list">
+      <div class="stop-list" ref="stopList">
         <template
           v-for="(o, i) in stops"
           :key="selectedRoute.subRouteUID + '-' + o.stopUID"
@@ -175,6 +175,11 @@ export default {
     },
     selectDirection(route) {
       this.$store.commit("routeSelector/setSelectedRoute", route);
+      this.$refs.stopList.scrollTo({
+        left: 0,
+        top: 0,
+        behavior: "smooth",
+      });
     },
     focusStop(stopInfo) {
       this.$refs.busMap.openInfoBox(stopInfo);
@@ -292,7 +297,7 @@ export default {
           padding: 0.375rem 0.875rem;
           border: 1px solid #cacfde;
           border-radius: 1000rem;
-          font-size: 0.875rem;
+          font-size: 1rem;
           color: #8c90ab;
         }
       }
@@ -334,7 +339,7 @@ export default {
         padding: 0.375rem 0.875rem;
         border: 1px solid #cacfde;
         border-radius: 1000rem;
-        font-size: 0.875rem;
+        font-size: 1rem;
         color: #8c90ab;
         background: #fff;
       }
@@ -419,6 +424,11 @@ export default {
       align-items: center;
       padding-bottom: 0.5rem;
 
+      @media (max-width: 1023px) {
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
+      }
+
       & > .route-number {
         flex-basis: 0;
         flex-grow: 1;
@@ -427,6 +437,9 @@ export default {
         font-weight: 600;
         letter-spacing: 0.05em;
         text-align: left;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
       }
 
       & > .favorite-btn {
@@ -439,6 +452,9 @@ export default {
         max-width: 100%;
         font-size: 1rem;
         text-align: left;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
       }
     }
 
@@ -477,7 +493,7 @@ export default {
           background: #5468ff;
         }
 
-        @media(max-width: 767px) {
+        @media (max-width: 767px) {
           font-size: 0.875rem;
           padding: 0.5rem 0;
         }

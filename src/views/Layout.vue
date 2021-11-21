@@ -110,7 +110,7 @@ export default {
       width: 100%;
       background: linear-gradient(90deg, #5468ff 0%, #01d8d0 50%, #5468ff 100%);
       background-size: 200%;
-      animation: gradient 3s ease infinite;
+      animation: gradient 1.5s ease infinite;
     }
   }
 
@@ -119,15 +119,15 @@ export default {
     font-size: 0.75rem;
     font-weight: 300;
     color: #8c90ab;
-    padding: 0.5rem 0;
+    padding: 0 0 0.5rem 0;
 
-    @media(max-width: 767px) {
+    @media (max-width: 767px) {
       font-size: 0.75rem;
-      padding: 0.25rem 0 0.5rem;
+      padding: 0rem 0 0.5rem;
       letter-spacing: 0.08em;
     }
 
-    @media(max-width: 330px) {
+    @media (max-width: 330px) {
       font-size: 0.5rem;
       padding: 0 0 0.5rem;
       letter-spacing: 0.01em;
@@ -135,7 +135,7 @@ export default {
   }
 
   & .header-layout {
-    padding: 0.5rem;
+    padding: 0.5rem 1rem;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
@@ -167,7 +167,10 @@ export default {
       color: #fff;
 
       & > * ~ * {
-        margin-left: 1rem;
+        margin-left: 2rem;
+        @media (max-width: 767px) {
+          margin-left: 1rem;
+        }
       }
 
       & > .nearby,
@@ -181,6 +184,10 @@ export default {
           content: "";
           height: 1rem;
           width: 1rem;
+          @media(max-width: 767px) {
+            height: 1.25rem;
+            width: 1.25rem;
+          }
           background-size: contain;
           background-repeat: no-repeat;
           background-position: center;

@@ -176,10 +176,13 @@ export default {
     flex-wrap: wrap;
     justify-content: flex-start;
     align-items: center;
+    overflow: hidden;
 
     & > .station-name {
       flex: 0 0 75%;
       overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
 
       @media (max-width: 767px) {
         flex: 0 0 100%;

@@ -34,10 +34,10 @@ const generateCountDownString = function (timestampOffset) {
   return timestampOffset <= 60
     ? `${
         Math.floor(timestampOffset / 10) * 10
-      } <span style="font-size:0.725rem;font-weight:400;">秒</span>`
+      } <span style="font-size:0.725rem;font-weight:400;padding-left:0.2rem">秒</span>`
     : `${Math.floor(
         timestampOffset / 60
-      )} <span style="font-size:0.725rem;font-weight:400;">分</span>`;
+      )} <span style="font-size:0.725rem;font-weight:400;padding-left:0.2rem">分</span>`;
 };
 
 export default {

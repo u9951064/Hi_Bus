@@ -71,6 +71,7 @@ export default {
     white-space: nowrap;
     overflow: hidden;
     text-align: left;
+    text-overflow: ellipsis;
   }
 
   & .plate-number {

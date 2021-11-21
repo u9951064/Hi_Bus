@@ -140,6 +140,9 @@ export default {
       letter-spacing: 0.02em;
       color: #040d2e;
       font-weight: bold;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
     }
 
     & > .back-btn {
@@ -217,12 +220,18 @@ export default {
     white-space: nowrap;
 
     & > .route-no {
+      width: 100%;
       font-size: 1.125rem;
       font-weight: 700;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     & > .route-name {
+      width: 100%;
       font-size: 1rem;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
   }
 

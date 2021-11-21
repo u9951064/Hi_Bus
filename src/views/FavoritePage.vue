@@ -1,5 +1,5 @@
 <template>
-  <ListPage :records="searchResults" :isFavoritePage="true"/>
+  <ListPage :records="records" :isFavoritePage="true"/>
 </template>
 
 <script>
@@ -10,8 +10,19 @@ export default {
   components: {
     ListPage,
   },
-  computed: {
-    searchResults() {
+  data() {
+    return {
+      records: {}
+    }
+  },
+  mounted() {
+    this.loadFavorite();
+  },
+  beforeRouteUpdate() {
+    this.loadFavorite();
+  },
+  methods: {
+    loadFavorite() {
       const result = {};
       Object.keys(this.$store.state.favoritePool.favoriteMap).forEach(
         (city) => {
@@ -21,7 +32,7 @@ export default {
           )[city] || { city, routes: [] };
         }
       );
-      return result;
+      this.records =  result;
     },
   },
 };

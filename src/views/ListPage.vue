@@ -9,7 +9,7 @@
           <span>個公車路線</span>
         </span>
         <a
-          class="tag"
+          class="tag pointer"
           v-for="c in cityList"
           :key="c.city"
           @click="scrollToCity(c.city)"
@@ -27,21 +27,21 @@
           </div>
         </div>
         <div class="table-content" ref="scoller">
-          <div class="not-found" v-if="searchResults.length === 0">
+          <div class="not-found" v-if="resultCount === 0">
             <template v-if="isFavoritePage">
               <span>
-                Oh，Hi BUS 還不知道您最愛的路線，您可以：<br/>
-                <a class="not-fond-option" @click="goToHome()"><img src="../assets/icons/search-purple-icon.svg"/> 搜尋路線</a>
-                <a class="not-fond-option" @click="goToNearBy()"><img src="../assets/icons/bubble-yellow-icon.svg"/> 附近站牌</a>
+                Oh，Hi BUS! 還不知道您最愛的路線，您可以：<br/>
+                <a class="not-fond-option pointer" @click="goToHome()"><img src="../assets/icons/search-purple-icon.svg"/> 搜尋路線</a>
+                <a class="not-fond-option pointer" @click="goToNearBy()"><img src="../assets/icons/bubble-yellow-icon.svg"/> 附近站牌</a>
               </span>
             </template>
             <span v-else>Oh，找不到符合搜尋的結果，請再試看看其他的搜尋吧！</span>
           </div>
-          <div class="city-group" v-for="(c, i) in searchResults" :key="i">
+          <div class="city-group" v-for="c in cityList" :key="c.city">
             <div class="city-name" :ref="c.city">{{ c.cityName }}</div>
             <div
               class="table-row pointer"
-              v-for="r in c.routes"
+              v-for="r in records[c.city].routes"
               :key="r.uniqueIndex"
               @click="goTracing(r)"
             >
@@ -113,19 +113,13 @@ export default {
     },
   },
   computed: {
-    searchResults() {
-      return Object.values(this.records).filter((r) => r.routes.length !== 0);
-    },
     resultCount() {
-      return this.searchResults.reduce((c, d) => (c += d.routes.length), 0);
+      return this.cityList.reduce((c, d) => (c += this.records[d.city].routes.length), 0);
     },
     cityList() {
-      return this.searchResults.map((d) => {
-        return {
-          cityName: d.cityName,
-          city: d.city,
-        };
-      });
+      return this.$store.state.busRoute.cityOptions.filter(c => 
+        c.city in this.records && this.records[c.city].routes.length > 0
+      );
     },
   },
 };
@@ -223,6 +217,9 @@ export default {
         padding-left: 0;
         padding-right: 0;
       }
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
     }
 
     & > .bus-headsign {
@@ -234,6 +231,9 @@ export default {
         padding-left: 0;
         padding-right: 0;
       }
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
     }
   }
 
@@ -306,8 +306,7 @@ export default {
     }
 
     & .tag {
-      cursor: pointer;
-      margin-right: 1rem;
+      margin-right: 0.5rem;
       padding: 0.5rem 1.25rem;
       background-color: #fff;
       color: #5468ff;

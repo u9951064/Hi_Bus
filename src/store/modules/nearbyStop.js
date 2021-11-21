@@ -43,7 +43,10 @@ const nearbyStopModule = {
       commit('setupGPSState', GPSStateConst.LOADING);
       try {
         // 嘗試要求取得 GPS 位置
-        const geolocationPosition = await getGeolocation();
+        const [geolocationPosition] = await Promise.all([
+          getGeolocation(),
+          new Promise(r => setTimeout(r, 300))
+        ]);
         if (!geolocationPosition.coords) {
           commit('setupGPSState', GPSStateConst.FAILED);
         } else {
@@ -62,10 +65,10 @@ const nearbyStopModule = {
       }
 
       // 移動距離太短，不進行查詢
-      if(getDistance(
-          { latitude: state.lastQueryGPS.lat, longitude: state.lastQueryGPS.lng },
-          { latitude: state.geolocation.lat, longitude: state.geolocation.lng }
-        ) < 5) {
+      if (getDistance(
+        { latitude: state.lastQueryGPS.lat, longitude: state.lastQueryGPS.lng },
+        { latitude: state.geolocation.lat, longitude: state.geolocation.lng }
+      ) < 5) {
         return;
       }
 
@@ -123,10 +126,10 @@ const nearbyStopModule = {
       }
 
       // 移動距離太短，不進行查詢
-      if(getDistance(
-          { latitude: state.lastQueryGPS.lat, longitude: state.lastQueryGPS.lng },
-          { latitude: state.geolocation.lat, longitude: state.geolocation.lng }
-        ) < 5 && new Date().getTime() < state.lastArrivalUpdatedAt + 5000) {
+      if (getDistance(
+        { latitude: state.lastQueryGPS.lat, longitude: state.lastQueryGPS.lng },
+        { latitude: state.geolocation.lat, longitude: state.geolocation.lng }
+      ) < 5 && new Date().getTime() < state.lastArrivalUpdatedAt + 5000) {
         return;
       }
 

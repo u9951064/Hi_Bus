@@ -3,8 +3,6 @@
     <select
       class="city-selector"
       v-model.trim="selectedCity"
-      @focus="focusHandler"
-      @blur="blurHandler"
     >
       <option value="">全部縣市</option>
       <option v-for="o in cityOptions" :key="o.city" :value="o.city">
@@ -236,7 +234,7 @@ export default {
 
     & > .keyword-input,
     & > .city-selector {
-      color: #8c90ab;
+      color: #040d2e;
       &::placeholder {
         color: #8c90ab;
       }

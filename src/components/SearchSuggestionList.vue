@@ -3,7 +3,7 @@
     <div class="city-group" v-for="c in searchResults" :key="c.city">
       <div class="city-name">{{ c.cityName }}</div>
       <div
-        class="route-item"
+        class="route-item pointer"
         v-for="r in c.routes"
         :key="r.uniqueIndex"
         @click="selectRoute(r)"
@@ -78,6 +78,7 @@ export default {
 
   & > .city-group {
     text-align: left;
+    padding-bottom: 1.5rem;
     & > .city-name {
       color: #5468FF;
       padding: 0.25rem 0;
@@ -99,6 +100,9 @@ export default {
         font-weight: 600;
         font-size: 1rem;
         padding: 0.75rem 0;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
       }
 
       & > .route-item-headSign {
@@ -106,6 +110,9 @@ export default {
         max-width: 70%;
         font-size: 1rem;
         padding: 0.75rem 0 0.75rem 0.25rem;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
       }
 
       @media(min-width: 768px) {

@@ -267,6 +267,7 @@ export default {
   }
 
   & .stop-marker {
+    cursor: pointer;
     position: relative;
     display: block;
     margin: -150% -50%;
@@ -342,6 +343,7 @@ export default {
       font-weight: 700;
       white-space: nowrap;
       overflow: hidden;
+      text-overflow: ellipsis;
       padding-bottom: 1rem;
     }
 
