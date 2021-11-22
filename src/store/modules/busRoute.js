@@ -121,9 +121,10 @@ const busRouteModule = {
     searchRoutes: state => (city, keyword) => {
       // 確認關鍵字有輸入
       keyword = (keyword || '').toLocaleLowerCase().trim();
-      if (keyword === '') {
+      if (city === '' && keyword === '') {
         return {};
       }
+
       // 找出符合的地址
       city = (city || '').toLocaleLowerCase().trim();
       const result = state.cityOptions.reduce((c, o) => {
@@ -152,7 +153,7 @@ const busRouteModule = {
         skipIndex[route.uniqueIndex] = route.uniqueIndex;
 
         // 檢查是否命中關鍵字
-        if (-1 === route.searchPatten.toLocaleLowerCase().indexOf(keyword)) {
+        if (keyword !== '' && -1 === route.searchPatten.toLocaleLowerCase().indexOf(keyword)) {
           return;
         }
 

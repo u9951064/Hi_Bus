@@ -41,7 +41,7 @@ const routes = [
         path: 'result',
         name: 'SearchResult',
         beforeEnter: (to, from, next) => {
-          if (store.state.routeSelector.inputKeyword == '') {
+          if (store.state.routeSelector.inputKeyword == '' && store.state.routeSelector.selectedCity == '') {
             next({
               name: 'Home'
             });

@@ -193,7 +193,7 @@ export default {
     }
 
     & > .bus-favorite {
-      text-align: center;
+      text-align: left;
       flex: 0 0 calc(7rem + 0.75rem + 0.75rem);
       max-width: calc(7rem + 0.75rem + 0.75rem);
       padding-left: 0.75rem;
