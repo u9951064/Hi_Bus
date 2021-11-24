@@ -57,19 +57,19 @@ export default {
     bottom: 3%;
 
     animation-iteration-count: infinite;
-    animation-timing-function: ease;
+    animation-timing-function: ease-in-out;
     animation-name: bus-animation-xl;
-    animation-duration: 23s;
+    animation-duration: 10s;
     width: 15%;
 
     @media (max-width: 1023px) {
       animation-name: bus-animation-md;
-      animation-duration: 18s;
+      animation-duration: 7.5s;
       width: 25%;
     }
     @media (max-width: 767px) {
       animation-name: bus-animation-sm;
-      animation-duration: 15s;
+      animation-duration: 5s;
       width: 40%;
     }
   }
@@ -111,31 +111,31 @@ export default {
 
 @keyframes bus-animation-xl {
   0% {
-    left: -20%;
+    left: -17%;
   }
-  30% {
-    left: 20%;
+  35% {
+    left: 30%;
   }
-  60% {
-    left: 60%;
+  40% {
+    left: 30%;
   }
   100% {
-    left: 120%;
+    left: 117%;
   }
 }
 
 @keyframes bus-animation-md {
   0% {
-    left: -30%;
+    left: -26%;
   }
-  30% {
-    left: 20%;
+  35% {
+    left: 22%;
   }
-  60% {
-    left: 60%;
+  38% {
+    left: 22%;
   }
   100% {
-    left: 130%;
+    left: 126%;
   }
 }
 
@@ -144,7 +144,10 @@ export default {
     left: -60%;
   }
   40% {
-    left: 30%;
+    left: 28%;
+  }
+  45% {
+    left: 28%;
   }
   100% {
     left: 160%;
