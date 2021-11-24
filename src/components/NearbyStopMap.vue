@@ -359,7 +359,6 @@ export default {
         justify-content: center;
         align-items: center;
         background: #f8f8fb;
-        border: 1px solid #cacfde;
         border-radius: 100rem;
         padding: 0.25rem 0;
         & > img {

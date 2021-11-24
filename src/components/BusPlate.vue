@@ -73,8 +73,7 @@ export default {
   white-space: nowrap;
   padding: 0.5rem 1rem;
   border-radius: 100rem;
-  background: #fff;
-  border: 1px solid #cacfde;
+  background: #f8f8fb;
   color: #8c90ab;
   font-weight: 300;
   font-size: 0.75rem;

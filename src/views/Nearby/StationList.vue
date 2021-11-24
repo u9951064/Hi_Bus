@@ -225,9 +225,10 @@ export default {
     justify-content: center;
     align-items: center;
     padding: 0.375rem 0;
-    border: 1px solid #cacfde;
     border-radius: 100rem;
     width: 5.2rem;
+    background: #F8F8FB;
+    color: #8c90ab;
 
     & > img {
       margin-right: 0.3rem;

@@ -106,24 +106,21 @@ export default {
   }
 
   &.status-empty {
-    color: #8c90ab;
-    background: #fff;
-    border: 1px solid #cacfde;
+    color: #8C90AB;
+    background: #F8F8FB;
     font-size: 0.875rem;
   }
 
   &.status-nearby {
     color: #fff;
     background: #ff6464;
-    border: 1px solid #ff6464;
     font-size: 0.875rem;
   }
 
   &.status-estimate {
     font-weight: bold;
     color: #040d2e;
-    background: #f8f8fb;
-    border: 1px solid #8c90ab;
+    background: #E7E9F2;
     font-size: 1.125rem;
   }
 }
