@@ -66,6 +66,7 @@ const routes = [
       },
       {
         path: 'nearby',
+        name: 'Nearby',
         meta: { hideLayoutSearchBar: false, mobileFullPageMode: false, mobileHideFooterMode: true },
         component: () => import(/* webpackChunkName: "Nearby" */ '../views/Nearby/Layout.vue'),
         children: [

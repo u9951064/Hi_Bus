@@ -15,10 +15,10 @@
           <SearchBar v-if="!needHideSearchBar" />
         </div>
         <div class="menu-bar">
-          <a class="nearby btn" @click="goToNearBy">
+          <a class="nearby btn" :class="{active: activeMenuItem('Nearby')}" @click="goToNearBy">
             <span class="menu-text">附近站牌</span>
           </a>
-          <a class="favorite btn" @click="goToFavorite">
+          <a class="favorite btn" :class="{active: activeMenuItem('Favorite')}" @click="goToFavorite">
             <span class="menu-text">我的最愛</span>
           </a>
         </div>
@@ -55,8 +55,14 @@ export default {
         name: "NearbyStations",
       });
     },
+    activeMenuItem(routeName) {
+      return this.$route.matched.reduce((c,r) => {
+        return c || r.name === routeName;
+      }, false);
+    },
   },
   computed: {
+    
     needHideSearchBar() {
       return !!(this.$route.meta.hideLayoutSearchBar || false);
     },
@@ -195,6 +201,9 @@ export default {
           margin-right: 0.2rem;
         }
 
+        &.active {
+          color: #ffc42d;
+        }
         @media (min-width: 769px) {
           &:hover {
             color: #ffc42d;
@@ -206,6 +215,9 @@ export default {
         &:before {
           background-image: url("../assets/icons/bubble-white-icon.svg");
         }
+        &.active:before {
+          background-image: url("../assets/icons/bubble-yellow-icon.svg");
+        }
         @media (min-width: 769px) {
           &:hover:before {
             background-image: url("../assets/icons/bubble-yellow-icon.svg");
@@ -216,6 +228,9 @@ export default {
       & > .favorite {
         &:before {
           background-image: url("../assets/icons/favorite-white-icon.svg");
+        }
+        &.active:before {
+          background-image: url("../assets/icons/favorite-yellow-icon.svg");
         }
         @media (min-width: 769px) {
           &:hover:before {
