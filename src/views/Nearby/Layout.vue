@@ -132,7 +132,7 @@ export default {
         border: 1px solid #cacfde;
 
         & > img {
-          height: 0.75rem;
+          height: 1rem;
         }
       }
     }

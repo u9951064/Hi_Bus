@@ -46,7 +46,7 @@ export default {
   width: auto;
   white-space: nowrap;
   color: #8c90ab;
-  font-size: 0.875rem;
+  font-size: 1rem;
   & .label {
     display: none;
   }

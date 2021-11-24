@@ -291,9 +291,10 @@ export default {
           align-items: center;
           border-radius: 50%;
           background: #fff;
+          border: 1px solid #cacfde;
 
           & > img {
-            height: 0.75rem;
+            height: 1rem;
           }
         }
 
@@ -332,7 +333,7 @@ export default {
         border: 1px solid #cacfde;
 
         & > img {
-          height: 0.75rem;
+          height: 1rem;
         }
       }
 
@@ -468,13 +469,19 @@ export default {
           display: none;
         }
         cursor: pointer;
-        width: 2rem;    
+        width: 2rem;
         height: 2rem;
         display: inline-flex;
         justify-content: center;
         align-items: center;
         border-radius: 50%;
         background: #fff;
+        border: 1px solid #cacfde;
+        margin-right: 1rem;
+
+        & > img {
+          height: 1rem;
+        }
       }
 
       

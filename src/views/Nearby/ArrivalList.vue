@@ -148,8 +148,6 @@ export default {
     & > .back-btn {
       cursor: pointer;
       flex: 0 0 auto;
-      max-width: 100%;
-      text-align: center;
       width: 2rem;
       height: 2rem;
       display: inline-flex;
@@ -157,9 +155,11 @@ export default {
       align-items: center;
       border-radius: 50%;
       background: #fff;
+      border: 1px solid #cacfde;
+      margin-right: 1rem;
 
       & > img {
-        height: 0.75rem;
+        height: 1rem;
       }
 
       @media (max-width: 1023px) {
@@ -243,7 +243,7 @@ export default {
     padding-left: 0.75rem;
     padding-right: 0.75rem;
 
-    @media (max-width: 767px) {
+    @media (max-width: 1023px) {
       flex: 0 0 3rem;
       max-width: 3rem;
       padding-right: 0;

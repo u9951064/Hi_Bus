@@ -96,7 +96,7 @@ export default {
   flex-wrap: nowrap;
   justify-content: center;
   align-items: center;
-  padding: 0.5rem 0;
+  padding: 0.6rem 0;
   border-radius: 100rem;
   width: 6rem;
   letter-spacing: -0.02em;
