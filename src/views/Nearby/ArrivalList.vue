@@ -146,6 +146,7 @@ export default {
     }
 
     & > .back-btn {
+      cursor: pointer;
       flex: 0 0 auto;
       max-width: 100%;
       text-align: center;

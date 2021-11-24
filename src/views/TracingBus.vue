@@ -15,6 +15,9 @@
       </div>
 
       <div class="route-header">
+        <div class="back-btn" @click="goBack">
+          <img src="../assets/icons/back-icon.svg" />
+        </div>
         <div class="route-number" v-html="busRouteName"></div>
         <div class="favorite-btn">
           <FavoriteBtn :route="selectedRoute" />
@@ -273,12 +276,14 @@ export default {
 
         & > .back-btn,
         & > .show-map-btn {
+          cursor: pointer;
           flex: 0 0 auto;
           max-width: 100%;
           text-align: center;
         }
 
         & > .back-btn {
+          cursor: pointer;
           width: 2rem;
           height: 2rem;
           display: inline-flex;
@@ -312,6 +317,7 @@ export default {
       height: 60%;
 
       & > .back-btn {
+        cursor: pointer;
         position: absolute;
         z-index: 5;
         top: 0.875rem;
@@ -442,7 +448,7 @@ export default {
         white-space: nowrap;
       }
 
-      & > .favorite-btn {
+      & > .favorite-btn, & > .back-btn {
         flex: 0 0 auto;
         max-width: 100%;
       }
@@ -456,6 +462,22 @@ export default {
         overflow: hidden;
         white-space: nowrap;
       }
+
+      & > .back-btn {
+        @media (max-width: 1025px) {
+          display: none;
+        }
+        cursor: pointer;
+        width: 2rem;    
+        height: 2rem;
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 50%;
+        background: #fff;
+      }
+
+      
     }
 
     & > .route-directions {

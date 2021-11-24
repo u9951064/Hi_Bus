@@ -117,6 +117,7 @@ export default {
       height: 60%;
 
       & > .back-btn {
+        cursor: pointer;
         position: absolute;
         z-index: 5;
         top: 0.875rem;
