@@ -45,7 +45,7 @@ export default {
   justify-content: center;
   width: auto;
   white-space: nowrap;
-  color: #8c90ab;
+  color: #CACFDE;
   font-size: 1rem;
   & .label {
     display: none;
@@ -83,16 +83,7 @@ export default {
     }
 
     &:hover {
-      background-color: #f4f5f9;
-    }
-
-    &:active {
-      background-color: #bbc5e4;
-      color: #fff;
-
-      &:before {
-        background-image: url("../assets/icons/favorite-white-icon.svg");
-      }
+      background-color: #F8F8FB;
     }
 
     &.active,

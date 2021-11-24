@@ -29,13 +29,21 @@
         <div class="table-content" ref="scoller">
           <div class="not-found" v-if="resultCount === 0">
             <template v-if="isFavoritePage">
-              <span>
-                Oh，Hi BUS! 還不知道您最愛的路線，您可以：<br/>
-                <a class="not-fond-option pointer" @click="goToHome()"><img src="../assets/icons/search-purple-icon.svg"/> 搜尋路線</a>
-                <a class="not-fond-option pointer" @click="goToNearBy()"><img src="../assets/icons/bubble-yellow-icon.svg"/> 附近站牌</a>
+              <span
+                >Oh，你還沒收藏最愛路線，你可以：<br />
+                <a class="not-fond-option pointer" @click="goToHome()"
+                  ><img src="../assets/icons/search-purple-icon.svg" />
+                  搜尋路線</a
+                >
+                <a class="not-fond-option pointer" @click="goToNearBy()"
+                  ><img src="../assets/icons/bubble-yellow-icon.svg" />
+                  附近站牌</a
+                >
               </span>
             </template>
-            <span v-else>Oh，找不到符合搜尋的結果，請再試看看其他的搜尋吧！</span>
+            <span v-else
+              >Oh，找不到符合搜尋的結果，請再試看看其他的搜尋吧！</span
+            >
           </div>
           <div class="city-group" v-for="c in cityList" :key="c.city">
             <div class="city-name" :ref="c.city">{{ c.cityName }}</div>
@@ -114,11 +122,14 @@ export default {
   },
   computed: {
     resultCount() {
-      return this.cityList.reduce((c, d) => (c += this.records[d.city].routes.length), 0);
+      return this.cityList.reduce(
+        (c, d) => (c += this.records[d.city].routes.length),
+        0
+      );
     },
     cityList() {
-      return this.$store.state.busRoute.cityOptions.filter(c => 
-        c.city in this.records && this.records[c.city].routes.length > 0
+      return this.$store.state.busRoute.cityOptions.filter(
+        (c) => c.city in this.records && this.records[c.city].routes.length > 0
       );
     },
   },
@@ -184,6 +195,7 @@ export default {
     justify-content: center;
     align-items: center;
     flex-wrap: wrap;
+    overflow-y: hidden;
 
     & > * {
       flex-basis: 0;
@@ -268,6 +280,7 @@ export default {
 
       & .bus-number {
         font-weight: bold;
+        font-size: 1.25rem;
       }
     }
   }
@@ -284,7 +297,7 @@ export default {
   }
 
   & .result-info {
-    padding: 1.5rem 0;
+    padding: 1rem 0 1.25rem;
     white-space: nowrap;
     overflow-y: auto;
     font-size: 0.875rem;
@@ -332,7 +345,7 @@ export default {
     font-weight: bold;
     font-size: 1.125rem;
     letter-spacing: 0.02em;
-    color: #040D2E;
+    color: #040d2e;
     display: flex;
     align-items: center;
     justify-content: center;
