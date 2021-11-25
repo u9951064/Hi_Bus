@@ -210,6 +210,7 @@ export default {
   & .arrival-time {
     flex: 0 0 25%;
     overflow: hidden;
+    max-width: 7rem;
   }
 
   & .route-content {
@@ -237,7 +238,7 @@ export default {
   }
 
   & .bus-favorite {
-    text-align: left;
+    text-align: center;
     flex: 0 0 calc(7rem + 0.75rem + 0.75rem);
     max-width: calc(7rem + 0.75rem + 0.75rem);
     padding-left: 0.75rem;

@@ -131,9 +131,12 @@ export default {
     max-height: 100%;
     border-bottom: 1px solid #cacfde;
     padding: 0.5rem 1rem;
-    font-size: 0.875rem;
     color: #8c90ab;
     white-space: nowrap;
+
+    & > .station-content > .station-count, & > .station-content > .station-name, & > .station-distance {
+      font-size: 0.875rem;
+    }
   }
 
   & > .table-body {

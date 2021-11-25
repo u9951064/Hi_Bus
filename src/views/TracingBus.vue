@@ -40,8 +40,8 @@
         </div>
       </div>
       <div class="stop-header row hide-mobile">
-        <div class="col-1 text-center hide-mobile">站序</div>
-        <div class="col-3 text-center">預估到站</div>
+        <div class="stop-sequence text-center hide-mobile">站序</div>
+        <div class="arrival-time text-center">預估到站</div>
         <div class="col text-left">站名</div>
         <div class="col-auto text-right">車牌號碼及位置</div>
       </div>
@@ -536,6 +536,17 @@ export default {
       color: #8c90ab;
       font-size: 0.875rem;
       padding: 0.5rem 0;
+      
+      & .arrival-time {
+        padding: 0.75rem 0;
+        flex: 0 0 25%;
+        max-width: 8rem;
+      }
+
+      & .stop-sequence {
+        flex: 0 0 8.3333333333%;
+        max-width: 3rem;
+      }
     }
 
     & > .stop-list {

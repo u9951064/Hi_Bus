@@ -1,9 +1,9 @@
 <template>
   <div class="stop-info-record row">
-    <div class="stop-sequence col-1 hide-mobile">
+    <div class="stop-sequence hide-mobile">
       {{ stopInfo.stopSequence }}
     </div>
-    <div class="arrival-time col-3">
+    <div class="arrival-time">
       <ArrivalTimeTag :arrivalInfo="arrivalInfo" />
     </div>
     <div class="stop-name col">{{ stopInfo.stopName }}</div>
@@ -62,8 +62,16 @@ export default {
       background: #f8f8fb;
     }
   }
+
+  & .stop-sequence {
+    flex: 0 0 8.3333333333%;
+    max-width: 3rem;
+  }
+
   & .arrival-time {
     padding: 0.75rem 0;
+    flex: 0 0 25%;
+    max-width: 8rem;
   }
 
   & .stop-name {
