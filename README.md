@@ -38,7 +38,7 @@ Hi BUS! 提供：
 
    > Note: Here map API 請參考 "第三方服務 > Here map > API 申請" 進行申請
 
-3. live server 瀏覽:
+3. live server 瀏覽 (for developing):
    ```
    npm run serve
    ```
@@ -76,8 +76,7 @@ Hi BUS! 提供：
 - SCSS
 - CSS Flex
 - Here Map
-- localStorage
-- Web APIs (Navigator.geolocation)
+- Web APIs (Geolocation API, Intersection Observer API, LocalStorage API)
 
 ### 第三方服務
 
