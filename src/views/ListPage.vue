@@ -51,6 +51,7 @@
             v-for="c in cityList"
             :key="c.city"
             :ref="`cityBlock_${c.city}`"
+            :data-city="c.city"
           >
             <div class="city-name" :ref="c.city">{{ c.cityName }}</div>
             <div
@@ -175,9 +176,9 @@ export default {
     updateActiveCity(entries) {
       entries.forEach((entry) => {
         if (entry.intersectionRatio > 0) {
-          this.keepData.intersectionCities.add(entry.target.__vnode.key);
+          this.keepData.intersectionCities.add(entry.target.dataset.city);
         } else {
-          this.keepData.intersectionCities.delete(entry.target.__vnode.key);
+          this.keepData.intersectionCities.delete(entry.target.dataset.city);
         }
       });
       this.$nextTick(() => {
