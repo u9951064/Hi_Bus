@@ -10,9 +10,12 @@
 const nearbyThreshold = 60;
 
 // 預計時間 XX:XX
-const generateTimeAtString = function (timestampOffset) {
+const generateTimeAtTag = function (timestampOffset) {
   if (timestampOffset === Number.MAX_SAFE_INTEGER) {
-    return "尚未發車";
+    return {
+      class: "status-empty",
+      label: "尚未發車",
+    };
   }
   const estimateTime = new Date(new Date().getTime() + timestampOffset * 1e3);
   const hourString = `${
@@ -21,23 +24,48 @@ const generateTimeAtString = function (timestampOffset) {
   const minuteString = `${
     estimateTime.getMinutes() < 10 ? "0" : ""
   }${estimateTime.getMinutes()}`;
-  return `${hourString} : ${minuteString}`;
+
+  return {
+    class: "status-estimate",
+    label: `${hourString} : ${minuteString}`,
+  };
 };
 
 // 倒數時間 XX 分
-const generateCountDownString = function (timestampOffset) {
+const generateCountDownTag = function (timestampOffset) {
   timestampOffset =
     timestampOffset === Number.MAX_SAFE_INTEGER ? 0 : timestampOffset;
   if (timestampOffset <= nearbyThreshold) {
-    return "進站中";
+    return {
+      class: "status-arrival",
+      label: "進站中",
+    };
   }
-  return timestampOffset <= 60
-    ? `${
-        Math.floor(timestampOffset / 10) * 10
-      } <span style="font-size:0.725rem;font-weight:400;padding-left:0.2rem">秒</span>`
-    : `${Math.floor(
+
+  if (timestampOffset <= 60) {
+    return {
+      class: "status-nearby",
+      label: `${
+        Math.floor(timestampOffset / 60) * 10
+      } <span style="font-size:0.725rem;font-weight:400;padding-left:0.2rem">秒</span>`,
+    };
+  }
+
+  if (timestampOffset <= 120) {
+    return {
+      class: "status-nearby",
+      label: `${Math.floor(
         timestampOffset / 60
-      )} <span style="font-size:0.725rem;font-weight:400;padding-left:0.2rem">分</span>`;
+      )} <span style="font-size:0.725rem;font-weight:400;padding-left:0.2rem">分</span>`,
+    };
+  }
+
+  return {
+    class: "status-estimate",
+    label: `${Math.floor(
+      timestampOffset / 60
+    )} <span style="font-size:0.725rem;font-weight:400;padding-left:0.2rem">分</span>`,
+  };
 };
 
 export default {
@@ -72,15 +100,9 @@ export default {
           result.label = "不停靠";
           break;
         case "1":
-          result.label = generateTimeAtString(this.estimateTime);
-          result.class =
-            result.label === "尚未發車" ? "status-empty" : "status-estimate";
-          break;
+          return generateTimeAtTag(this.estimateTime);
         case "0":
-          result.label = generateCountDownString(this.estimateTime);
-          result.class =
-            result.label === "進站中" ? "status-nearby" : "status-estimate";
-          break;
+          return generateCountDownTag(this.estimateTime);
         default:
           result.label = "更新中";
       }
@@ -106,21 +128,28 @@ export default {
   }
 
   &.status-empty {
-    color: #8C90AB;
-    background: #F8F8FB;
+    color: #8c90ab;
+    background: #f8f8fb;
     font-size: 0.875rem;
   }
 
-  &.status-nearby {
+  &.status-arrival {
     color: #fff;
     background: #ff6464;
     font-size: 0.875rem;
   }
 
+  &.status-nearby {
+    font-weight: bold;
+    color: #ff6464;
+    background: #ffe5e5;
+    font-size: 1.125rem;
+  }
+
   &.status-estimate {
     font-weight: bold;
     color: #040d2e;
-    background: #E7E9F2;
+    background: #e7e9f2;
     font-size: 1.125rem;
   }
 }

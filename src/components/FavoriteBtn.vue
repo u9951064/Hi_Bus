@@ -39,7 +39,7 @@ export default {
 <style scoped lang="scss">
 .favorite-btn {
   cursor: pointer;
-  padding: 0.5rem 0;
+  padding: 0.375rem 0;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -69,7 +69,7 @@ export default {
   .favorite-btn {
     border-radius: 1000rem;
     border: 1px solid #cacfde;
-    padding: 0.5rem 0;
+    padding: 0.375rem 0;
     width: 6rem;
 
     & .label {

@@ -159,7 +159,7 @@ export default {
       margin-right: 1rem;
 
       & > img {
-        height: 1rem;
+        height: 0.5rem;
       }
 
       @media (max-width: 1023px) {

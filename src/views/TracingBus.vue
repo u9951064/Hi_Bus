@@ -294,7 +294,7 @@ export default {
           border: 1px solid #cacfde;
 
           & > img {
-            height: 1rem;
+            height: 0.5rem;
           }
         }
 
@@ -333,7 +333,7 @@ export default {
         border: 1px solid #cacfde;
 
         & > img {
-          height: 1rem;
+          height: 0.5rem;
         }
       }
 
@@ -480,7 +480,7 @@ export default {
         margin-right: 1rem;
 
         & > img {
-          height: 1rem;
+          height: 0.5rem;
         }
       }
 
@@ -538,7 +538,6 @@ export default {
       padding: 0.5rem 0;
       
       & .arrival-time {
-        padding: 0.75rem 0;
         flex: 0 0 25%;
         max-width: 8rem;
       }
