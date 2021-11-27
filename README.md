@@ -1,6 +1,6 @@
-# Hi BUS! 今天想搭乘哪輛公車呢？
+# Hi BUS! 今天想搭乘哪輛公車呢？ 
 
-## 關於 Hi BUS!
+## 關於 Hi BUS! https://hi-bus.tinycloud.tw/
 
 ---
 Hi BUS! 揮揮手搭乘公車開啟您的旅途！\
@@ -23,6 +23,9 @@ Hi BUS! 提供：
 
 &emsp;&emsp;⭐ 收藏最愛\
 &emsp;&emsp;&emsp;&emsp;將經常搭乘的路線儲存方便快速查詢
+
+
+
 
 ### 系統說明
 

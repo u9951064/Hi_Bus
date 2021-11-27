@@ -15,6 +15,7 @@
       type="text"
       placeholder="搜尋公車路線"
       ref="keywordInput"
+      enterkeyhint="search"
       v-model.trim="inputKeyword"
       @focus="focusHandler"
       @blur="blurHandler"
