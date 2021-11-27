@@ -12,7 +12,6 @@
           class="tag pointer"
           v-for="c in cityList"
           :key="c.city"
-          :class="{ active: activeCity === c.city }"
           @click="scrollToCity(c.city)"
           >{{ c.cityName }}</a
         >
@@ -84,7 +83,6 @@
 <script>
 import replaceSymbol from "@/utils/replaceSymbol";
 import FavoriteBtn from "@/components/FavoriteBtn.vue";
-import { markRaw } from "@vue/reactivity";
 
 export default {
   name: "ListPage",
@@ -101,21 +99,6 @@ export default {
   },
   components: {
     FavoriteBtn,
-  },
-  data() {
-    return {
-      activeCity: null,
-      keepData: markRaw({
-        observer: undefined,
-        intersectionCities: new Set(),
-      }),
-    };
-  },
-  mounted() {
-    this.createObserve();
-  },
-  unmounted() {
-    this.unobserve();
   },
   methods: {
     replaceSymbol(text) {
@@ -140,62 +123,18 @@ export default {
       });
     },
     scrollToCity(city) {
-      if(!city || !this.$refs[city]) {
+      if (!city || !this.$refs[city]) {
         return;
       }
       this.$refs[city].scrollIntoView({ behavior: "smooth", block: "start" });
-    },
-    createObserve() {
-      if (this.keepData.observer) {
-        this.unobserve();
-      }
-      if(this.cityList.length === 0) {
-        return;
-      }
-      const observerOptions = {
-        root: this.$refs.scoller,
-        threshold: 0,
-      };
-      this.keepData.observer = new IntersectionObserver(
-        this.updateActiveCity,
-        observerOptions
-      );
-      this.$nextTick(() => {
-        this.cityList.forEach((c) => {
-          this.keepData.observer.observe(this.$refs[`cityBlock_${c.city}`]);
-        });
-      });
-    },
-    unobserve() {
-      if (this.keepData.observer) {
-        this.keepData.observer.disconnect();
-        this.keepData.observer = null;
-      }
-      this.keepData.intersectionCities.clear();
-    },
-    updateActiveCity(entries) {
-      entries.forEach((entry) => {
-        if (entry.intersectionRatio > 0) {
-          this.keepData.intersectionCities.add(entry.target.dataset.city);
-        } else {
-          this.keepData.intersectionCities.delete(entry.target.dataset.city);
-        }
-      });
-      this.$nextTick(() => {
-        const activeCity = this.cityList.find((c) =>
-          this.keepData.intersectionCities.has(c.city)
-        );
-        this.activeCity = activeCity ? activeCity.city : null;
-      });
     },
   },
   computed: {
     resultCount() {
       this.$nextTick(() => {
-        if(this.cityList[0]) {
+        if (this.cityList[0]) {
           this.scrollToCity(this.cityList[0].city);
         }
-        this.createObserve();
       });
       return this.cityList.reduce(
         (c, d) => (c += this.records[d.city].routes.length),
@@ -409,9 +348,7 @@ export default {
         background: #e7e9fd;
       }
 
-      &:active,
-      &.active,
-      &.active:hover {
+      &:active {
         color: #ffffff;
         background: #5468ff;
       }
