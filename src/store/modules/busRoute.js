@@ -1,6 +1,5 @@
-import browserStorage from '@/utils/browserStorage';
-import getSubRouteUID from '@/utils/getSubRouteUID';
-import GistApi from '../../libs/GistApi'
+import browserStorage from '@/utils/browserStorage'
+import getSubRouteUID from '@/utils/getSubRouteUID'
 import MotcApi from '../../libs/MotcApi'
 
 /**
@@ -17,7 +16,6 @@ const busRouteModule = {
 
   actions: {
     reset: () => {
-      browserStorage.removeItem('busRoutes/cityOptions');
       browserStorage.removeItem('busRoutes/routes');
     },
     init: async ({ state, dispatch, commit }) => {
@@ -29,25 +27,8 @@ const busRouteModule = {
       commit('setInitialized', true);
     },
     loadCityOption: async ({ commit }) => {
-      // 讀取儲存的快取資料
-      const storedData = browserStorage.getItem('busRoutes/cityOptions') || '';
-      if (storedData instanceof Object && Object.keys(storedData).length) {
-        commit('setCityOptions', storedData);
-        return;
-      }
-      browserStorage.removeItem('busRoutes/cityOptions');
-
-      const { data: cityList } = await GistApi.get('/V3/Map/Basic/City');
-      commit('setCityOptions', cityList.map(c => {
-        return {
-          cityName: c.CityName,
-          city: c.City,
-        };
-      }));
-      commit('setCityOptions', [{
-        'cityName': "公路客運",
-        "city": "InterBus",
-      }]);
+      const { data: cityOptions } = await import(/* webpackChunkName: "cityOptions" */ '@/assets/json/city-options.json');
+      commit('setCityOptions', cityOptions);
     },
     loadRoutes: async ({ state, commit }) => {
       // 讀取儲存的快取資料
@@ -109,7 +90,6 @@ const busRouteModule = {
     },
     setCityOptions(state, payload) {
       state.cityOptions.push(...payload);
-      browserStorage.setItem('busRoutes/cityOptions', state.cityOptions);
     },
     addToCityRoute(state, payload) {
       state.routes.push(...payload);
