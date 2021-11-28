@@ -202,6 +202,7 @@ const nearbyStopModule = {
         }
         if ('EstimateTime' in r) {
           c[stopUID][routeRecord.subRouteUID].estimateTime = Math.min(c[stopUID][routeRecord.subRouteUID].estimateTime, parseInt(r.EstimateTime));
+          c[stopUID][routeRecord.subRouteUID].stopStatus = Math.min(c[stopUID][routeRecord.subRouteUID].stopStatus, parseInt(r.StopStatus || 0));
         }
 
         return c;

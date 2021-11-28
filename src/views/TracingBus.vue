@@ -300,7 +300,7 @@ export default {
 
         & > .show-map-btn span {
           display: inline-block;
-          padding: 0.375rem 0.875rem;
+          padding: 0.1875rem 0.875rem;
           border: 1px solid #cacfde;
           border-radius: 1000rem;
           font-size: 1rem;
@@ -321,8 +321,8 @@ export default {
         cursor: pointer;
         position: absolute;
         z-index: 5;
-        top: 0.875rem;
-        left: 0.875rem;
+        top: 0.5rem;
+        left: 0.5rem;
         width: 2rem;
         height: 2rem;
         display: inline-flex;
@@ -340,10 +340,10 @@ export default {
       & > .toggle-map-btn span {
         position: absolute;
         z-index: 5;
-        top: 0.875rem;
+        top: 0.5rem;
         right: 0.5rem;
         display: inline-block;
-        padding: 0.375rem 0.875rem;
+        padding: 0.1875rem 0.875rem;
         border: 1px solid #cacfde;
         border-radius: 1000rem;
         font-size: 1rem;

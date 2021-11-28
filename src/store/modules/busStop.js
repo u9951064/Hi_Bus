@@ -145,6 +145,7 @@ const busStopModule = {
 
         if ('EstimateTime' in r) {
           c[stopUID].estimateTime = Math.min(c[stopUID].estimateTime, parseInt(r.EstimateTime));
+          c[stopUID].stopStatus = Math.min(c[stopUID].stopStatus, parseInt(r.StopStatus));
         }
 
         return c;
